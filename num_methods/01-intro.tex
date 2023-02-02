@@ -1,0 +1,92 @@
+%\subsection{Idk}
+
+\begin{definition}[Numerical Methods]
+    Numerical Methods are algorithmic approaches to numerically solve mathematical problems.
+    We use it often it is hard/difficult/impossible to solve analytically.
+\end{definition}
+
+\subsection{Taylor series}
+Given a function $f : \mathbb{R} \to \mathbb{R}$
+(that is hard to evaluate for some $x \in \mathbb{R}$),
+but $f$ and $f^{(n)}$ are known for a value $c$, which is close to $x$.
+Can we use this information to approximate $f(x)$?
+
+We know values for $\cos^{(n)}(0)$.
+\[
+    \begin{cases}
+        f(0) = \cos(0) = 1\\
+        f'(0) = -\sin(0) = 0\\
+        f''(0) = -\cos(0) = -1\\
+    \end{cases} \text{ for } c = 0
+\]
+Can we get $\cos(0.1)$ from this?
+
+\begin{definition}[Taylor series]
+    Let $f : \mathbb{R} \to \mathbb{R}$, differentiable 
+    infinitely many times at $c \in \mathbb{R}$.
+    So we have $f^{(k)}(c),\ k=1,2,\dots $. Then the Taylor series of $f$ at $c$ is:
+    \[
+        f(x) \approx f(c) + \frac{f(c)}{1!}(x-c)^1 + \frac{f''(c)}{2!}(x-c)^2 + \dots =
+        \sum_{k=0}^{\infty} \frac{f^{(k)}}{k!} (x - c)^k
+    \]
+\end{definition}
+
+\begin{remark}
+    Taylor series is a power series.
+\end{remark}
+
+\begin{remark}
+    For $c = 0$ also known as Maclaurin series
+\end{remark}
+
+\begin{remark}
+    A power series has an interval/radius of convergence.
+    You can only evaluate the series if $x \in \text{interval of convergence}$.
+\end{remark}
+
+\begin{example}[1]
+    What is the Taylor series for $f(x) = e^x$ at $c = 0$?
+    We have $f^{(k)}(x) = e^x$, so $f^{(k)}(0) = 1$.
+    Thus: \[
+        \sum_{k = 0}^{\infty} \frac{1}{k!} x^k
+    \]
+    and the radius of convergence is $\infty$.
+
+    I.e. for any $x \in \mathbb{R}$:
+    \[e^x = \sum_{k = 0}^{\infty} \frac{x^k}{k!}\]
+
+    For an algorithm we need a finite amount of terms. For example,
+    \[
+        e^x \approx \frac{1}{0!} x^0 + \frac{1}{1!} x^1 + \frac{1}{2!} x^2 =
+        1 + x + \frac{x^2}{2}
+    \]
+    This is a polynomial!
+\end{example}
+
+\begin{example}[2]
+    Let's calculate Taylor series of a polynomial.
+    \begin{align*}
+        &
+        f(x) = 4x^2 + 5x + 7,\ c = 2
+        \\&
+        f(2) = 33,\ f'(2) = 8x + 5\Big|_{x = 2} = 21,\ f''(2) = 8
+    \end{align*}
+    Taylor series:
+    \[
+        33 + 21(x - 2) + \frac{8}{2} (x - 2)^2 = 4x^2 + 5x + 7 = f(x)
+    \]
+    Taylor series of a polynomial is itself.
+\end{example}
+
+\begin{theorem}[Taylor theorem]
+    Let $f \in \mathrm{C}^{n + 1}([a, b])$ (i.e. $f$ is $(n+1)$-times
+    continuously differentiable).
+    Then for any $x \in [a, b]$ we have that 
+    \[
+        f(x) = \sum_{k=0}^n \frac{f^{(k)}(c)}{k!}(x - c)^k +
+        \frac{f^{(n+1)}(\xi_x)}{(n+1)!} (x - c)^{n+1}
+    \]
+    where $\xi_x$ is a point that depends on $x$ and which is between
+
+    The first sum is called \textit{truncated Taylor series}, the error is called \textit{the remainder}.
+\end{theorem}

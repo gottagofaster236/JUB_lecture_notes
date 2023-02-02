@@ -29,7 +29,7 @@ But, unfortunately, such a function does not exist.
             Translation does not change the measure;
         }
         \item {
-            The length of the unit interval is 1.
+            The measure of the unit interval is 1.
         }
     \end{enumerate}
 \end{theorem}
@@ -73,7 +73,7 @@ But, unfortunately, such a function does not exist.
         }
         \item[Proof.] {
             If $x \in [1/3, 2/3]$, then
-            $\exists! y \in N$ such that $x = y + q$ for some $q \in \mathbb{Q}$,
+            $\exists!\, y \in N$ such that $x = y + q$ for some $q \in \mathbb{Q}$,
             as $N$ contains exactly one representative from each of the equivalence classes.
             It is easy to see that such $q \in [0, 2/3]$.
         }
@@ -90,7 +90,7 @@ But, unfortunately, such a function does not exist.
         \sum 0 = 0
     \]
     If $\mu(N) = \varepsilon > 0$, then the sum is $+\infty$. 
-    But it's supposed to be in $[1/3, 2/3]$?!
+    But it's supposed to be in $[1/3, 1]$?!
 \end{proof}
 
 \begin{consequence}
@@ -139,7 +139,7 @@ But, unfortunately, such a function does not exist.
                 \item {
                     $m^*(A) \le b - a$.
                     To prove this, we can cover $A$ with a single interval:
-                    \[ (a - \varepsilon, b + \varepsilon) \implies \sum l(I_j) = b - a + 2\varepsilon \].
+                    \[ (a - \varepsilon, b + \varepsilon) \implies \sum l(I_j) = b - a + 2\varepsilon \]
                     Now take $\varepsilon \to 0$.
                 }
                 \item {

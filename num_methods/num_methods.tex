@@ -4,9 +4,16 @@
 \usepackage{centernot}
 \usepackage{mathtools}
 %\usepackage{ulem}
-%\usepackage{enumitem}
-%\usepackage{ansmath}
+\usepackage{enumitem}
+\usepackage{amsmath}
+\usepackage{float}
 \enablemath
+
+\DeclarePairedDelimiter\abs{\lvert}{\rvert}%
+\DeclarePairedDelimiter\norm{\lVert}{\rVert}%
+\makeatletter
+\let\oldabs\abs
+\def\abs{\@ifstar{\oldabs}{\oldabs*}}
 
 \begin{document}
 \gdef\CourseName{Numerical Methods}
@@ -14,4 +21,5 @@
 \makegood
 \Section{Introduction}{Lev Leontev}
 \input{01-intro}
+\input{02}
 \end{document}

@@ -146,17 +146,34 @@ But, unfortunately, such a function does not exist.
                     $m^*(A) \ge b - a$.
                     Suppose we an infinite cover of $A$ by open intervals.
                     Since $A$ is a compact set, we can choose a finite subcover.
-                    The case of a finite cover with open intervals is obvious.
+                    The case of a finite cover with open intervals is simple.
+                    We can prove it as follows: if we have two intersecting 
+                    open intervals, we can replace them with a single interval
+                    of a lesser length. Then we can continue this process using induction.
                 }
             \end{enumerate}
         }
         \item {
-            If $A$ is an open or semiclosed interval, we can approximate it from both sides
-            by closed intervals.
-        }
-        \item {
             If $A$ is unbounded, then all of the covers would have infinite sum, and thus 
             the infimum will be infinite as well.
+        }
+        \item {
+            If $A$ is an open or semiclosed interval, we can approximate it from both sides
+            by closed intervals.
+
+            Let's denote the closure of $A$ by $\bar{A}$.
+            Since we're adding points, the Outer Measure will not decrease:
+            \[ A \subset \overline{A} \implies m^*(A) \le m^*(\overline{A}) = l(a) \]
+
+            \pagebreak
+            Now suppose we have an closed interval $B$ strictly inside $A$. Then we get
+            \[ m^*(A) \ge m^*(B) = l(B) = l(A) - \varepsilon \]
+            Now take $\eps \to 0 \implies m^*(A) \ge l(A)$.
+
+            \begin{figure*}[h]
+                \centering
+                \includegraphics[width=0.5\textwidth]{measure_a_and_b}
+            \end{figure*}
         }
     \end{enumerate}
 \end{proof}

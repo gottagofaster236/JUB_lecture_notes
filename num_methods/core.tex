@@ -256,6 +256,11 @@
   \declaretheorem[numberwithin=\ThmNamespace, name=Theorem, style=thmstyle_thm]{theorem}
   \declaretheorem[numberwithin=\ThmNamespace, name=Definition, style=thmstyle_def]{definition}
   \declaretheorem[sibling=theorem, name=Statement, style=thmstyle_thm]{statement}
+  \declaretheorem[sibling=theorem, name=Proposition, style=thmstyle_thm]{proposition}
+  \renewcommand{\thetheorem}{\arabic{theorem}}
+  \renewcommand{\thedefinition}{\arabic{definition}}
+  \renewcommand{\thestatement}{\arabic{statement}}
+  \renewcommand{\theproposition}{\arabic{proposition}}
   \declaretheorem[numbered=no, name=Remark, style=thmstyle_remark]{remark}
   \declaretheorem[numbered=no, name=Lemma, style=thmstyle_thm]{lemma}
   \declaretheorem[numbered=no, name=Consequence, style=thmstyle_cons]{consequence}

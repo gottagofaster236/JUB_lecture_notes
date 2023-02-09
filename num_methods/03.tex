@@ -1,0 +1,229 @@
+\textbf{Summary of Taylor series:}
+\begin{itemize}
+    \item {
+        Problem: Evaluate $f(x)$ with a given error bound.
+    }
+    \item {
+        Required: $f \in \mathrm{C}^{n+1}$, values of derivatives $f^{(k)}(a)$.
+    }
+    \item {
+        Check interval of convergence: does Taylor series expansion work?
+    }
+    \item {
+        Estimate the maximum error for $n$ terms of the Taylor polynomial.
+    }
+    \item {
+        Choose $n$, such that the error bound is low enough.
+    }
+    \item {
+        Evaluate the Taylor polynomial.
+    }
+\end{itemize}
+
+\newpage
+\subsection{Number representation}
+
+There are different error types:
+\begin{enumerate}
+    \item {
+        An error in data (partly due to roundoff).
+    }
+    \item {
+        Roundoff errors (during computation). For example,
+        multiplication increases the amount of needed significant digits, and
+        we can't store them all on a computer.
+    }
+    \item {
+        Truncation error, that is inherent to numeric methods. For example,
+        if we take a finite number of terms in our Taylor series.
+    }
+\end{enumerate}
+
+\begin{definition}
+    Let $\tilde{a}$ be approximation of $a$. Then
+    $\abs{\tilde{a} - a}$ is the \textit{absolute error}, and 
+    $\frac{\abs{\tilde{a} - a}}{a}$ is the \textit{relative error}.
+    The \textit{error bound} is the magnitude of admissable error.
+\end{definition}
+\begin{example}
+    0.00123 with error $0.000004 = 0.4 \cdot 10^{-5}$.
+    The error is below $\frac{1}{2} \cdot 10^{-t}$ with $t = 5$, so there's 5
+    correct digits and 3 significant digits (the number of non-leading zeros).
+\end{example}
+\begin{example}
+    0.00123 with error $0.000006 = 0.06 \cdot 10^{-4} > \frac{1}{2} \cdot 10^{-5}$.
+    Only has 2 significant digits, because we have to round the error up.
+\end{example}
+
+\begin{theorem}
+    In addition/subtraction the bounds for absolute errors are added,
+    in multiplication/division the relative errors are added.
+\end{theorem}
+\begin{example}
+    Solve $x^2 - 56x + 1 = 0$:
+    \[
+        x = 28 - \sqrt{783} \approx 28 - 27.982 \text{ (5 significant digits)} =
+        0.018 \pm \frac{1}{2} \cdot 10^{-3}
+    \]
+    We end up with 2 significant digits in the answer, despite that we used to 
+    have 5. That's why computers use floating point numbers, as
+    leading zeros are bad.
+\end{example}
+
+\begin{definition}[Error propagation]
+    If $y(x)$ is smooth, than the derivative $\abs{y(x)'}$
+    can be interpreted as the sensitivity of $y(x)$ to errors in $x$.
+    We can generalize this to functions of multiple variables:
+    \[
+        \abs{\Delta y} \le \sum \abs{\frac{\partial y}{\partial x_i}} \cdot \abs{\Delta x_i}
+        \text{, where } \Delta y = \tilde{y} - y,\ \Delta x_i = \tilde{x_i} - x_i
+    \]
+    This is an empirical inequality that is only valid for small $\Delta x_i$.
+    It is used a lot in physics.
+\end{definition}
+
+\begin{definition}[Base representation]
+    Every number $x \in \mathbb{N}$ can be written in the following form 
+    as a unique expansion with the respect to the base $b$, where
+    $b \in \mathbb{N} \setminus \{0\}$:
+    \begin{align*}
+        &
+        x = a_0 b^0 + a_1 b^1 + a_2 b^2 + \dots + a_n b_n = 
+        \sum_{i=0}^n a_i b^i 
+        \\&
+        a \in \mathbb{N}_0,\ a_i < b,\ a_i \in \{0, \dots, b - 1\}
+    \end{align*}
+        
+    Here $b$ is called the \textit{base}, $a_i$ are called the \textit{digits}.
+    Humans usually use base 10. But, for example, computers
+    can use base 2.
+
+    For a real number $x \in \mathbb{R}$ we can write: 
+    \[
+        x = \sum_{i=0}^n a_i b^i + \sum_{i=1}^\infty a_{-i} b^{-i}
+    \]
+\end{definition}
+\begin{example}
+    $b=2:\ 1011 = 1 \cdot 2^0 + 1 \cdot 2^1 + 0 \cdot 2^2 + 1 \cdot 2^3 =
+    (11)_{10}$
+\end{example}
+There are different algorithms that convert number systems.
+
+\subsubsection{Euclid's algorithm}
+Euclid's algorithm converts $(x)_{10}$ to $(y)_b$.
+\begin{enumerate}%[label={\arabic*)}]
+    \item {
+        Input $(x)_{10}$.
+    }
+    \item {
+        Determine the smallest $n$, such that $x < b^{n+1}$.
+    }
+    \item {
+        For $i=n$ to $0$ do:
+        \begin{align*}
+            &
+            a_i := x\ \mathrm{div}\ b^{i} \text{ (integer division)}
+            \\&
+            x := x\ \mathrm{mod}\ b^{i} \text{ (the remainder)}
+        \end{align*}
+    }
+    \item {
+        Output result $a_n a_{n-1} a_{n-2} \dots a_0 = (y)_b$.
+    }
+\end{enumerate}
+
+\begin{example}
+    \begin{enumerate}
+        \item {
+            $(x)_{10} = (13)_{10} \to (y)_2$
+        }
+        \item {
+            $n = 3$ since $13 < 2^4$.
+        }
+        \item {
+            \begin{align*}
+                &
+                i = 3:\ a_3 = 13 \ \mathrm{div}\ 2^3 = 1,\
+                x = 13 \ \mathrm{mod}\ 2^3 = 5
+                \\&
+                i = 2:\ a_2 = 5 \ \mathrm{div}\ 2^2 = 1,\
+                x = 5 \ \mathrm{mod}\ 2^2 = 1
+                \\&
+                i = 1:\ a_1 = 5 \ \mathrm{div}\ 2^1 = 0,\
+                x = 1 \ \mathrm{mod}\ 2^1 = 1
+                \\&
+                i = 0:\ a_0 = 1 \ \mathrm{div}\ 2^0 = 1,\
+                x = 1 \ \mathrm{mod}\ 2^0 = 0
+            \end{align*}
+        }
+        \item {
+             Output: $(1101)_2 = (13)_{10}$.
+        }
+    \end{enumerate}
+\end{example}
+Two problems of the Euclid's algorithm:
+\begin{enumerate}
+    \item {
+        Step 2 is inefficient
+    }
+    \item {
+        Division by large numbers can be problematic.
+    }
+\end{enumerate}
+
+\subsubsection{Horner's scheme}
+Horner's scheme is a more efficient algorithm. The idea is to represent
+the number as follows:
+\[
+    (a_n a_{n - 1} \dots a_{0})_b = 
+    a_0 + b\bigl(a_1 + b(a_2 + b(a_3 + \dots + b (a_n))) \dots \bigr)
+\]
+The algorithm is the following:
+\begin{enumerate}
+    \item {
+        Input $(x)_{10}$.
+    }
+    \item {
+        $i := 0$.
+    }
+    \item {
+        While $x > 0$ do
+        \begin{align*}
+            &
+            a_i := x \ \mathrm{mod}\ b
+            \\&
+            x := x \ \mathrm{div}\ b
+        \end{align*}
+    }
+    \item {
+        Output result $a_n a_{n-1} a_{n-2} \dots a_0 = (y)_b$.
+    }
+\end{enumerate}
+\begin{remark}
+    The algorithm is very similar to the Euclid's algorithm ---
+    the difference is that we execute it in reverse. 
+    We no longer have divisions by large numbers, and thus
+    it runs faster.
+\end{remark}
+
+\textbf{General remarks:}
+\begin{enumerate}
+    \item {
+        A number with simple representation in one base 
+        may be complicated to represent in another base.
+        For example,
+        $(0.1)_{10} = (0.0001100110011\dots)_2$.
+    }
+    \item {
+        Base 2 is called \textit{binary},
+        base 8 is \textit{octal},
+        base 16 is \textit{hexadecimal}.
+    }
+    \item {
+        To convert from a base $b$
+        to base $10$ we can just perform the following computation:
+        \[
+            (42)_8 = 4 \cdot 8^1 + 2 \cdot 8^0 = (34)_{10}
+        \]
+    }
+\end{enumerate}

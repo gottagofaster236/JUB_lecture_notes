@@ -1,0 +1,179 @@
+\pagebreak
+\begin{definition}[Algebra]
+    Let $X$ be a non-empty set. $\Omega \subset 2^X$ is an algebra,
+    if:
+    \begin{enumerate}
+        \item {
+            $X \in \Omega$;
+        }
+        \item {
+            $\Omega$ is closed under the formation of complements in $X$
+             and \textit{finite} unions.
+        }
+    \end{enumerate}
+    \begin{remark}
+        It follows that $\Omega$ is also closed under intersections:
+        \[
+            \bigl(X_1^C \cup \dots \cup X_n^C\bigr)^C = X_1 \cap \dots \cap X_n
+        \]
+    \end{remark}
+\end{definition}
+
+\begin{definition}[$\sigma$-algebra]
+    Let $X$ be a non-empty set. $\Omega \subset 2^X$ is a $\sigma$-algebra,
+    if:
+    \begin{enumerate}
+        \item {
+            $X \in \Omega$;
+        }
+        \item {
+            $\Omega$ is closed under the formation of complements in $X$
+             and \textit{countable} unions.
+        }
+    \end{enumerate}
+\end{definition}
+\begin{remark}
+    Every $\sigma$-algebra is an algebra, but not vice versa.
+\end{remark}
+
+\begin{corollary}
+    The collection $\mathcal{M}$ of all measurable subsets
+     of $\mathbb{R}$ is an algebra.
+\end{corollary}
+\begin{proof}
+    For the proof, we'll need to show that:
+    \begin{enumerate}
+        \item {
+            $\mathbb{R}$ is measurable.
+            \[
+                m^*(A) = m^*(A \cap \mathbb{R}) + m^*(A \cap \mathbb{R}^C) = 
+                m^*(A) + m^*(\emptyset)
+            \]
+        }
+        \item {
+            It is closed under complements. It follows from the symmetry of the
+            \hyperref[def:measurable]{definition
+            of a measurable set}.
+        }
+        \item {
+            It is closed under unions.  We \hyperref[the:measurableUnion]{have already proved} this one.
+        }
+    \end{enumerate}
+\end{proof}
+
+\begin{proposition}
+    \label{prop:disjointIntersectionSum}
+    $\{E_k\}_1^n$ --- disjoint measurable sets. Then for every set $A$
+    \[
+        m^*\Bigl(A \cap \Bigl[\bigcup_1^n E_k\Bigr]\Bigr) = \sum_1^n m^*(A \cap E_k)
+    \]
+    In particular, for $A = \mathbb{R}$ we have
+    \[
+        m^*\Bigl(\bigcup_1^n E_k\Bigr) = \sum_1^n m^*(E_k)
+    \]
+\end{proposition}
+\begin{proof}
+    Induction on $n$.
+
+    Base $n=1$ is obvious.
+
+    Step $n - 1 \to n$. Take $\hat{A} := A \cap \bigl[ \bigcup_1^n E_k \bigr]$.
+    Then \[\hat{A} \cap E_n = A \cap E_n \]
+    We also have \[\hat{A} \cap E_n^C = A \cap \Bigl[ \bigcup_1^{n - 1} E_k \Bigr]\]
+    That is true, as intersecting 
+    with $E_n^C$ is equivalent to subtracting $E_n$ from $\hat{A}$, and since
+    $\{E_k\}$ are disjoint, no other parts of $\hat{A}$ except $E_n$ will be removed. Then:
+    \begin{align*}
+        &m^*(\hat{A}) \overset{E_n \text{ is measurable}}{=\joinrel=} m^*(\hat{A} \cap E_n) + m^*(\hat{A} \cap E_n^C)
+        =
+        \\&
+        = m^*(A \cap E_n) + m^*\Bigl(A \cap \Bigl[\bigcup_{1}^{n-1} E_k\Bigr]\Bigr)
+        \overset{\text{induction}}{=} m^*(A \cap E_n) + \sum_{1}^{n-1} m^*(A \cap E_k)
+    \end{align*}
+\end{proof}
+
+\begin{proposition}
+    \label{prop:unionOfCountable}
+    The union of a countable collection of measurable sets is the union
+    of a countable collection of \textit{disjoint} measurable sets.
+\end{proposition}
+\begin{proof}
+    If $A = \cup_1^\infty A_k$, define $\hat{A}_1 := A_1$ and
+    $\hat{A}_k := A_k \setminus \cup_1^{k-1} A_j$.
+    As $\mathcal{M}$ is an algebra, all $\hat{A}_k$ are measurable, and
+    $A = \sqcup_1^\infty \hat{A}_k$, which is what we wanted.
+\end{proof}
+
+\begin{theorem}
+    $\mathcal{M}$ is a $\sigma$-algebra.
+\end{theorem}
+\begin{proof}
+    We need to show that if all $\{E_k\}_1^\infty$ are measurable sets,
+    then $E = \cup_1^\infty E_k$ is measurable. 
+    By Proposition~\ref{prop:unionOfCountable}, without the loss of generality,
+    assume that $E_k$ are all pairwise disjoint.
+    Let $F_n := \cup_1^n E_k$, then $F_n \in \mathcal{M}$
+    (as a finite union). As $F_n \subset E$, we have $E^C \subset F_n^C$.
+
+    Let $A$ be any set. Then:
+    \begin{align*}
+        &
+        m^*(A) = m^*(A \cap F_n) + m^*(A \cap F_n^C) \ge
+        m^*(A \cap F_n) + m^*(A \cap E^C)
+        \overset{\text{Proposition~\ref{prop:disjointIntersectionSum}}}{=}
+        \\&=
+        \sum_1^n m^*(A \cap E_k) + m^*(A \cap E_C)
+    \end{align*}
+    Now take $n \to \infty$:
+    \begin{align*}
+        m(A) \ge \sum_1^\infty m^*(A \cap E_k) + m^*(A \cap E_C)
+        \overset{\text{\hyperref[the:countableSubadditivity]{countable subadditivity}}}{\ge}
+        m^*(A \cap E) + m^*(A \cap E^C)
+    \end{align*}
+    Now we have the inequality in the difficult direction. The inequality in the other direction
+    is obvious (again, from countable subadditivity).
+\end{proof}
+
+\begin{proposition}[Countable additivity]
+    If $\{E_k\}_1^\infty \subset \mathcal{M}$ --- collection of
+    disjoint sets, then  $\cup_1^\infty E_k \in \mathcal{M}$
+    and
+    \[ m^*\Bigl(\bigcup_1^\infty E_k\Bigr) = \sum_1^\infty m^*(E_k) \] 
+\end{proposition}
+\begin{proof}
+    We know that:
+    \begin{enumerate}
+        \item {
+            \[ m^*\Bigl( \bigcup_1^\infty E_k \Bigr) \le
+            \sum_1^\infty m^*(E_k) \text{ (countable \textit{sub}additivity)}\]
+        }
+        \item {
+            \[ m^*\Bigl(\bigcup_1^\infty E_k\Bigr) \ge
+            m^*\Bigl( \bigcup_1^n E_k \Bigr) \overset{\text{Proposition~\ref{prop:disjointIntersectionSum}}}{=}
+            \sum_1^n m^*(E_k) \]
+            Take $n \to \infty$, then
+            \[ m^*\Bigl( \bigcup_1^\infty E_k \Bigr) \ge 
+            \sum_1^\infty m^*(E_k) \]
+            Which is what we wanted.
+        }
+    \end{enumerate}
+\end{proof}
+
+\begin{definition}
+    The restriction of $m^*$ on $\mathcal{M}$ is called the
+    Lebesgue measure and denoted by $m$.
+    \[ m(E) := m^*(E) \quad \forall E \in \mathcal{M} \]
+\end{definition}
+\begin{definition}
+    If $X$ is a non-empty set and $\mathcal{A}$ is a $\sigma$-algebra on $X$,
+    then any function $\mu : \mathcal{A} \to [0, +\infty]$ is called the measure
+    on $(X, \mathcal{A})$, if:
+    \begin{enumerate}
+        \item {
+            $\mu(\emptyset) = 0$.
+        }
+        \item {
+            $\mu$ is countable additive.
+        }
+    \end{enumerate}
+\end{definition}

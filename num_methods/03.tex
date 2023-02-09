@@ -42,7 +42,7 @@ There are different error types:
 \begin{definition}
     Let $\tilde{a}$ be an approximation of $a$. Then
     $\abs{\tilde{a} - a}$ is the \textit{absolute error}, and 
-    $\frac{\abs{\tilde{a} - a}}{a}$ is the \textit{relative error}.
+    $\abs{\frac{\tilde{a} - a}{a}}$ is the \textit{relative error}.
     The \textit{error bound} is the magnitude of admissable error.
 \end{definition}
 \begin{example}
@@ -84,8 +84,8 @@ There are different error types:
 
 \begin{definition}[Base representation]
     Every number $x \in \mathbb{N}$ can be written in the following form 
-    as a unique expansion with the respect to the base $b$, where
-    $b \in \mathbb{N} \setminus \{0\}$:
+    as a unique expansion with respect to the base $b$, where
+    $b \in \mathbb{N} \setminus \{1\}$:
     \begin{align*}
         &
         x = a_0 b^0 + a_1 b^1 + a_2 b^2 + \dots + a_n b_n = 
@@ -149,7 +149,7 @@ Euclid's algorithm converts $(x)_{10}$ to $(y)_b$.
                 i = 2:\ a_2 = 5 \ \mathrm{div}\ 2^2 = 1,\
                 x = 5 \ \mathrm{mod}\ 2^2 = 1
                 \\&
-                i = 1:\ a_1 = 5 \ \mathrm{div}\ 2^1 = 0,\
+                i = 1:\ a_1 = 1 \ \mathrm{div}\ 2^1 = 0,\
                 x = 1 \ \mathrm{mod}\ 2^1 = 1
                 \\&
                 i = 0:\ a_0 = 1 \ \mathrm{div}\ 2^0 = 1,\
@@ -187,12 +187,14 @@ The algorithm is the following:
         $i := 0$.
     }
     \item {
-        While $x > 0$ do
+        While $x > 0$ do:
         \begin{align*}
             &
             a_i := x \ \mathrm{mod}\ b
             \\&
             x := x \ \mathrm{div}\ b
+            \\&
+            i := i + 1
         \end{align*}
     }
     \item {

@@ -77,7 +77,7 @@
 
     Base $n=1$ is obvious.
 
-    Step $n - 1 \to n$. Take $\hat{A} := A \cap \bigl[ \bigcup_1^n E_k \bigr]$.
+    Step $n - 1 \to n$. Take $\hat{A} \coloneqq A \cap \bigl[ \bigcup_1^n E_k \bigr]$.
     Then \[\hat{A} \cap E_n = A \cap E_n \]
     We also have \[\hat{A} \cap E_n^C = A \cap \Bigl[ \bigcup_1^{n - 1} E_k \Bigr]\]
     That is true, as intersecting 
@@ -98,8 +98,8 @@
     of a countable collection of \textit{disjoint} measurable sets.
 \end{proposition}
 \begin{proof}
-    If $A = \cup_1^\infty A_k$, define $\hat{A}_1 := A_1$ and
-    $\hat{A}_k := A_k \setminus \cup_1^{k-1} A_j$.
+    If $A = \cup_1^\infty A_k$, define $\hat{A}_1 \coloneqq A_1$ and
+    $\hat{A}_k \coloneqq A_k \setminus \cup_1^{k-1} A_j$.
     As $\mathcal{M}$ is an algebra, all $\hat{A}_k$ are measurable, and
     $A = \sqcup_1^\infty \hat{A}_k$, which is what we wanted.
 \end{proof}
@@ -112,7 +112,7 @@
     then $E = \cup_1^\infty E_k$ is measurable. 
     By Proposition~\ref{prop:unionOfCountable}, without the loss of generality,
     assume that $E_k$ are all pairwise disjoint.
-    Let $F_n := \cup_1^n E_k$, then $F_n \in \mathcal{M}$
+    Let $F_n \coloneqq \cup_1^n E_k$, then $F_n \in \mathcal{M}$
     (as a finite union). As $F_n \subset E$, we have $E^C \subset F_n^C$.
 
     Let $A$ be any set. Then:
@@ -162,7 +162,7 @@
 \begin{definition}
     The restriction of $m^*$ on $\mathcal{M}$ is called the
     Lebesgue measure and denoted by $m$.
-    \[ m(E) := m^*(E) \quad \forall E \in \mathcal{M} \]
+    \[ m(E) \coloneqq m^*(E) \quad \forall E \in \mathcal{M} \]
 \end{definition}
 \begin{definition}
     If $X$ is a non-empty set and $\mathcal{A}$ is a $\sigma$-algebra on $X$,

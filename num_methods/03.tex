@@ -122,9 +122,9 @@ Euclid's algorithm converts $(x)_{10}$ to $(y)_b$.
         For $i=n$ to $0$ do:
         \begin{align*}
             &
-            a_i := x\ \mathrm{div}\ b^{i} \text{ (integer division)}
+            a_i \coloneqq x\ \mathrm{div}\ b^{i} \text{ (integer division)}
             \\&
-            x := x\ \mathrm{mod}\ b^{i} \text{ (the remainder)}
+            x \coloneqq x\ \mathrm{mod}\ b^{i} \text{ (the remainder)}
         \end{align*}
     }
     \item {
@@ -184,17 +184,17 @@ The algorithm is the following:
         Input $(x)_{10}$.
     }
     \item {
-        $i := 0$.
+        $i \coloneqq 0$.
     }
     \item {
         While $x > 0$ do:
         \begin{align*}
             &
-            a_i := x \ \mathrm{mod}\ b
+            a_i \coloneqq x \ \mathrm{mod}\ b
             \\&
-            x := x \ \mathrm{div}\ b
+            x \coloneqq x \ \mathrm{div}\ b
             \\&
-            i := i + 1
+            i \coloneqq i + 1
         \end{align*}
     }
     \item {

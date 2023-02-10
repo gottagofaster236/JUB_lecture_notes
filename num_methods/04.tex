@@ -94,7 +94,7 @@ Issues with floating-point numbers:
     Notice the three zeros at the end --- that is a sign of 
     a precision loss (unless the number actually ends with zeros).
     \begin{consequence}
-        Avoid subtracting number of similar size, because it leads to
+        Avoid subtracting numbers of similar size, because it leads to
         a loss of precision.
     \end{consequence}
     A potential solution in this case would be to use Taylor series expanison:
@@ -106,11 +106,11 @@ Issues with floating-point numbers:
     \end{align*}
     Using 3 terms we get: $0.4937174328 \cdot 10^{-4}$.
     The error of the Taylor series with 3 terms will be 
-    $\le 10^{-13}$ (which is needed for ``full'' precision for $0.\dots \cdot 10^{-4}$).
+    $\le 10^{-13}$ (which is needed for ``full'' precision for $0.\ldots \cdot 10^{-4}$).
 \end{example}
 \begin{theorem}
     Let $x, y$ be two normalized floating point numbers
-    with $x > y > 9$ and base $b=2$. If there exist $p, q \in \mathbb{N}_0$ such that
+    with $x > y > 0$ and base $b=2$. If there exist $p, q \in \mathbb{N}_0$ such that
     \[ 2^{-p} \le 1 - \frac{y}{x} \le 2^{-q} \]
-    Then at most $p$ and at least $q$ significant bits are lost.
+    Then at most $p$ and at least $q$ significant bits (digits base 2) are lost during subtraction.
 \end{theorem}

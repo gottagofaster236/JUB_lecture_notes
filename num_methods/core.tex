@@ -214,7 +214,7 @@
   \fi
 
   \ifx\ThmNamespace\undefined
-  \def\ThmNamespace{subsection}
+  \def\ThmNamespace{section}
   \fi
   
   \declaretheoremstyle[
@@ -255,8 +255,8 @@
   
   \declaretheorem[numberwithin=\ThmNamespace, name=Theorem, style=thmstyle_thm]{theorem}
   \declaretheorem[numberwithin=\ThmNamespace, name=Definition, style=thmstyle_def]{definition}
-  \declaretheorem[sibling=theorem, name=Statement, style=thmstyle_thm]{statement}
-  \declaretheorem[sibling=theorem, name=Proposition, style=thmstyle_thm]{proposition}
+  \declaretheorem[numberwithin=\ThmNamespace, name=Statement, style=thmstyle_thm]{statement}
+  \declaretheorem[numberwithin=\ThmNamespace, name=Proposition, style=thmstyle_thm]{proposition}
   \renewcommand{\thetheorem}{\arabic{theorem}}
   \renewcommand{\thedefinition}{\arabic{definition}}
   \renewcommand{\thestatement}{\arabic{statement}}

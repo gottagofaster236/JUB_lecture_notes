@@ -1,0 +1,116 @@
+\subsection{Floating point representation}
+\begin{definition}
+    Normalized floating point representation
+    with respect to a base $b$ stores any number $x$ as follows:
+    \[
+        x = 0.a_1 a_2 \dots a_k \cdot b^n \text{ where } a_i \in \{0, 1, \dots, b - 1\}
+    \]
+    $a_i$ are called \textit{digits}, $k$ is called \textit{precision},
+    $n$ is called \textit{exponent}, $a_1 \dots a_k$ is called \textit{mantissa},
+    $a_1 \ne 0$ is called \textit{normalization}, which makes the representation
+    unique.
+\end{definition}
+\begin{remark}
+    Leading zeros are essentially a waste of space. That's why floating points
+    are useful when you add/subtract/divide numbers --- as you're able to move
+    the decimal point. 
+\end{remark}
+\begin{example}[1]
+    Base 10: $32.213 = 0.32213 \cdot 10^2$.
+
+    Base 2: $x = \pm 0.b_1 b_2 \dots b_k \cdot 2^n$
+    We need another bit to define the sign of the number.
+\end{example}
+\begin{example}[2]
+    For \textit{single precision} floating-point numbers:
+    4 bytes = 32 bits.
+    \begin{itemize}
+        \item {
+            1 bit sign mantissa.
+        }
+        \item {
+            1 bit sign exponent.
+        }
+        \item {
+            7 bits for exponent (integer).
+        }
+        \item {
+            23 bits for mantissa (24 effectively, since the first digit is always 1).
+        }
+    \end{itemize}
+
+    7 bits allow for the largest exponent of 127, i.e. 
+    $2^127 \approx 10^38$. Anything above that is infinity. So, we have the range of
+    $10^{-38} < \abs{x} < 10^38$.
+
+    Since $2^{-24} \approx 10^{-7}$, we can represent 7 significant digits.
+
+    We can have a better representation, e.g. with \textit{double precision} (8 bytes).
+\end{example}
+
+Issues with floating-point numbers:
+\begin{itemize}
+    \item {
+        Adding numbers is not commutative, i.e.
+        $x + y$ does not necessarily equal to $y + x$.
+    }
+    \item {
+        It's not associative, i.e.
+        $(x + y) + z$ does not necessarily equal to $x + (y + z)$.
+        You usually try to add small numbers together first, in hopes that they 
+        will become big enough to become significant.
+    }
+\end{itemize}
+\begin{example}[1]
+    Take $x = y = 0.00000033$, $z = 0.00000034$, $w = 1.00000000$.
+    We compute $x + y + z + w$, and in that order we get $1.000001$.
+    Reversed order gets $1.000000$ with base 10. Why is that?
+    That's because we only have $7$ significant digits.
+\end{example}
+\begin{example}[2]
+    \begin{align*}
+        \sum_{1}^{10^7} 1 + 10^7 = 1 + \dots + 1 + 10^7
+    \end{align*}
+    The order of summation will make a difference. You will either get 
+    $10^7$ or $2 \cdot 10^7$, because $1 + 1 = 2$, but $1 + 10^7 = 10^7$
+    due to roundoff.
+\end{example}
+\begin{consequence}
+    Avoid adding numbers of different order of magnitude.
+    Add numbers in increasing order of their size.
+\end{consequence}
+\begin{example}[3]
+    Compute $x - \sin{x}$ for $x$ close to $0$, e.g. $x = 1 / 15$.
+    Assume $k = 10$ precision.
+    \begin{align*}
+        &
+        x = 0.6666666667 \cdot 10^{-1}
+        \\&
+        \sin{x} = 0.6661729492 \cdot 10^{-1}
+        \\&
+        x - \sin{x} = 0.0004937175 \cdot 10^{-1} = 
+        0.4937175\underline{000} \cdot 10^{-4}
+    \end{align*}
+    Notice the three zeros at the end --- that is a sign of 
+    a precision loss (unless the number actually ends with zeros).
+    \begin{consequence}
+        Avoid subtracting number of similar size, because it leads to
+        a loss of precision.
+    \end{consequence}
+    A potential solution in this case would be to use Taylor series expanison:
+    \begin{align*}
+        &
+        \sin{x} = x - \frac{x^3}{3!} + \frac{x^5}{5!} - \dots
+        \\&
+        x - \sin{x} = +\frac{x^3}{3!} - \frac{x^5}{5!} + \dots
+    \end{align*}
+    Using 3 terms we get: $0.4937174328 \cdot 10^{-4}$.
+    The error of the Taylor series with 3 terms will be 
+    $\le 10^{-13}$ (which is needed for ``full'' precision for $0.\dots \cdot 10^{-4}$).
+\end{example}
+\begin{theorem}
+    Let $x, y$ be two normalized floating point numbers
+    with $x > y > 9$ and base $b=2$. If there exist $p, q \in \mathbb{N}_0$ such that
+    \[ 2^{-p} \le 1 - \frac{y}{x} \le 2^{-q} \]
+    Then at most $p$ and at least $q$ significant bits are lost.
+\end{theorem}

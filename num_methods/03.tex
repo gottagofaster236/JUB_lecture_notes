@@ -21,8 +21,9 @@
 \end{itemize}
 
 \newpage
-\subsection{Number representation}
+\section{Number representation}
 
+\subsection{Errors}
 There are different error types:
 \begin{enumerate}
     \item {
@@ -82,6 +83,7 @@ There are different error types:
     It is used a lot in physics.
 \end{definition}
 
+\subsection{Base representation}
 \begin{definition}[Base representation]
     Every number $x \in \mathbb{N}$ can be written in the following form 
     as a unique expansion with respect to the base $b$, where
@@ -109,7 +111,7 @@ There are different error types:
 \end{example}
 There are different algorithms that convert number systems.
 
-\subsubsection{Euclid's algorithm}
+\subsection{Euclid's algorithm}
 Euclid's algorithm converts $(x)_{10}$ to $(y)_b$.
 \begin{enumerate}%[label={\arabic*)}]
     \item {
@@ -171,7 +173,7 @@ Two problems of the Euclid's algorithm:
     }
 \end{enumerate}
 
-\subsubsection{Horner's scheme}
+\subsection{Horner's scheme}
 Horner's scheme is a more efficient algorithm. The idea is to represent
 the number as follows:
 \[
@@ -209,7 +211,7 @@ The algorithm is the following:
 \end{remark}
 
 \textbf{General remarks:}
-\begin{enumerate}
+\begin{itemize}
     \item {
         A number with simple representation in one base 
         may be complicated to represent in another base.
@@ -228,4 +230,24 @@ The algorithm is the following:
             (42)_8 = 4 \cdot 8^1 + 2 \cdot 8^0 = (34)_{10}
         \]
     }
-\end{enumerate}
+    \item {
+        Conversion $2$ and $8$. $8=2^3$:
+        three consecutive bits represent one octal digit, e.g.
+        \[ (551.624)_8 = (101 101 001.110 010 100)_2 \]
+    }
+    \item {
+        Conversion $2$ and $16=2^4$: just four bits to one hexadecimal digit. 
+    }
+    \item {
+        Horner's scheme algorithm does not need estimate of $n$
+        and does not divide by large numbers.
+    }
+    \item {
+        It is applicable to real numbers, but one needs a critireon to stop
+        if the representation with the new base is infinite.
+    }
+    \item {
+        On computers we only have finite precision
+        (the number of digits/bits).
+    }
+\end{itemize}

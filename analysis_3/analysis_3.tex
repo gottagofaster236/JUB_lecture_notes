@@ -9,6 +9,12 @@
 \usepackage{hyperref}
 \enablemath
 
+\DeclarePairedDelimiter\abs{\lvert}{\rvert}%
+\DeclarePairedDelimiter\norm{\lVert}{\rVert}%
+\makeatletter
+\let\oldabs\abs
+\def\abs{\@ifstar{\oldabs}{\oldabs*}}
+
 \begin{document}
 \gdef\CourseName{Analysis 3}
 \author{Lev Leontev}
@@ -17,4 +23,6 @@
 \input{01-measure}
 \input{02-sigma_algebra}
 \input{03}
+\input{04}
+\input{05}
 \end{document}

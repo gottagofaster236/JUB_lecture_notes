@@ -1,0 +1,216 @@
+\pagebreak
+\section{Linear Systems of Equations}
+\begin{definition}
+    A linear system of equations is given by
+    \[ 
+        Ax = b,\ A \in \mathbb{R}^{m \times n},\ x \in \mathbb{R}^n,
+        b \in \mathbb{R}^m
+    \]
+    I.e. the matrix $A$ has $m$ rows and $n$ columns, $x$ is a vector with
+    $n$ unknowns, $b$ has $m$ entries, thus the system has
+    $m$ equations.
+\end{definition}
+\begin{remark}
+    The system of equations is called \textit{linear}, because 
+    the degree of all $x_i$ is equal to one.
+\end{remark}
+\begin{remark}
+    If $n = m$, the system is called \textit{square}. (As the matrix is square).
+\end{remark}
+\begin{remark}
+    We can also write the system as a sum:
+    \[
+        \sum_{j=1}^n a_{ij} x_j = b_i,\ i = 1, \dots, m
+    \]
+\end{remark}
+
+\begin{example}
+    \[
+        \begin{cases}
+            a_{11} x_1 + a_{12} x_2 = b_1\\
+            a_{21} x_1 + a_{22} x_2 = b_2
+        \end{cases}\
+        n = 2,\ m = 2
+    \]
+\end{example}
+
+Linear systems of equations arise in a lot of problems:
+\begin{itemize}
+    \item {
+        Geometrical problems (coordinate transforms, 3D matrices).
+    }
+    \item {
+        Electrical circuits, Kirchhoff's laws/Ohm's laws.
+    }
+    \item {
+        Solving differential equations.
+    }
+    \item {
+        GPS.
+    }
+\end{itemize}
+
+\subsection{Gaussian Elimination (GE)}
+Assume that $m = n$ (square system).
+The idea of Gaussian Elimination: do row operations to produce an 
+upper triangular matrix (echelon form). Then do backward substitution
+to solve the system.
+
+Allowed row operations:
+\begin{enumerate}
+    \item {
+        Swap rows.
+    }
+    \item {
+        Scale rows, i.e. multiply a row by a scaler.
+    }
+    \item {
+        Add multiples of one row to another.
+    }
+\end{enumerate}
+
+\begin{example}
+    \[
+        A = \begin{bmatrix}
+            6 & -2 & 2 & 4\\
+            12 & -8 & 6 & 10\\
+            3 & -13 & 9 & 3\\
+            -6 & 4 & 1 & -18
+        \end{bmatrix},\quad
+        b = \begin{bmatrix}
+            16 \\ 26 \\ -19 \\ -34
+        \end{bmatrix}
+    \]
+
+    \begin{enumerate}[font={\bfseries}, label={Step \arabic*.}]
+        \item {
+            Do GE in a systematic way:
+            \[
+                \text{Augmented matrix} =
+                \left[\begin{array}{cccc|c}
+                    \textcolor{red}{6} & -2 & 2 & 4 & 16\\
+                    12 & -8 & 6 & 10 & 26\\
+                    3 & -13 & 9 & 3 & -19\\
+                    -6 & 4 & 1 & -18 & -34
+                \end{array}\right]
+            \]
+            The \textcolor{red}{6} here is the pivot element, and the first row
+            is the pivot row.
+            \begin{align*}
+                &\left[\begin{array}{cccc|c}
+                    \textcolor{red}{6} & -2 & 2 & 4 & 16\\
+                    12 & -8 & 6 & 10 & 26\\
+                    3 & -13 & 9 & 3 & -19\\
+                    -6 & 4 & 1 & -18 & -34
+                \end{array}\right]
+                \textcolor{red}{\begin{array}{l}
+                    \leftarrow\ \text{pivot row}\\
+                    \leftarrow\ (-2) \cdot R_1 + R_2 \\
+                    \leftarrow\ (-1/2) \cdot R_1 + R_3 \\
+                    \leftarrow\ 1 \cdot R_1 + R_4
+                \end{array}}
+                \\
+                \hookrightarrow
+                &\left[\begin{array}{cccc|c}
+                    6 & -2 & 2 & 4 & 16\\
+                    0 & \textcolor{red}{-4} & 2 & 2 & -6\\
+                    0 & \textcolor{blue}{-12} & 8 & 1 & -27\\
+                    0 & \textcolor{green}{2} & 3 & -14 & -18
+                \end{array}\right]
+                \textcolor{red}{\begin{array}{l}
+                    \\
+                    \leftarrow\ \text{pivot row}\\
+                    \leftarrow\ (-3) \cdot R_2 + R_3 \\
+                    \leftarrow\ (1/2) \cdot R_2 + R_4
+                \end{array}}
+            \end{align*}
+            Always consider the factor, e.g.
+            \begin{align*}
+                -3 &= -\Bigl(\frac{\textcolor{blue}{-12}}{\textcolor{red}{-4}}\Bigr)
+                \\
+                \frac{1}{2} &= -\Bigl(\frac{\textcolor{green}{2}}{\textcolor{red}{-4}}\Bigr)
+            \end{align*}
+            Eventually, we end up with a triangular form (using diagonal elements as pivots).
+            \[
+                \left[\begin{array}{cccc|c}
+                    6 & -2 & 2 & 4 & 16\\
+                    0 & -4 & 2 & 2 & -6\\
+                    0 & 0 & 2 & -5 & -9\\
+                    0 & 0 & 0 & -3 & -3
+                \end{array}\right]
+            \]
+        }
+        \item {
+            Backward substitution:
+            \begin{itemize}
+                \item {
+                    Last row: $-3 x_4 = -3 \Longleftrightarrow x_4 = 1$.
+                }
+                \item {
+                    Second last row:
+                    \begin{align*}
+                        &2 x_3 - 5x_4 = -9\\
+                        &2x_3 - 5 = -9 \Longleftrightarrow x_3 = -2
+                    \end{align*}
+                }
+                \item {
+                    \dots finally:
+                    $x_1 = 3,\ x_2 = 1,\ x_3 = -2,\ x_4 = 1$.
+                }
+            \end{itemize}
+        }
+    \end{enumerate}
+\end{example}
+
+The algorithm again:
+\begin{enumerate}
+    \item {
+        Input $A \in \mathbb{R}^{n \times n},\ b \in \mathbb{R}^n$.
+
+        \textbf{Forward substitution:}
+    }
+    \item {
+        For $k = 1, \dots, n - 1$ (for all pivot rows, except the last one):
+    }
+    \item {
+        \hspace*{0.5cm}  For $i = k + 1, \dots, n$ (for all rows below the pivot row):
+    }
+    \item {
+        \hspace*{1cm}  For $j = k, \dots, n$ (for all columns from the pivot one):\\
+        \hspace*{1.5cm} $
+            a_{ij} \coloneqq a_{ij} - \frac{a_{ik}}{a_{kk}} a_{kj}
+        $\\
+        \hspace*{1cm} End for.\\
+        \hspace*{1cm} $
+            b_i \coloneqq b_i - \frac{a_{ik}}{a_{kk}} b_k
+        $
+    }
+    \item[$\overline{3}$.] {
+        \hspace*{0.5cm} End for.
+    }
+    \item[$\overline{2}$.] {
+        End for.
+
+        \textbf{Backward substitution:}
+    }
+    \item {
+        $
+            x_n = \frac{b_n}{a_nn} \text{ (last unknown)}
+        $
+    }
+    \item {
+        For $i = n-1, \dots, 1$ (return back row by row)\\
+        \hspace*{0.5cm} $\mathrm{rhs} \coloneqq b_i$
+    }
+    \item {
+        \hspace*{0.5cm}  For $j = n, \dots, i + 1$ (for all columns up to the pivot element)\\
+        \hspace*{1cm}  $\mathrm{rhs} \coloneqq \mathrm{rhs} - a_{ij} x_i$ (all $x_j$ are already known)
+    }
+    \item[$\overline{7}$.] {
+        \hspace*{0.5cm} End for.
+        \hspace*{0.5cm} $x_i \coloneqq \frac{\mathrm{rhs}}{a_{ii}}$
+    }
+    \item[$\overline{6}$.] {
+        End for.
+    }
+\end{enumerate}

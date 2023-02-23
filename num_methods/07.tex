@@ -1,0 +1,236 @@
+\subsection{Banded systems}
+\begin{definition}
+    An equation system is called \textit{banded}
+    if $a_{ij} \ne 0, \abs{i - j} \le k < n$, i.e.
+    non-zero entries are arranged around the diagonal.
+    
+\end{definition}
+\begin{example}
+    \[
+        \begin{pmatrix}
+            * & * & 0 & 0 & 0 & 0\\ 
+            * & * & * & 0 & 0 & 0\\ 
+            0 & * & * & * & 0 & 0\\ 
+            0 & 0 & * & * & * & 0\\ 
+            0 & 0 & 0 & * & * & *\\ 
+            0 & 0 & 0 & 0 & * & *
+        \end{pmatrix}
+    \]
+    Is a 3-banded system with $k = 1$.
+\end{example}
+\begin{remark}
+    Banded systems can occur in image filtering and many other problems.
+\end{remark}
+\begin{remark}
+    Solving Gaussian Elimination is $\mathcal{O}(n^3)$, banded systems: $\mathcal{O}(n)$.
+\end{remark}
+\begin{remark}
+    The case of $k = 1$ is called triagonal or three diagonal.
+\end{remark}
+
+\textbf{General remarks:}
+\begin{itemize}
+    \item {
+        A nonsingular matrix is called \textit{regular}, it has full rank
+        and has an inverse.
+    }
+    \item {
+        A square matrix is nonsingular if the determinant $\ne 0$.
+    }
+    \item {
+        If the matrix is singular, GE (both versions) will lead to division by zero
+        (zero pivots) at some stage, or a floating point exception.
+        You don't have to check for this explicitely: once you get an exception, 
+        you know the matrix is singular.
+    }
+    \item {
+        Errors. If we're trying to solve $Ax = b$ and we found the solution
+        $x = \tilde{x}$, then the error is $r = A\tilde{x} - b$.
+
+        If $\norm{r}$ is large due to rounding, we call the matrix \textit{ill-conditioned}.
+    }
+\end{itemize}
+
+\subsection{LU Decomposition}
+\begin{itemize}
+    \item {
+        In many applications the same linear system has to be solved for different right
+        hand sides.
+    }
+    \item {
+        If you know the inverse, you can simply apply it to the right hand side:
+        \begin{align*}
+            &
+            x_1, x_2, x_3 \in \mathbb{R}^n, A \in \mathbb{R}^{n \times n}
+            \\&
+            Ax_1 = b_1,\ Ax_2 = b_2, Ax_3 = b_3
+            \\&
+            x_1 = A^{-1} b_1,\ x_2 = A^{-1} b_2,\ x_3 = A^{-1} b_3
+        \end{align*}
+    }
+    \item {
+        We want to store the operations of GE
+        and backward substitution in a convenient way,
+        so we can easily solve for different $b$.
+    }
+    \item {
+        The key operation is: all the row operations
+        of GE can be formulated as linear operators (which can be represented as matrices).
+        
+        In forward \textit{elimination}, i.e. adding a multiple of an upper row to a lkower row, 
+        the matrices are lower-triangular.
+    }
+\end{itemize}
+
+\begin{example}
+    \[M_1 = \begin{bmatrix}
+        1 & 0 & 0 & 0\\
+        -2 & 1 & 0 & 0\\
+        -\frac{1}{2} & 0 & 1 & 0\\
+        1 & 0 & 0 & 1
+    \end{bmatrix}\]
+    $M_1 A$ does the following:
+    \begin{itemize}
+        \item {
+            Leave the first row as is.
+        }
+        \item {
+            Subtract 2 row 1 from row 2.
+        }
+        \item {
+            Subtract $\frac{1}{2}$ row 1 from row 3.
+        }
+        \item {
+            Adds row 1 to row 4.
+        }
+    \end{itemize}
+    Reducing echelon form in 3 steps by $M_3 M_2 M_1 A$
+    and we get new system
+    \[ Ax = b \Longleftrightarrow M_3 M_2 M_1 A = M_3 M_2 M_1 b
+    \text{, where $M_3 M_2 M_1$ is an upper-triangular matrix} \]
+    Previous example gives us (GE without partial pivot):
+    \[
+        M_1 = \begin{bmatrix}
+            1 & 0 & 0 & 0\\
+            -2 & 1 & 0 & 0\\
+            -1/2 & 0 & 1 & 0\\
+            1 & 0 & 0 & 1
+        \end{bmatrix},\quad
+        M_2 = \begin{bmatrix}
+            1 & 0 & 0 & 0\\
+            0 & 1 & 0 & 0\\
+            0 & -3 & 1 & 0\\
+            0 & 1/2 & 0 & 1
+        \end{bmatrix},\quad
+        M_3 = \begin{bmatrix}
+            1 & 0 & 0 & 0\\
+            0 & 1 & 0 & 0\\
+            0 & 0 & 1 & 0\\
+            0 & 0 & -2 & 1
+        \end{bmatrix}
+    \]
+\end{example}
+\begin{remark}
+    \mbox{}
+    \begin{itemize}
+        \item {
+            Product of lower triangular matrices is a lower triangular matrix.
+        }
+        \item {
+            Inverse of a lower triangular matrix is a lower triangular matrix.
+        }
+    \end{itemize}
+\end{remark}
+\textbf{Summary}:
+If $M_3 M_2 M_1 A = U$, where $U$ --- upper-triangular matrix, then
+\[ A = (M_3 M_2 M_1)^{-1} U = M_1^{-1} M_2^{-1} M_3^{-1} U = LU \]
+
+Let's formulate a theorem to somewhat formalize things.
+\begin{theorem}
+    Let $A \in \mathbb{R}^{n \times n}$ be \textit{invertible}. Then there exists
+    a decomposition $LU = A$ with $L$ --- a lower triangular matrix, and $U$ --- 
+    upper triangular, $L, U \in \mathbb{R}^{n \times n}$ and
+    $L = M_1^{-1} M_2^{-1} \dots M_{n-1}^{-1}$,
+    where $M_i$ is the matrix describing step $i$ of forward elimination of GE.
+    $U$ is upper-triangular-matrix (echelon form).
+    \[U = M_{n-1} M_{n-2} \dots M_1 A \]
+\end{theorem}
+\begin{remark}
+    LU can be done with pivoting, called LUP decomposition. There will be other matricies
+    involved which swap rows.
+\end{remark}
+\begin{example}
+    \begin{align*}
+        A &= \begin{bmatrix}
+            6 & -2 & 2 & 4\\
+            -12 & -8 & 6 & 10\\
+            3 & -13 & 9 & 3\\
+            -6 & 4 & 1 & -18
+        \end{bmatrix}
+        \\
+        U &= \begin{bmatrix}
+            6 & -2 & 2 & 4\\
+            0 & -4 & 2 & 2\\
+            0 & 0 & 2 & -5\\
+            0 & 0 & 0 & 3
+        \end{bmatrix}
+        \\
+        M_1 &= \begin{bmatrix}
+            1 & 0 & 0 & 0\\
+            -2 & 1 & 0 & 0\\
+            -\frac{1}{2} & 0 & 1 & 0\\
+            1 & 0 & 0 & 1
+        \end{bmatrix}
+        \\
+        M_1^{-1} &= \begin{bmatrix}
+            1 & 0 & 0 & 0\\
+            2 & 1 & 0 & 0\\
+            \frac{1}{2} & 0 & 1 & 0\\
+            -1 & 0 & 0 & 1
+        \end{bmatrix} \text{ (notice the sign change)}
+    \end{align*}
+    I.e. $M_1^{-1}$ is an opposite operation to $M_1$:
+    subtraction $\to$ addition, addition $\to$ subtraction.
+    \[
+        \implies L = M_1^{-1} M_2^{-2} M_3^{-1} =
+        \begin{bmatrix}
+            1 & 0 & 0 & 0\\
+            2 & 1 & 0 & 0\\
+            1/2 & 3 & 1 & 0\\
+            -1 & -1/2 & 2 & 1
+        \end{bmatrix}
+    \]
+    Finally, for solving $Ax = b$ we see
+    $Ax = b \Longleftrightarrow LUx = b$.
+    We do a substitution $y \coloneqq UX$.
+    We solve for $y$ first, which is easy, since $L$ is triangular.
+    Once we have $y$, we can solve $Ux = y$ for $x$ via backwardd substitution.
+\end{example}
+
+Remarks:
+\begin{itemize}
+    \item {
+        LU has same complexity as GE ($\mathcal{O}(n^3)$).
+    }
+    \item {
+        Any of the two substitution steps are $\mathcal{O}(n^2)$.
+    }
+\end{itemize}
+
+\subsection{Cholesky decomposition}
+When $A \in \mathbb{R}^{n \times n}$ is symmetric and positive definite,
+we can use Cholesky decomposition.
+
+\begin{definition}
+    $B \in \mathbb{R}^{n \times n}$ is positive definite if and only if:
+    \begin{enumerate}
+        \item {
+            All eigenvalues are greater than 0.
+        }
+        \item {
+            $v \cdot Bv > 0$ when $v \ne 0$.
+
+            $v \cdot Bv > 0 \Longleftrightarrow v = 0$.
+        }
+    \end{enumerate}
+\end{definition}

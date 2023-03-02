@@ -1,0 +1,152 @@
+
+\begin{theorem}[Tietze]
+    If $E \in \mathbb{R}$, $E$ is closed, then any continuous
+    function on $E$ extends to a continuous function on $\mathbb{R}$.
+\end{theorem}
+\begin{proof}[Proof idea.]
+    The idea is that if $E$ is closed, then its complement, i.e.
+    the set where $f$ is undefined, is open.
+    As we know, an open set on $\mathbb{R}$ can be represented as a disjoint
+    union of a countable number of intervals.
+    For every such interval we can simply connect the values of $f$
+    on its endpoints with a straight line.
+
+    The technicality that will arise is the case if we have a countable
+    number of intervals that accumulate at a point --- that can be left 
+    as an exercise.
+\end{proof}
+
+\begin{definition}
+    Let $(X, \mathcal{A})$, $(Y, \mathcal{D})$ be measurable spaces.
+    $f : X \to Y$ is called $(A, \mathcal{D})$-measurable, if
+    for every $E \in \mathcal{D}$ we have $f^{-1}(E) \in \mathcal{A}$.
+\end{definition}
+\begin{proposition}
+    Let $f: X \to Y$ be any function. $\mathcal{A}$ is a $\sigma$-algebra on $X$.
+    Then the family of sets
+    \[ f_*(\mathcal{A}) = \{E \subset Y \mid f^{-1}(E) \in \mathcal{A} \} \]
+    is a $\sigma$-algebra on Y.
+\end{proposition}
+\begin{proof}
+    To prove that $f_*(\mathcal{A})$ is a $\sigma$-algebra, we have to prove 3
+    properties from the definition of a $\sigma$-algebra.
+    \begin{enumerate}
+        \item {
+            $Y \in f_*(\mathcal{A})$, since $f^{-1}(Y) = X$.
+            And $X \in \mathcal{A}$, since $\mathcal{A}$ is a $\sigma$-algebra.
+        }
+        \item {
+            $f_*(\mathcal{A})$ is closed under complements.
+            If $E \in f_*(\mathcal{A})$, then
+            $f^{-1}(E^C) = \bigl(f^{-1}(E)\bigr)^C$.
+            But $f^{-1}(E) \in \mathcal{A}$ by definition of $f_*(\mathcal{A})$.
+            Therefore, $\bigl(f^{-1}(E)\bigr)^C \in \mathcal{A}$, since $\mathcal{A}$ is a $\sigma$-algebra.
+            Therefore, $f^{-1}(E^C) \in \mathcal{A}$, and thus $E^C \in f_*(\mathcal{A})$
+            by definition of $f_*(\mathcal{A})$.
+        }
+        \item {
+            $f_*(\mathcal{A})$ is closed under countable unions.
+            If $\{E_n\} \subset f_*(\mathcal{A})$, then 
+            \[
+                f^{-1}\Bigl(\bigcup_{k=1}^\infty E_k\Bigr) = 
+                \bigcup_{k=1}^\infty f^{-1}(E_k) \in \mathcal{A} \implies
+                \bigcup_{k=1}^\infty E_k \in f_*(\mathcal{A})
+            \]
+        }
+    \end{enumerate}
+\end{proof}
+\begin{observation}
+    If $f_*(\mathcal{A})$ contains a generating set of $\mathcal{D}$, then
+    $f$ is $(\mathcal{A}, \mathcal{D})$-measurable.
+\end{observation}
+\begin{proof}
+    If $f_*(\mathcal{A})$ contains a generating set of $\mathcal{D}$, then, 
+    since it is a $\sigma$-algebra, it must contain the whole $\mathcal{D}$. That 
+    means that the preimages of all sets from $\mathcal{D}$ lie in 
+    $\mathcal{A}$, which is the definition of $(\mathcal{A}, \mathcal{D})$-measurability.
+\end{proof}
+
+\begin{corollary}
+    \label{cor:measurableSpacesADMeasurable}
+    Let $(X, \mathcal{A})$, $(Y, \mathcal{D})$ be measurable spaces.
+    $\mathcal{E} \subset \mathcal{D}$ generates $\mathcal{D}$. Then
+    $f : X \to Y$ is $(\mathcal{A}, \mathcal{D})$-measurable if and only if
+    $\forall E \in \mathcal{E}: f^{-1}(E) \in \mathcal{A}$.
+\end{corollary}
+\begin{proof}
+    This is just a restatement of the observation above.
+\end{proof}
+
+\begin{corollary}
+    Let $X$, $Y$ be topological spaces. If $f: X \to Y$ is continuous,
+    then $f$ is $(\mathcal{B}_X, \mathcal{B}_Y)$-measurable.
+\end{corollary}
+\begin{proof}
+    Take $\mathcal{E}$ to be the set of all open sets in $Y$. 
+    $\mathcal{E}$ is a generating set of $\mathcal{B}_Y$. Then, according
+    to the Corollary~\ref{cor:measurableSpacesADMeasurable}, we have to prove that the inverse of every set in $\mathcal{E}$
+    is in $\mathcal{B}_X$. But $f^{-1}$ of every open set is open by the
+    definition of a continuous function, and every open set in $X$ 
+    is contained in $\mathcal{B}_X$ (since the Borel $\sigma$-algebra
+    is by definition the smallest $\sigma$-algebra containing all open sets).
+\end{proof}
+\begin{proof}[Proof of Proposition~\ref{pro:everyBorIsMeasurable}]
+    Let $X = E$, $Y = \mathbb{R}$ in the previous corollary.
+    If $f : E \to \mathbb{R}$ is continuous,
+    then $f$ is $(\mathcal{B}_E, \mathcal{B}_\mathbb{R})$-measurable.
+    But $\mathcal{B}_E \subset \mathcal{M}$. So, the preimage of any 
+    set in $\mathcal{B}_\mathbb{R}$ will be in $\mathcal{M}$.
+\end{proof}
+
+\subsection{Measurable functions in $\overline{\mathbb{R}}$}
+\begin{definition}
+    $\overline{\mathbb{R}} \coloneqq \mathbb{R} \cup \{+\infty, -\infty\}$.
+    The topology on $\overline{\mathbb{R}}$ is defined as follow:
+    open sets are all open sets in $\mathbb{R}$, all intervals of the form
+    $(a, +\infty]$, $[-\infty, a)$, as well as all possible unions (not neccesarily countable)
+    of the aforementioned sets.
+\end{definition}
+\begin{definition}
+    We can say that a sequence converges to $+\infty$ or $-\infty$, if for any open set
+    containing this infinity there exists such an index of the sequence, 
+    starting from which all elements of the sequence are contained in that set.
+\end{definition}
+\begin{definition}
+    Let $E \in \mathbb{R}$ be measurable. Then $f : E \to \overline{\mathbb{R}}$
+    is \textit{(Lebesgue) measurable}\\ if it is $(\mathcal{M}, \mathcal{B}_\mathbb{R})$-measurable.
+\end{definition}
+\begin{example}[1]
+    All continuous functions are Lebesgue measurable.
+\end{example}
+\begin{example}[2]
+    The Dirichlet function (1 for $\mathbb{Q}$, 0 for $\mathbb{R} \setminus \mathbb{Q}$)
+    is Lebesgue measurable. 
+    That's because every preimage for the Dirichlet function
+    is either $\mathbb{R}$, $\mathbb{Q}$, or $\mathbb{R} \setminus \mathbb{Q}$, and
+    every one of those is measurable.
+\end{example}
+\begin{corollary}
+    Let $E \in \mathcal{M}$, $f : E \to \overline{\mathbb{R}}$ is measurable if and only
+    if on the of the following holds:
+    \begin{enumerate}
+        \item {
+            For every open set $O \subset \overline{\mathbb{R}}: f^{-1}(O) \in \mathcal{M}$.
+        }
+        \item {
+            $\forall c \in \overline{\mathbb{R}} \implies
+            f^{-1}\bigl((c, +\infty]\bigr) \in \mathcal{M}$.
+        }
+        \item {
+            $\forall c \in \overline{\mathbb{R}} \implies
+            f^{-1}\bigl([c, +\infty]\bigr) \in \mathcal{M}$.
+        }
+        \item {
+            $\forall c \in \overline{\mathbb{R}} \implies
+            f^{-1}\bigl([-\infty, c)\bigr) \in \mathcal{M}$.
+        }
+        \item {
+            $\forall c \in \overline{\mathbb{R}} \implies
+            f^{-1}\bigl([-\infty, c]\bigr) \in \mathcal{M}$.
+        }
+    \end{enumerate}
+\end{corollary}

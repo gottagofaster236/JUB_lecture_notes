@@ -184,46 +184,41 @@ We can again solve the same equation for multiple ride hand sides:
     }
 \end{itemize}
 
-\pagebreak
-\section{Nonlinear equations}
-Linear equations can be represented by a matrix, nonlinear cannot.
-Nonlinear equations are about finding roots. Appears in many application problems.
+%\begin{example}[1]
+%    Suppose we want to find out what should be the length
+%    of the cable between two pillars, provided we have some slack.
+%    \begin{figure*}[h]
+%        \centering
+%        \includegraphics[width=0.3\textwidth]{catenary}
+%    \end{figure*}
+%
+%    Solution is given by the equation
+%    \[
+%        \lambda \cdot \cosh\Bigl(\frac{500}{\lambda}\Bigr) - \lambda - 1 = 0
+%    \]
+%    Solve for $\lambda$, which can be used to compute the length of the cable
+%    ($\lambda$ here is the radius of curvature at apex).
+%    So, we want to find the root of this equation.
+%    This is difficult to solve analytically, so we can find 
+%    an approximation of $\lambda$.
+%\end{example}
 
-\begin{example}
-    Suppose we want to find out what should be the length
-    of the cable between two pillars, provided we have some slack.
-    \begin{figure*}[h]
-        \centering
-        \includegraphics[width=0.3\textwidth]{catenary}
-    \end{figure*}
+%\subsection{Bisection method}
+%For cases like
+%\begin{align*}
+%    f(x) &= 12 x^2 - 5x - 2 = 0\\
+%    &=(4x + 1)(3x - 2q)
+%\end{align*}
+%we can solve using the formula, and get $x_1 = -\frac{1}{4},\ x_2 = \frac{2}{3}$.
+%But this does not work for a more complex problem, e.g.
+%$f(x) = \log(3 + x^4) + 3\sin(x) = 0$.
 
-    Solution is given by the equation
-    \[
-        \lambda \cdot \cosh\Bigl(\frac{500}{\lambda}\Bigr) - \lambda - 1 = 0
-    \]
-    Solve for $\lambda$, which can be used to compute the length of the cable
-    ($\lambda$ here is the radius of curvature at apex).
-    So, we want to find the root of this equation.
-    This is difficult to solve analytically, so we can find 
-    an approximation of $\lambda$.
-\end{example}
-
-\subsection{Bisection method}
-For cases like
-\begin{align*}
-    f(x) &= 12 x^2 - 5x - 2 = 0\\
-    &=(4x + 1)(3x - 2q)
-\end{align*}
-we can solve using the formula, and get $x_1 = -\frac{1}{4},\ x_2 = \frac{2}{3}$.
-But this does not work for a more complex problem, e.g.
-$f(x) = \log(3 + x^4) + 3\sin(x) = 0$.
-
-\begin{itemize}
-    \item {
-        We need to find an algorithm that gives a \textit{robust}
-        root localization (has to work for any nonlinear function).
-    }
-    \item {
-        We don't know how many roots there are. The algorithm should find at least one root per search.
-    }
-\end{itemize}
+%\begin{itemize}
+%    \item {
+%        We need to find an algorithm that gives a \textit{robust}
+%        root localization (has to work for any nonlinear function).
+%    }
+%    \item {
+%        We don't know how many roots there are. The algorithm should find at least one root per search.
+%    }
+%\end{itemize}

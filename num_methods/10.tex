@@ -71,7 +71,7 @@ Problems with the Newton method:
         }
         \item {
             $f''$ exists and is continuous ($f \in \operatorname{C}^2([a, b])$)
-            and $x_0$ needs to \textit{``close enough''} (not a mathematical term)
+            and $x_0$ is \textit{``close enough''} (not a mathematical term)
             to the root $r$.
         }
     \end{enumerate}
@@ -142,7 +142,7 @@ The Secant method converges slower than the Newton method, but it's easier to co
     $\abs{r - x_1} < \delta$, $\abs{r - x_0} < \delta$, we'll have
     \begin{enumerate}
         \item {
-            $\lim_{n \to \infty} \abs{x_n - r} = 0$ (the sequence converge)
+            $\lim_{n \to \infty} \abs{x_n - r} = 0$ (the sequence converges)
         }
         \item {
             $\abs{r - x_{n + 1}} \le M \abs{r - x_n}^\alpha$
@@ -170,7 +170,7 @@ The Secant method converges slower than the Newton method, but it's easier to co
 
 Summary:
 {
-\tiny
+\scriptsize
 \[\begin{array}{c|c|c|c|c|c}
     & \text{\#initials} & \text{Regularity of $f$} & \text{Convergence} & \text{Root between points} & \text{Function calls per iteration}
     \\\hline

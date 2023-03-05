@@ -1,5 +1,5 @@
 \begin{theorem}
-    Suppose we have a function $f \in \operatorname{C}^2([a, b])$, such that:
+    Suppose we have a function $f \in C^2([a, b])$, such that:
     \begin{enumerate}
         \item {
             $f(a) \cdot f(b) < 0$ (there's a sign switch).
@@ -70,7 +70,7 @@ Problems with the Newton method:
             $f$ has no critical points in $(a, b)$.
         }
         \item {
-            $f''$ exists and is continuous ($f \in \operatorname{C}^2([a, b])$)
+            $f''$ exists and is continuous ($f \in C^2([a, b])$)
             and $x_0$ is \textit{``close enough''} (not a mathematical term)
             to the root $r$.
         }
@@ -134,7 +134,7 @@ Substitution into Newton method gives us
 The Secant method converges slower than the Newton method, but it's easier to compute.
 
 \begin{theorem}
-    If $f \in \operatorname{C}^2([a, b])$
+    If $f \in C^2([a, b])$
     and $r \in (a, b),\ f(r) = 0,\ f'(r) \ne 0$
     and 
     \[ x_{n + 1} = x_n - \frac{f(x_n) (x_{n-1} - x_n)}{f(x_{n - 1} - f(x_n))} \]
@@ -174,7 +174,7 @@ Summary:
 \[\begin{array}{c|c|c|c|c|c}
     & \text{\#initials} & \text{Regularity of $f$} & \text{Convergence} & \text{Root between points} & \text{Function calls per iteration}
     \\\hline
-    \text{Bisection} & \text{2 ($a$, $b$)} & \operatorname{C}([a, b]) & \text{linear} & \text{Yes} & 1
+    \text{Bisection} & \text{2 ($a$, $b$)} & C([a, b]) & \text{linear} & \text{Yes} & 1
     \\\hline
     \text{Newton} & \text{1 ($x_0$)} & \operatorname{C^2}([a, b]) &
     \text{quadratic} & \text{No} & 2

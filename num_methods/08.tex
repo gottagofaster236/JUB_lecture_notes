@@ -80,7 +80,7 @@ Then
     \end{bmatrix}
 \]
 Then it follows by the formula of matrix multiplications:
-\[ a_{ij} = \sum_{k=1}^n l_{ik} l_{ij} \]
+\[ a_{ij} = \sum_{k=1}^n l_{ik} l_{jk} \]
 Since a lot of entries in $\tilde{L}$ are zeros, actually
 \[ a_{ij} = \sum_{k = 1}^j l_{ik} l_{jk},\ i \ge j \]
 We only write such equations for $i \ge j$, as we have a symmetrical matrix
@@ -88,11 +88,11 @@ on the left hand side.
 
 Now, for $i = j$:
 \[
-    a_{ii} = \sum_{k=1}^{u} l_{ik} l_{ik} = \sum_{k=1}^i (l_{ik})^2
+    a_{ii} = \sum_{k=1}^{i} l_{ik} l_{ik} = \sum_{k=1}^i (l_{ik})^2
     \Longleftrightarrow l_{ii} = \sqrt{a_{ii} - \sum_{k=1}^{i-1} (l_{ik})^2}
 \]
-Here $l_{ii}$ has to be non-negative, as in $L$ the diagonal elements are 1,
-and in we're taking the square root of $D$ so it has to be positive.
+Here $l_{ii}$ is non-negative, as in $L$ the diagonal elements are 1,
+and $\tilde{L} = L \cdot \sqrt{D}$, which doesn't change the sign of the diagonal elements.
 
 For $i > j$: \[ a_{ij} = \sum_{k=0}^j l_{ik} l_{jk} \]
 and so:
@@ -109,7 +109,7 @@ For $i=1 \dots n$:\\
 \hspace*{0.5cm}For $j = 1 \dots i - 1$ (here $i > j$)\\
 \hspace*{1cm} $y = a(i, j)$\\
 \hspace*{1cm} For $k = 1 \dots j - 1$:\\
-\hspace*{1.5cm} $y = y - l(ik) \cdot l(j, k)$\\
+\hspace*{1.5cm} $y = y - l(i, k) \cdot l(j, k)$\\
 \hspace*{1cm} end for\\
 \hspace*{1cm} $l(i, j) = \frac{y}{l(j, j)}$\\
 \hspace*{0.5cm} end for\\
@@ -139,8 +139,7 @@ The time complexity is $\mathcal{O}(n^3)$.
         \\&
         l_{21} = \frac{1}{l_{11}} (a_{21} - 0) = \frac{1}{1} = 1
         \\&
-        % TODO fix this
-        l_{31} = \frac{1}{l_{11}} (a_{21} - 0) = \frac{1}{1} = 1
+        l_{31} = \frac{1}{l_{11}} (a_{31} - 0) = \frac{1}{1} = 1
     \end{align*}
     Second column:
     \begin{align*}

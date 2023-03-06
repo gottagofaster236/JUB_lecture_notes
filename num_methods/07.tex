@@ -22,11 +22,18 @@
     Banded systems can occur in image filtering and many other problems.
 \end{remark}
 \begin{remark}
-    Solving Gaussian Elimination is $\mathcal{O}(n^3)$, banded systems: $\mathcal{O}(n)$.
-\end{remark}
-\begin{remark}
     The case of $k = 1$ is called triagonal or three diagonal.
 \end{remark}
+\begin{remark}
+    Solving Gaussian Elimination is $\mathcal{O}(n^3)$, banded systems with $k = \mathcal{O}(1)$:
+    $\mathcal{O}(n)$, see \href{https://en.wikipedia.org/wiki/Tridiagonal_matrix_algorithm}{tridiagonal matrix algorithm} for $k = 1$ case.
+\end{remark}
+\begin{remark}
+    Statement without proof: For arbitrary $k$ we can solve $k$-diagonal matrix by running Gaussian elimination, where in the first phase we only 
+    zero out the elements below the main diagonal, and in the second phase only the elements above the diagonal. 
+    This way matrix will continue to be $k$-diagonal during transformations, so the whole process will work in $\mathcal{O}(nk^2) = \mathcal{O}(n)$, if implemented on sparse matrices.
+\end{remark}
+
 
 \textbf{General remarks:}
 \begin{itemize}

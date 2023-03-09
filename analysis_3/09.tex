@@ -1,0 +1,160 @@
+\begin{observation}
+    $E \in \mathcal{M},\ f : E \to \overline{\mathbb{R}}$.
+    \begin{enumerate}
+        \item {
+            If $f$ is measurable and $f = g$ almost everywhere ($f$ and $g$ differ on a subset of measure 0), then $g$ is measurable.
+        }
+        \item {
+            Let $D \subset E$, $D \in \mathcal{M}$. $f$ is measurable on $E \Longleftrightarrow f|_D$ and $f|_{E \setminus D}$ are measurable.
+        }
+    \end{enumerate}
+\end{observation}
+\begin{proof}
+    \begin{enumerate}
+        \item {
+            Let $B \subset \overline{\mathbb{R}}$. $f$ is measurable, thus, $f^{-1}(B)$ is measurable.
+            $f$ and $g$ differ on a subset of measure 0, therefore, $g^{-1}(B) \operatorname{\triangle} f^{-1}(B)$ has measure 0,
+            therefore, $g^{-1}(B)$ is measurable.
+        }
+        \item {
+            \begin{enumerate}
+                \item {
+                    $\impliedby$
+                    \[
+                        f^{-1}(B) = (f|_D)^{-1}(B) \cup (f|_{E \setminus D})^{-1}(B)
+                    \]
+                    The union of measurable sets is measurable, therefore, $f^{-1}(B)$ is measurable.
+                }
+                \item {
+                    $\implies$
+                    \[
+                        (f|_D)^{-1}(B) = f^{-1}(B) \cap D \text{ and } (f|_{E \setminus D})^{-1}(B) = f^{-1}(B) \cap (E \setminus D)
+                    \]
+                    (Intersection of two measurable sets is measurable.)
+                }
+            \end{enumerate}
+        }
+    \end{enumerate}
+\end{proof}
+
+\begin{observation}
+    If $f(x) = +\infty$ and $g(x) = -\infty$, then $(f + g)(x)$ is not defined.
+    Therefore, if $f$ and $g$ are finite almost everywhere, then
+    $f + g$ is defined almost everywhere.
+\end{observation}
+\begin{remark}
+    $E$ is always considered measurable when we write ``$f : E \to \mathbb{R}$ is measurable''.
+\end{remark}
+\begin{theorem}
+    $f, g : E \to \overline{\mathbb{R}}$ --- measurable, finite almost everywhere.
+    Then:
+    \begin{enumerate}
+        \item {
+            $\forall \alpha, \beta \in \mathbb{R}: \alpha f + \beta g$ is measurable
+            on $E$.
+        }
+        \item {
+            $f \cdot g$ is measurable on $E$.
+        }
+    \end{enumerate}
+\end{theorem}
+\begin{proof}
+    \mbox{}
+    \begin{enumerate}
+        \item {
+            \mbox{}
+            \begin{itemize}
+                \item {
+                    $\alpha f$ is measurable.
+                    \begin{enumerate}
+                        \item {
+                            $\alpha = 0 \implies \alpha f \equiv 0$ --- measurable.
+                        }
+                        \item {
+                            $\alpha \ne 0$.
+                            $F = \alpha f \implies F^{-1}(\text{open set}) =
+                            f^{-1}(\frac{1}{2} \cdot \text{open set})$.
+                            Here
+                            $\frac{1}{2} \cdot \text{open set}$
+                            is also open, therefore,
+                            $f^{-1}$ of it is measurable, therefore, $F^{-1}(\text{open set})$
+                            is measurable.
+                        }
+                    \end{enumerate}
+                }
+                \item {
+                    $F = f + g$. Consider $F^{-1}([-\infty, c))\ \forall c \in \mathbb{R}$.
+                    \[ F^{-1}([-\infty, c)) = \{ x \mid f(x) + g(x) < c \} \]
+                    For any such $x$ there exists a $q \in \mathbb{Q}$, such that
+                    \[ f(x) < q < c - g(x) \implies
+                    F^{-1}([-\infty, c)) \subset \bigcup_{q \in \mathbb{Q}}
+                    \Bigl(\{ x \mid g(x) < c - q \} \cap \{ x \mid f(x) < q \} \Bigr) \]
+                    (Here we have a set intersection: if $x$ satisfies both inequalities,
+                    then it is in $F^{-1}([-\infty, c])$.)
+                    But
+                    \[
+                        \bigcup_{q \in \mathbb{Q}}
+                        \Bigl(\{ x \mid g(x) < c - q \} \cap \{ x \mid f(x) < q \} \Bigr) =
+                        \bigcup_{q \in \mathbb{Q}} \Bigl( 
+                            g^{-1}([-\infty, c - q)) \cap f^{-1}([-\infty, q])
+                         \Bigr)                       
+                    \]
+                    A countable union of measurable sets is measurable,
+                    therefore, $F$ is measurable.
+                }
+            \end{itemize}
+        }
+        \item {
+            \mbox{}
+            \begin{itemize}
+                \item {
+                    $ f \cdot g = \frac{1}{2} \bigl((f + g)^2 - f^2 - g^2\bigr) $
+                }
+                \item {
+                    $F = f^2$. For all $c \ge 0$, consider
+                    \[ F^{-1}\bigl((c, +\infty]\bigr) = f^{-1}\bigl((\sqrt{c}, +\infty]\bigr)
+                    \cup f^{-1}\bigl([-\infty, -\sqrt{c})\bigr) \in \mathcal{M} \]
+                    For $c < 0$, $F^{-1}((c, +\infty)) = E$.
+                }
+            \end{itemize}
+        }
+    \end{enumerate}
+\end{proof}
+
+\begin{example}
+    Composition of measurable functions can be non-measurable:
+    $\psi = \varphi + \mathrm{id}$, $\varphi$ --- Cantor function.
+    Let $A$ --- measurable set contained in Cantor set $C$, such that
+    $\psi(A)$ is not measurable.
+    $\psi$ and $\psi^{-1}$ are continuous, and thus measurable.
+    \[
+        \chi_A(x) = \begin{cases}
+            1,& x \in A\\
+            0,& x \not\in A
+        \end{cases}
+    \]
+    $\chi_A$ is measurable, since $A$ is measurable.
+    But $f = \chi_A \circ \psi^{-1}$ is non-measurable.
+\end{example}
+\begin{proof}
+    \[ f^{-1}(\{1\} \in \mathcal{B}) = \psi \circ \chi_A^{-1}(\{1\}) = \psi(A) \not\in \mathcal{M} \]
+    Therefore, $f$ is not measurable.
+\end{proof}
+
+\begin{proposition}
+    \[
+        \begin{cases}
+            f : \overline{\mathbb{R}} \to \overline{\mathbb{R}} \text{ is continuous}\\
+            g : E \to \overline{\mathbb{R}} \text{ is measurable}
+        \end{cases}
+        \implies
+        f \circ g \text{ is measurable}
+    \]
+\end{proposition}
+\begin{proof}
+    For every open set $O \in \overline{\mathbb{R}}$ we have
+    \[
+        (f \circ g)^{-1}(O) = g^{-1}\bigl(f^{-1}(O)\bigr)
+        \overset{f^{-1}(O) \text{ is open}}{\in} \mathcal{M}
+    \]
+\end{proof}

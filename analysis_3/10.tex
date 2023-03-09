@@ -1,0 +1,155 @@
+\pagebreak
+\begin{corollary}
+    For every $p > 0$ and $f$ --- measurable function, 
+    $\abs{f}^p$ is measurable.
+\end{corollary}
+\begin{proof}
+    $\abs{x}$ and $x^p$ are continuous as functions from $\mathbb{R}$ to $\mathbb{R}$.
+    Therefore, $\abs{f}^p$ is continuous as a composition.
+\end{proof}
+\begin{remark}
+    If $p < 0$, then $x^p$ is not continuous at 0. But we can prove that it is
+    as function from $[0, +\infty]$ to $\overline{\mathbb{R}}$.
+\end{remark}
+
+\begin{definition}
+    $f_1, \dots, f_n : E \to \overline{\mathbb{R}}$. Define
+    \[ \max\{f_1, \dots, f_n\}(x) \coloneqq \max \{ f_1(x), \dots, f_n(x) \} \]
+\end{definition}
+\begin{proposition}
+    \label{prop:maxMeasurable}
+    If $f_1, \dots, f_n : E \to \overline{\mathbb{R}}$ are measurable,
+    then $\max\{f_1, \dots, f_n\}$ is measurable and
+    $\min\{f_1, \dots, f_n\}$ is measurable.
+\end{proposition}
+\begin{proof}
+    For all $c \in \mathbb{R}$, 
+    \[
+        \max\{f_1, \dots, f_n\}^{-1}\bigl((c, +\infty]\bigr) =
+        \bigcup_{k=1}^n f_k^{-1}\bigl((c, +\infty]\bigr)
+    \]
+    which is measurable as a finite union of measurable sets.
+
+    (Meaning of the formula: the maximum is greater than $c$ at a point
+    if at least one of the individual functions is greater than $c$ at that point.)
+\end{proof}
+\begin{remark}
+    In principle, $\max$ can be turned to $\sup$ or even $\limsup$.
+
+    For supremum, you would consider a countable union, and for $\limsup$
+    you would consider a countable intersection, both of which don't
+    change the measurability of sets.
+\end{remark}
+\begin{definition}
+    For a sequence $\{a_k\}$, 
+    \[ 
+        \limsup{a_n} = \lim_{k \to \infty} \sup\{a_k, a_{k+1}, \dots\}
+    \]
+\end{definition}
+
+\begin{corollary}
+    If $f$ is measurable, then 
+    $f^+(x) = \max\{f, 0\}$ (called the \textit{positive part} of $f$) and
+    $f^-(x) = \min\{f, 0\}$ (called the \textit{negative part} of $f$)
+    are measurable.
+\end{corollary}
+\begin{proof}
+    This is the direct sequence of Proposition~\ref{prop:maxMeasurable}.
+\end{proof}
+
+\begin{definition}[Types of convergence]
+    $f_n : E \to \overline{\mathbb{R}}$.
+
+    Then the sequence of functions $\{f_n\}$ converges to $f$:
+    \begin{enumerate}
+        \item {
+            \textit{pointwise}, if
+             $\lim_{n \to \infty} f_n(x) = f(x),\ \forall x \in E$
+        }
+        \item {
+            \textit{pointwise almost everywhere of $E$} if
+            $\lim_{n \to \infty} f_n(x) = f(x)$ for almost every $x \in E$
+            (i.e., for every $x$ outside a subset of measure 0).
+        }
+        \item {
+            \textit{uniformly}, if for every $\varepsilon > 0$
+            there exists $N \in \mathbb{N}$, such that
+            $\abs{f_{n}(x) - f(x)} < \varepsilon$ for any $n > N,\ x \in E$. 
+        }
+    \end{enumerate}
+\end{definition}
+\begin{remark}
+    Uniform convergence is the strongest one.
+\end{remark}
+\begin{remark}
+    Pointwise limit of continuous functions (or Riemann integrals) can be
+    discontinuous (or not Riemann integrable).
+    For example, if we number all of the rational numbers, and construct 
+    continuous functions that raise to the rational numbers and then 
+    go down again for the first $n$ rational numbers for every $n$, 
+    then the limit of such functions is the Dirichlet function.
+
+    Despite that, the following proposition holds true true:
+\end{remark}
+\begin{proposition}
+    $f_n : E \to \overline{\mathbb{R}}$ --- measurable.
+    If $f_n \to f$ pointwise almost everywhere on $E$, then $f$ is measurable.
+\end{proposition}
+\begin{proof}
+    Without the loss of generality, the convergence is pointwise.
+    (Because if we prove it for a subset of $E$ of the same measure, then
+    returning the set of points of measure zero to our domain of definition
+    will not change the measurability).
+
+    Let's consider $f^{-1}\bigl([-\infty, c]\bigr) = \{ x \mid f(x) < c\}$.
+    \[
+        f(x) < c \Longleftrightarrow \exists n, k \in \mathbb{N}:
+        \forall j > k:
+        f_j(x) < c - \frac{1}{n}
+    \]
+    (Note that this $\frac{1}{n}$ part is important, because if we omitted that,
+    it could happen that $f_j(x)$ converge to $c$, but are always strictly less than $c$.)
+    Therefore,
+    \[
+        f^{-1}\bigl([-\infty, c)\bigr) = 
+        \bigcup_{k, n}
+        \bigcap_{j=k+1}^\infty f_j^{-1}\biggl(\Bigl[-\infty, c - \frac{1}{n}\Bigr)\biggr)
+    \]
+    which is measurable because countable unions and intersections keep measurability.
+\end{proof}
+
+\subsection{Simple functions}
+\begin{definition}
+    Let $E \in \mathcal{M}$.
+    A function $\varphi : E \to \mathbb{R}$ is called a \textit{simple}, if it is
+    measurable and takes only finitely many values.
+\end{definition}
+\begin{property}
+    A simple function can be represented in the following way
+    (also called the canonical representation):
+    \[
+        \varphi = \sum_{k=1}^n c_k \cdot \chi_{E_k}
+        \text{, where } E_k = \varphi^{-1}(c_k)
+    \]
+    (Here $c_k$ are all the values of $\varphi$, $\chi$ is the characteristic function.)
+\end{property}
+\begin{lemma}[Simple Approximation Lemma]
+    $f : E \to \mathbb{R}$ --- measurable and bounded
+    ($\exists M: \abs{f} < m$).
+    Then for every $\varepsilon > 0$ there exist 
+    simple functions $\varphi_\varepsilon, \psi_\varepsilon : E \to \mathbb{R}$,
+    such that $\varphi_\varepsilon \le f \le \psi_\varepsilon$ and
+    $0 \le \psi_\varepsilon - \varphi_\varepsilon < \varepsilon$ on $E$.
+\end{lemma}
+\begin{proof}
+    Let's split the range of function $f$ into equal intervals
+    $I_1, \dots, I_n$ of length no more than $\varepsilon$.
+    Now, for every $x \in E$, let's round $f(x)$ \textit{down} to the closest interval end point and
+    call the resulting function $\varphi_\varepsilon(x)$, and let's round $f(x)$ 
+    \textit{up} to the closest interval end point and call the resulting function $\psi_\varepsilon(x)$.
+
+    Then indeed we'll have $\varphi_\varepsilon \le f \le \psi_\varepsilon$ (since
+    we rounded the function down or up, respectively), and
+    $0 \le \psi_\varepsilon - \varphi_\varepsilon < \varepsilon$ as 
+    the rounded points will end in the same interval for every $x \in E$.
+\end{proof}

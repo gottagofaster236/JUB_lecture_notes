@@ -109,8 +109,8 @@ Problems with the Newton method:
     doesn't go outside the domain $[a, b]$.
 \end{remark}
 
-\subsection{Modifications of the Newton method}
-\subsubsection{Modified Newton method}
+\textbf{Modified Newton method}
+
 As we remember, in the usual Newton method
 \[ x_{n+1} = x_n - \frac{f(x_n)}{f'(x_n)} \]
 If $f'(x_n)$ doesn't change much anymore from $n$ to $n + 1$, we can fix it to
@@ -118,7 +118,8 @@ $f'(x_m)$ with some fixed $m \le n$. Then our new formula for $x_{n+1}$ is
 \[ x_{n + 1} = x_n - \frac{f(x_n)}{f'(x_m)} \]
 We avoid futher evaluations of $f'(x)$ which saves computational resources.
 
-\subsubsection{Secant method}
+\pagebreak
+\subsection{Secant method}
 Newton's method needs derivatives. 
 We can approximate the derivatives by secants (also called a difference quotient):
 

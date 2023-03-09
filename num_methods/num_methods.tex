@@ -8,6 +8,14 @@
 \usepackage{amsmath}
 \usepackage{float}
 \usepackage{hyperref}
+\usepackage{pgfplots}
+\usepgfplotslibrary{external}
+\tikzexternalize
+\usepgfplotslibrary{fillbetween}
+\pgfplotsset{compat=1.18}
+\usetikzlibrary{fpu}
+\usetikzlibrary{arrows.meta}
+
 \enablemath
 
 \DeclarePairedDelimiter\abs{\lvert}{\rvert}%
@@ -18,7 +26,7 @@
 
 \begin{document}
 \gdef\CourseName{Numerical Methods}
-\author{Notes by Lev Leontev\\Professor: Juricke Stephan}
+\author{Notes by Lev Leontev\\Professor: Stephan Juricke}
 \makegood
 \input{01}
 \input{02}
@@ -30,4 +38,5 @@
 \input{08}
 \input{09}
 \input{10}
+\input{11}
 \end{document}

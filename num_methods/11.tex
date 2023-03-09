@@ -1,0 +1,215 @@
+\subsection{Systems of non-linear equations}
+Given a \textit{vector-valued} function $f: \mathbb{R}^m \to \mathbb{R}^m$
+we want to solve the equation $f(\vec{x}) = \vec{0}$, i.e.
+find a vector $\vec{r} \in \mathbb{R}^m$, such that $f(\vec{r}) = \vec{0}$.
+Such a function $f$ is represented by
+\[ 
+    f(\vec{x}) = \begin{pmatrix}
+        f_1(\vec{x}) \\ \vdots \\ f_m(\vec{x})
+    \end{pmatrix}
+\]
+where $f_i : \mathbb{R}^m \to \mathbb{R}$ for $i = 1, \dots m$
+and vectors $\vec{x} = (x_{(1)}, \dots, x_{(m)}) \in \mathbb{R}^m$.
+
+Thus, $f(\vec{x}) = \vec{0}$ means that we need to simultaneously
+solve $f_i(\vec{x}) = 0$ for all $i = 1, \dots, m$.
+
+The generalization of derivatives for such functions
+is the so called \textit{Jacobian matrix}:
+\[
+    Df = \begin{bmatrix}
+        \frac{\partial f_1}{\partial x_{(1)}} & \frac{\partial f_1}{\partial x_{(2)}} & \dots & \frac{\partial f_1}{\partial x_{(m)}}\\
+        \vdots & \vdots & \ddots & \vdots\\
+        \frac{\partial f_m}{\partial x_{(1)}} & \dots & \dots & \frac{\partial f_m}{\partial x_{(m)}}
+    \end{bmatrix} \in \mathbb{R}^{m \times m}
+\]
+where $\frac{\partial f_i}{\partial x_{(j)}}$ is a partial derivative,
+which tells you the slope of the function $f_i$ in the direction $x_i$.
+
+\begin{example}
+    Let $m = 3$, i.e. $f : \mathbb{R}^3 \to \mathbb{R}^3$. Let
+    \[
+        f_1(\vec{x}) = \begin{pmatrix}
+            x_{(1)} + x_{(2)} + x_{(3)} - 3\\
+            x_{(1)}^2 + x_{(2)} + x_{(3)}^2 - 5\\
+            e^{x_{(1)}} - x_{(1)} x_{(2)} - x_{(1)} x_{(3)} - 1
+        \end{pmatrix}
+    \]
+    Then the Jacobi/Jacobian matrix is
+    \[
+        (Df)(\vec{x}) = \begin{bmatrix}
+            1 & 1 & 1\\
+            2x_{(1)} & 1 & 2x_{(3)}\\
+            e^{x_{(1)}} - x_2 - x_3 & -x_{(1)} & -x_{(1)}
+        \end{bmatrix}
+    \]
+\end{example}
+
+Newton's method can be generalized to this setting:
+\[ \vec{x}_{n + 1} = \vec{x}_n - (Df)^{-1}(\vec{x}_n) f(\vec{x}_n) \]
+In practice, the inverse $(Df)^{-1}$ need not to be calculated, but
+a system
+\[ \bigl(Df(\vec{x}_n)\bigr) \vec{y} = f(\vec{x}_n) \]
+may be solved.
+Then 
+\[ \vec{y} = \bigl(Df(\vec{x}_n)\bigr)^{-1} f(\vec{x}_n) \]
+We need the Jacobian to be nonsingular at the root.
+As derivatives are required to be continuous, Jacobian will be 
+nonsingular in some vicinity of the root.
+
+\pagebreak
+\section{Interpolation and approximation}
+We have some measurements under certain conditions.
+Now we want to estimate what happens in situations we have not measured (yet).
+\begin{example}
+    Viscosity of water measured for various temperatures:
+    \begin{align*}
+        &
+        \begin{array}{c|c|c|c|c}
+            \text{temperature/\degree C} & 0 & 5 & 10 & 15
+            \\\hline
+            \text{viscosity/cP} & 1.792 & 1.519 & 1.308 & 1.140
+        \end{array}
+        \\&
+        1 \text{ P (Poise)} = 0.1\ \frac{N}{m^2 \cdot s^{-1}}
+    \end{align*}
+    where $\frac{N}{m^2}$ --- force per area, $s^{-1}$ --- rate of shear,
+    the whole thing measures resistance towards shear.
+
+    Question: what is the viscosity at temperature $= 8$ \degree C?
+
+    Solution:
+    \begin{center}   
+        \begin{tikzpicture}
+            \begin{axis}[
+                axis x line=center,
+                axis y line=left,
+                axis line style={-{Stealth[scale=1.5]}},
+                xlabel={temperature},
+                ylabel={viscosity},
+                xlabel style={below right},
+                ylabel style={above},
+                xtick distance=5,
+                ytick=\empty,
+                xmin=-2.5, xmax=19, ymin=-1, ymax=15,
+                unit vector ratio=1 1 1,
+                samples=1000,
+                width=24cm, height=9cm,
+            ]
+                \tikzset{graph/.style={very thick, domain=-2.5:19}}
+                \addplot[blue, graph] {12 - 0.7 * x};
+                \addlegendentry{linear interpolation}
+
+                \tikzset{point/.style={circle,fill,inner sep=1.75pt,red}}
+                \node[point] at (axis cs:0,12) {};
+                \node[point] at (axis cs:5,8.5) {};
+                \node[point] at (axis cs:10,5) {};
+                \node[point] at (axis cs:15,1.5) {};
+
+                \addplot[green, graph] {min(12, max(12 - 0.7 * round(x / 5) * 5, 1.5))};
+                \addlegendentry{nearest neighbor interpolation}
+            \end{axis}
+        \end{tikzpicture}
+    \end{center}     
+    Find a \textit{linear} function $v(t)$ that achieves
+    the measured values at $T = 5$ and $T = 10.$ Then evaluate this function at
+    $T = 8$.
+    \[ 
+        v(T) = \frac{T - 5}{10 - 5} T_{10} + \frac{10 - T}{10 - 5} T_5 =
+        \frac{T - 5}{5} T_{10} + \frac{10 - T}{5} T_5
+    \]
+    and so 
+    \[ v(8) = \frac{3}{5} T_{10} + \frac{2}{5} T_5 \]
+    Note that here $\frac{3}{5}$ and $\frac{2}{5}$ are ratios of how
+    8 divides $[5, 10]$.
+
+    That means, for linear interpolation, $T_{10}$ and $T_5$ need to be
+    weighted with the cut-ratios $\frac{2}{5}$, $\frac{3}{5}$
+    abd added together ($T_5 = 1.519,\ T_{10} = 1.308$).
+\end{example}
+
+\pagebreak
+\subsection{Polynomial interpolation}
+What if the measured values look like this?
+\begin{center}   
+    \begin{tikzpicture}
+        \begin{axis}[
+            axis x line=left,
+            axis y line=left,
+            xtick=\empty,
+            ytick=\empty,
+            axis line style={-{Stealth[scale=1.5]}},
+            xlabel style={below right},
+            ylabel style={above left},
+            xmin=-0.6, xmax=3.5, ymin=-1, ymax=10,
+            unit vector ratio=3 1 1
+        ]
+            \tikzset{point/.style={circle,fill,inner sep=1.75pt,red}}
+            \node[point] at (axis cs:0,0) {};
+            \node[point] at (axis cs:1,1) {};
+            \node[point] at (axis cs:2,4) {};
+            \node[point] at (axis cs:3,9) {};
+        \end{axis}
+    \end{tikzpicture}
+\end{center}     
+We can either:
+\begin{enumerate}
+    \item {
+        Approximate by piecewise linear interpolation.
+    }
+    \item {
+        Use nonlinear interpolation.
+    }
+\end{enumerate}
+\begin{definition}[Interpolating function]
+    Given values $p_0, \dots, p_n \in \mathbb{R}$ and
+    nodes $u_0, \dots, u_n \in \mathbb{R}$
+    a function $p : \mathbb{R} \to \mathbb{R}$ with
+    $p(u_i) = p_i,\ i = 1, \dots, n$ is called \textit{interpolating}.
+\end{definition}
+\begin{remark}
+    This definition can be generalized to points
+    $p_i \in \mathbb{R}^d$ and curves $p : \mathbb{R} \to \mathbb{R}^d$.
+\end{remark}
+
+\textbf{The goal} of polynomial interpolation: to find coefficients
+$\alpha_0, \dots, \alpha_n \in \mathbb{R}$, such that for 
+a given set of polynomials $\varphi_0, \dots, \varphi_n$
+the linear combination
+\[
+    p(u) \coloneqq \sum_{i=0}^n \alpha_i \varphi_i(u)
+\]
+is interpolating. This means
+\[
+    p(u_j) = \sum_{i=0}^n \alpha_i \varphi_i(u_j) = p_j,\ j = 0, \dots, n
+\]
+In other words, $\alpha_0, \dots, \alpha_n$ shall be such that
+\[
+    \begin{cases}
+        \sum_{i=0}^n \alpha_i \varphi_i(u_0) = p_0\\
+        \vdots\\
+        \sum_{i=0}^n \alpha_i \varphi_i(u_n) = p_n
+    \end{cases}
+\]
+This is a system of linear equations for weights $\alpha_i$:
+\begin{align*}
+    &
+    \Phi \vec{\alpha} = \vec{p}
+    \\&
+    \vec{\alpha} = (\alpha_0, \dots, \alpha_n),\
+    \vec{p} = (p_0, \dots, p_n) \in \mathbb{R}^{n + 1}
+    \\&
+    \Phi \in \mathbb{R}^{(n + 1) \times (n + 1)}
+    \\&
+    \Phi = \begin{bmatrix}
+        \varphi(u_0) & \dots & \varphi_n(u_0)\\
+        \vdots & \ddots & \vdots\\
+        \varphi_0(u_n) & \dots & \varphi_n(u_n)
+    \end{bmatrix}
+    \text{ is called \textit{collocation matrix}}
+\end{align*}
+It follows that $\vec{\alpha} = \Phi^{-1} \vec{p}$.
+
+$\Phi$ is invertible if and only if the set of functions $\varphi_0, \dots, \varphi_n$
+is linearly independent $\Longleftrightarrow$ they are a basis of the respective
+interpolation space, here a basis of polynomials of degree $\le n$.

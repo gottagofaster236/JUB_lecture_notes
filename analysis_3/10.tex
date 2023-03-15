@@ -130,10 +130,20 @@
     \[
         \varphi = \sum_{k=1}^n c_k \cdot \chi_{E_k}
         \text{, where } E_k = \varphi^{-1}(c_k)
+        %\text{ and } \forall i \ne j: E_i \cap E_j = \emptyset
     \]
     (Here $c_k$ are all the values of $\varphi$, $\chi$ is the characteristic function.)
 \end{property}
-\begin{lemma}[Simple Approximation Lemma]
+\begin{remark}
+    We could also represent a simple function in the following way:
+    \[ \varphi = \sum_{k=1}^n c_n \chi_{E_k} \]
+    Here $E_k$ may overlap. But we can easily derive
+    a canonical representation. Say, $E_i \cap E_j \ne \emptyset$.
+    Then
+    \[ \varphi = c_i \cdot \chi_{E_i \setminus E_j} + c_j \cdot \chi_{E_j \setminus E_i} +
+        (c_i + c_j) \cdot \chi_{E_i \cap E_j} + \dots \]
+\end{remark}
+\begin{lemma}[Simple approximation lemma]
     $f : E \to \mathbb{R}$ --- measurable and bounded
     ($\exists M: \abs{f} < m$).
     Then for every $\varepsilon > 0$ there exist 

@@ -1,0 +1,131 @@
+\begin{theorem}[Simple approximation theorem]
+    $f: E \to \overline{\mathbb{R}}$ is measurable if and only if 
+    there exists a sequence of simple functions $\varphi_n : E \to \mathbb{R}$,
+    such that $\varphi_n \to f$ pointwise on $E$, and $\abs{\varphi_n} \le \abs{f}$
+    on $E$ for all $n$.
+
+    (If $f \ge 0$, then $\{\varphi_n\}$ can be chosen to be increasing.)
+\end{theorem}
+\begin{remark}
+    In the simple approximation lemma, functions 
+    $\varphi_\varepsilon$ and $\psi_\varepsilon$ sandwich the function $f$,
+    and\\ $0 \le \psi_\varepsilon - \varphi_\varepsilon < \varepsilon$, therefore, 
+    at every point they both differ from $f$ by no more than $\varepsilon$.
+    If we could choose a sequence of $\varepsilon$'s that converges to 0,
+    we would get uniform convergence.
+
+    Unfortunately, we can't apply the lemma directly, because we needed the function $f$ to be bounded.
+    That's why we're not getting uniform convergence.
+\end{remark}
+\begin{proof}
+    \begin{enumerate}
+        \item {
+            $\impliedby$. We have a sequence of simple (and thus measurable) functions $\{\varphi_n\}$,
+            therefore, their limit is also measurable.
+        }
+        \item {
+            $\implies$.
+            \begin{enumerate}[label={(\arabic*)}]
+                \item {
+                    Let's express $f = f^+ - f^-$, where $f^+ = \max\{f, 0\}$ and $f^- = \min\{f, 0\}$.
+                    Let's prove the theorem for both $f^+$ and $f^-$.
+                    Without the loss of generality, assume that $f \ge 0$.
+                }
+                \item {
+                    To use the simple approximation lemma, we have to make the function bounded.
+                    Define $f_n \coloneqq \min\{f, 2^n\}$.
+                    Take $\varphi_n$ as the lower simple approximation of $f_n$,
+                    according to the simple approximation lemma, with $\varepsilon = \frac{1}{2^n}$.
+
+                    Then $\varphi_n \to f$ pointwise. Moreover, $\{\varphi_n\}$ 
+                    are increasing (because we bound it with $2^n$, and because when we 
+                    go from $n$ to $n + 1$, every interval in the proof of SAL is split into two).
+                }
+                \item {
+                    Do the same for $f^-$ and add the sequences for $f^+$ and $f^-$ together.
+                    Since $\abs{f} = \max\{\abs{f^+}, \abs{f^-}\}$, the condition
+                    of $\abs{\varphi_n} \le \abs{f}$ will hold true. 
+                }
+            \end{enumerate}
+        }
+    \end{enumerate}
+\end{proof}
+
+\subsection{Egoroff, Lusin, Littlewood's three principles}
+Informal statement:
+\begin{enumerate}
+    \item {
+        Every measurable set is \textit{nearly} (not a mathematical term) a finite union of intervals.
+    }
+    \item {
+        Every measurable function is nearly continuous.
+    }
+    \item {
+        Every pointwise convergent sequence of measurable functions is nearly uniform convergent.
+    }
+\end{enumerate}
+\begin{theorem}[Egoroff's theorem]
+    Assume that $m(E) < \infty$, 
+    $f_n : E \to \overline{\mathbb{R}}$ --- measurable, $f_n \to f$
+    pointwise almost everywhere on $E$, where $f : E \to \mathbb{R}$.
+    Then for any $\varepsilon > 0$ there exists a closed subset
+    $F \subset E$, such $m(E \setminus F) < \varepsilon$ and $f_n \to f$
+    uniformly on $f$.
+\end{theorem}
+\begin{remark}
+    It is crucial that $f$ is from $E$ to $\mathbb{R}$, not $\mathbb{\overline{R}}$,
+    otherwise we wouldn't get uniform convergence.
+\end{remark}
+\begin{proof}
+    $\abs{f} < \infty \implies \abs{f - f_k}$ is defined for all $x \in E$
+    (starting from some $k$).
+
+    Let's also throw out the subset of measure $E$, on which $f_n \not\to f$.
+
+    \begin{enumerate}
+        \item {
+            Fix $\eta > 0$.
+            \[ E_n \coloneqq \{ x \in E \mid \abs{f(x) - f_k(x)} < \eta,\ \forall k \ge n \} \]
+            Each set $E_n$ is measurable, because $\abs{f(x) - f_k(x)}$ is measurable,
+            and $E_n$ is the countable intersection of preimages of $[0, \eta)$ for all $k$.
+            We can also note that $\{E_n\}$ is ascending.
+            
+            Also, $ \cup_{n=1}^\infty E_n = E $.
+            That's follows from pointwise convergence. If we take any point from the set $E$,
+            eventually it will be contained in some $E_n$, because for a given point $x$
+            the difference $\abs{f(x) - f_k(x)}$ has to converge to 0. 
+            Therefore,
+            \[
+                \lim_{n \to \infty} m(E_n) = m(E)
+            \]
+            Then there exists $N \in \mathbb{N}$, such that 
+            $m(E \setminus E_n) < \varepsilon$ for every $\varepsilon > 0$>
+        }
+        \item {
+            Now let's take such $N$ for $\eta_n = \frac{1}{n}$,
+            $\varepsilon_n = \frac{\varepsilon}{2^{n + 1}}$.
+
+            Take $E_n = E_N$, where $E_N$ is from step 1
+            for $\eta = \eta_n$ and $\varepsilon = \varepsilon_n$.
+
+            Take $A = \cap_{n=1}^\infty E_n$. Then, by convergence, 
+            $f_n \to f$ uniformly on $A$. On the other hand, 
+            $A$ is measurable as a countable union of measurable sets.
+
+            Let's estimate the measure of $A$.
+            \[ m(E \setminus A) = m\Bigl(
+                \bigcup_{k=1}^\infty (E \setminus E_n)
+            \Bigr) \le
+            \sum_{n=1}^\infty m(E \setminus E_n) \le
+            \sum_{n=1}^\infty \frac{\varepsilon}{2^{n+1}} = \frac{\varepsilon}{2}
+            \]
+            But $A$ may be non-closed, so we can't just assign $F$ to $A$.
+            Therefore, we have to approximate $A$ by closed sets.
+        }
+        \item {
+            Take $F \subset A$, so that $F$ is closed and
+            $m(A \subset F) < \frac{\varepsilon}{2}$.
+            We \hyperref[the:lebesgueMeasurableConditions]{have proved} that such an $F$ exists if $A$ is measurable.
+        }
+    \end{enumerate}
+\end{proof}

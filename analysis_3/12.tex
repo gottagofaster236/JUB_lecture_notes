@@ -1,0 +1,167 @@
+\begin{theorem}[Lusin's theorem]
+    $f : E \to \mathbb{R}$ --- measurable. Then for every
+    $\varepsilon > 0$ there exists a continuous function
+    $g : \mathbb{R} \to \mathbb{R}$ and a closed set $F \subset E$, 
+    such that $f = g$ on $F$ and $m(E \setminus F) < \varepsilon$.
+\end{theorem}
+\begin{proof}
+    \textit{Main idea}: uniform limit of continuous functions is continuous,
+    then apply Egoroff's theorem.
+
+    The proof is gonna be split into two parts:
+    \begin{enumerate}
+        \item {
+            Find a closed $F$ on which $f$ is continuous (in induced topology).
+        }
+        \item {
+            Extend $f|_F$ to a continuous function $g$.
+            We have briefly discussed how to do this:
+            the complement of a closed set $F$ is an open set, 
+            and thus a disjoint union of open intervals. On every such
+            open interval we can connect the graph of $f$
+            with a straight line. There's some work to be done, because
+            there can be an infinite number of such intervals converging a point,
+            but we'll leave it as an exercise.
+        }
+    \end{enumerate}
+
+    Proof of Part 1:
+    \begin{enumerate}
+        \item {
+            Assume $m(E) < \infty$. (Let's leave $m(E) = \infty$
+            as an exercise).
+            By simple approximation lemma, there exists a sequence of 
+            simple functions $f_n : E \to \mathbb{R}$, such that
+            $f_n \to f$ pointwise.
+        }
+        \item {
+            $\forall n$ there exists a closed subset $F_n \subset F$,
+            such that $f_n$ is continuous on $F_n$ and
+            $m(E \setminus F_n) < \frac{\varepsilon}{2^{n+1}}$.
+            
+            Proof:
+            \[ f_n = \sum_{j=1}^{k_n} c_j \cdot \chi_{E_j} \text{ --- canonical representation} \]
+            Each of the sets $E_j$ 
+            \hyperref[the:lebesgueMeasurableConditions]{can be approximated}
+            by a closed set $G_j$ from the inside (they are measurable from
+            \hyperref[def:simpleFunction]{the definition of a simple function}).
+
+            Put $F_n \coloneqq \cup G_j$. It's a finite union, therefore $F_n$ is closed.
+
+            $f_n$ is constant on each of $G_j$, as $G_j \subset E_j$.
+            A preimage of an open set for $f$ was a union of several $E_j$'s.
+            If we now restrict $f$ onto $\cup G_j$, the preimage of an open set
+            will be a union of several $G_j$'s. What we have to prove that 
+            $G_j$'s are open in the induced topogy on $F_n$ --- that's 
+            true because $G_j$'s are closed in $\mathbb{R}$ and disjoint.
+        }
+        \item {
+            By Egoroff's theorem, there exists a closed $F_0 \subset E$, 
+            such that $m(E \setminus F_0) < \frac{\varepsilon}{2}$ and 
+            $f_n \to f$ uniformly.
+            Now take $F \coloneqq \cap_{n=0}^\infty F_n$. The intersection of closed sets 
+            is closed. 
+            By construction, $f_n$ is continuous on $F$, as $F_n \subset F$.
+            Since $f_n \to f$ uniformly on $F$ (as $F_0 \subset F$),
+            $f$ is continuous on $F$.
+            Let's now estimate the measure of $E \setminus F$:
+            \[
+                m(E \setminus F) < \frac{\varepsilon}{2} + 
+                \sum_{n=1}^\infty \frac{\varepsilon}{2^{n+1}} = \varepsilon
+            \]
+        }
+    \end{enumerate}
+\end{proof}
+\begin{remark}
+    If $m(E) = \infty$, we can split $\mathbb{R}$ into intervals with finite length.
+    Then use the finite case we've just proved for each of those intervals,
+    but choose $\varepsilon_k = \frac{\varepsilon}{2^{k + 1}}$ so that they all sum 
+    up to $\varepsilon$ at the end.
+\end{remark}
+
+\section{Lebesgue integral}
+\begin{definition}
+    Let $\psi : E \to \mathbb{R}$ be simple, $m(E) < \infty$. Let
+    \[ \psi = \sum_{n=1}^k a_n \cdot \chi_{E_n} \]
+    be the canonical representation of $\psi$. Then define
+    \[ \int_E \psi \coloneqq \sum_{n=1}^k a_n \cdot m(E_n) \]
+\end{definition}
+\begin{remark}
+    Notation: if we want to emphasize the measure, we can write
+    \[ \int_E \psi = \int_E \psi \,dm = \int_a^b \psi \,dm \text{ (when $E=[a, b]$)} \]
+\end{remark}
+\begin{remark}
+    One can show that if it's not the canonical representation,
+    we can still compute the integral by the same formula and get the same result.
+\end{remark}
+
+\begin{definition}
+    Let $f : E \to \mathbb{R}$ be bounded, $m(E) < \infty$.
+    ($f$ is not necessarily measurable).
+
+    The \textit{lower Lebesgue integral} is by definition
+    \[ \sup\Bigl\{ \int_E \varphi \mathrel{\Big\vert} \text{ $\varphi$ is simple and $\varphi \le f$ on $E$} \Bigr\} \]
+    The \textit{upper Lebesgue integral} is by definition
+    \[ \inf\Bigl\{ \int_E \psi \mathrel{\Big\vert} \text{ $\varphi$ is simple and $\varphi \ge f$ on $E$} \Bigr\} \]
+    $f$ is \textit{Lebesgue integrable} if the lower Lebesgue integral
+    is equal to the upper Lebesgue integral. Then
+    \[ \int_E f \coloneqq \text{lower Lebesgue integral} = \text{upper Lebesgue integral} \]
+\end{definition}
+
+\begin{theorem}
+    $f : [a, b] \to \mathbb{R}$ is bounded and $[a, b]$ is bounded.
+    If $f$ is Riemann integrable over $[a, b]$, then 
+    $f$ is Lebesgue integrable and both integrals will match.
+\end{theorem}
+\begin{proof}
+    Upper and lower Riemann sums are obtained by simple functions.
+\end{proof}
+\begin{theorem}
+    If $f : E \to \mathbb{R}$ is bounded and \textit{measurable}, 
+    $m(E) < \infty$, then $f$ is Lebesgue integrable on $E$.
+\end{theorem}
+\begin{proof}
+    By the simple approximation lemma, for every $n \in \mathbb{N}$
+    there exist simple functions $\varphi_n$, $\phi_n$, such that
+    $\varphi_n \le f \le \psi_n$ on $E$ and
+    $\psi_n - \varphi_n \le \frac{1}{n}$ on $E$.
+    \[
+        \forall n: 
+        (\text{upper Lebesgue integral} - \text{lower Lebesgue integral}) \le
+        \int_E \psi_n - \int_E \varphi_n = \int_E (\psi_n - \varphi_n) \le
+        \frac{1}{n} m(E) \to 0
+    \]
+    Here we've used the fact that the difference of two integrals
+    is the integral of the difference (which we haven't yet proved).
+    However, since we're dealing with simple functions,
+    we can prove it by simply rearranging the finite sums.
+\end{proof}
+
+Now here's some definitions for the improper case,
+i.e. infinite integration limits or functions that converge to infinity.
+
+\begin{definition*}
+    $f : E \to \overline{\mathbb{R}}$ is measurable.
+    Its support is by definition
+    \[ \supp f \coloneqq \{ x \in E \mid f(x) \ne 0 \} \]
+    $f$ is of finite support of $m(\supp f) < \infty$.
+\end{definition*}
+\begin{definition}
+    $f : E \to \overline{\mathbb{R}}$ is measurable, $f \ge 0$. Then
+    \[
+        \int_E f \coloneqq \sup \Bigl\{
+            \int_E h \mathrel{\Big\vert}
+            \text{$h$ is bounded, measurable,}\
+            m(\supp h) < \infty,\ 0 \le h \le f \text{ on } E
+        \Bigr\} 
+    \]
+    $f$ is Lebesgue integrable over $E$, if $\int_E f < \infty$.
+\end{definition}
+\begin{definition}
+    A measurable function $f : E \to \overline{\mathbb{R}}$
+    is Lebesgue measurable over $E$ if 
+    $f^+ = \max\{f, 0\}$ and $f^- = \max\{-f, 0\}$ are Lebesgue
+    integrable over $E$.
+    Then
+    \[ \int_E f = \int_E f^+ - \int_E f^- \]
+\end{definition}

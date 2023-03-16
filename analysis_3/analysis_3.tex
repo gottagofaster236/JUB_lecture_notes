@@ -15,6 +15,7 @@
 \makeatletter
 \let\oldabs\abs
 \def\abs{\@ifstar{\oldabs}{\oldabs*}}
+\DeclareMathOperator\supp{supp}
 
 \begin{document}
 \gdef\CourseName{Analysis 3}
@@ -31,4 +32,5 @@
 \input{09}
 \input{10}
 \input{11}
+\input{12}
 \end{document}

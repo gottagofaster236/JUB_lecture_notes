@@ -1,0 +1,393 @@
+\subsubsection{Newton interpolation}
+Recall Lagrange interpolation: we find
+\[
+    p(u) = \sum_{i=0}^n \alpha_i L_i^n(u) \text{ such that } L_i^n(u_j) = \delta_{ij}
+\]
+In this case, $\Phi = I$ (the collocation matrix is the identity matrix), 
+therefore, $\alpha_i = p_i$. 
+
+Idea of Newton interpolation (not to be confused with Newton method)
+is to use basis functions
+$P_0(u), \dots, P_n(u)$ with $P_i(u)$ being of degree $i$
+with roots $u_0, \dots, u_{i - 1}$:
+
+\[
+    P_0(u) = 1, P_i(u) = (u - u_0)(u - u_1) \dots (u - u_{i - 1})
+\]
+Consequently, the collocation matrix is lower triangular:
+\[
+    \Phi = \begin{bmatrix}
+        1 & 0 & \dots & \dots& 0\\
+        \vdots & * & \ddots & & \vdots\\
+        \vdots & \vdots & \ddots & \ddots & \vdots\\
+        \vdots & \vdots & & \ddots & 0\\
+        1 & * & \dots & \dots & *\\
+    \end{bmatrix}
+\]
+And we're trying to solve the system
+\[ \Phi \alpha = \vec{p} \]
+\begin{example}
+    \[ \begin{array}{c|c|c|c}
+        u_i & 0 & 1 & 2\\
+        \hline
+        p_i & 2 & 4 & 3
+    \end{array} \]
+
+    \begin{center}   
+        \begin{tikzpicture}
+            \begin{axis}[
+                axis x line=left,
+                axis y line=left,
+                axis line style={-{Stealth[scale=1.5]}},
+                xtick={0,1,2},
+                ytick=\empty,
+                xmin=-1, xmax=3, ymin=1, ymax=5,
+                unit vector ratio=1 1 1,
+                samples=100,
+            ]
+                \tikzset{graph/.style={very thick, smooth, domain=-1:3}}
+                \addplot[red, graph] {2};
+                \addplot[green, graph] {2 * x + 2};
+                \addplot[blue, graph] {(-3/2) * x^2 + (7/2) * x + 2};
+            \end{axis}
+        \end{tikzpicture}
+    \end{center}
+
+    \begin{itemize}
+        \item {
+            1 point interpolation:
+            $p(u_0) = u_0$, degree of $p$ is 0.
+            Then
+            \[ p(u) = \alpha_0 \cdot P_0(u) \text{ (0 degree polynomial)} = \alpha \cdot 1 = \alpha = p_0 \]
+            So
+            \[ p(u_0) = p_0 = 2 \]
+
+            In Newton interpolation, we use a special notation.
+            Instead of $\alpha_0$ we can write $p[u_0]$. So, $p(u) = p[u_0] P_0$.
+
+            Here: $p[u_0] = 2 \implies p(u) = 2 \cdot 1 = 2$
+        }
+        \item {
+            2 point interpolation. We will denote 
+            $\alpha_0 = p[u_0]$ and $\alpha_1 = p[u_0 u_1]$
+            (we write it as such as $\alpha_1$ depends on values of $p$ at $u_0$ and $u_1$).
+            So, we want to find
+            \[ p(u) = p[u_0] P_0(u) + p[u_0 u_1] P_{1}(u) \]
+            such that
+            \[
+                \begin{drcases}
+                    p(u_0) = p_0\\
+                    p(u_1) = p_1
+                \end{drcases} \text{ --- the interpolation conditions}
+            \]
+            The first condition yields
+            \[
+                p_0 = p[u_0] P_0(u_0) + p[u_0 u_1] P_1(u_0) =
+                \left[P_1(u_0) = 0 \text{ by construction}\right] =
+                p[u_0] P_0(u_0)
+            \]
+            This is already fullfilled due to 1 point interpolation.
+
+            The second condition yields:
+            \begin{align*}
+                &p_1 = p(u_1) = p[u_1] P_0(u_1) + p[u_0 u_1] P_1(u_1)\\
+                &\iff p_1 = p[u_0] \cdot 1 + p[u_0 u_1] (u_1 - u_0)\\
+                &\implies 4 = 2 \cdot 1 + p[u_0 u_1] (1 - 0)\\
+                &\iff p[u_0 u_1] = \frac{4 - 2}{1 - 0} = 2
+            \end{align*}
+            So: $p(u) = 2 + 2 P_1(u) = 2 + 2u$.
+        }
+        \item {
+            3 point interpolation. We want to find
+            \[
+                p(u) = p[u_0] P_0(u) + p[u_0 u_1] P_1(u) +
+                p[u_0 u_1 u_2] P_2(u)
+            \]
+            First and second terms are already known by 1 and 2 point interpolation.
+            Thus:
+            \[ 
+                p(u) = 2 + 2u + p[u_0 u_1 u_2] P_2(u) =
+                2 + 2u + p[u_0 u_1 u_2] (u - u_0)(u - u_1)
+            \]
+            Use the third interpolation condition, $p(u_2) = p_2$, to find $p[u_0 u_1 u_2]$:
+            \begin{align*}
+                & p_2 = 2 + 2u_2 + p[u_0 u_1 u_2](u_2 - u_0)(u_2 - u_1)\\
+                \implies & 3 = 2 + 2 \cdot 2 + p[u_0 u_1 u_2] (2 - 0)(2 - 1)\\
+                \iff & \frac{3 - 6}{2} = p[u_0 u_1 u_2]
+            \end{align*}
+            We get the interpolating polynomial:
+            \[
+                p(u) = 2 + 2u - \frac{3}{2} u(u - 1) \iff
+                p(u) = 2P_0(u) + 2P_1(u) - \frac{3}{2} P_2(u)
+            \]
+        }
+    \end{itemize}
+\end{example}
+\begin{remark}
+    The resulting polynomial is the same as for Lagrange interpolation
+    and for the basis $1, x, x^2$.
+    There exists only one unique polynomial of degree $n$ passing through
+    $n + 1$ points.
+\end{remark}
+
+The weights $p[u_0 \dots u_i]$ are obtained by substition using 
+the lower triangular matrix. One can prove (for example, using induction), that
+\[
+    p[u_0 \dots u_i] = \sum_{k=1}^i
+    \frac{p_k}{
+        \prod_{j = 0,\, j \ne k}^{i} (u_k - u_j)
+    }
+\]
+This is exactly as we found $p[u_0 u_1 u_2]$ earlier by bringing everything to one side
+and dividing.
+
+We can do this recursively:
+$p[u_0] = p_0$ and
+\begin{align*}
+    p[u_0 u_1] = 
+    \frac{p_0}{u_0 - u_1} + \frac{p_1}{u_1 - u_0} = \frac{p_1 - p_0}{u_1 - u_0} =
+    \frac{p[u_1] - p[u_0]}{u_1 - u_0} = \frac{p[u_1] - p[u_0]}{u_k - u_j}
+\end{align*}
+Here $p[u_1]$ is the coefficient if we were only to interpolate at $u_1$,
+and $p[u_0]$ is the coefficient if we were only to interpolate at $u_0$.
+
+The general formula (also can be proved by induction):
+\[
+    p[u_0 \dots u_i] = \frac{p[u_1 \dots u_i] - p[u_0 \dots u_{i-1}]}{u_i - u_0}
+\]
+The coefficients are called \textit{divided differences}
+of order $i$ at nodes $u_0, \dots, u_i$.
+\begin{example}
+    As before, 
+    \[
+        {
+            \renewcommand{\arraystretch}{2}
+            \begin{array}{c|c|c|c|c}
+                u_i & p_i & p[u_i] & p[u_i u_{i+1}] & p[u_i u_{i+1} u_{i+2}]
+                \\\hline
+                0 & 2 & \textcolor{red}{2} &
+                \dfrac{\textcolor{green}{4} - \textcolor{red}{2}}{1 - 0} = \textcolor{orange}{2} &
+                \dfrac{\textcolor{cyan}{-1} - \textcolor{orange}{2}}{2 - 0} = -\dfrac{3}{2}
+                \\\hline
+                1 & 4 & \textcolor{green}{4} & 
+                \dfrac{\textcolor{blue}{3} - \textcolor{green}{4}}{2 - 1} = \textcolor{cyan}{-1}
+                \\\hline
+                2 & 3 & \textcolor{blue}{3} &
+            \end{array} 
+        }
+    \]
+    The resulting coefficients come from the top row of this scheme, i.e.
+    they are $2, 2, -\frac{3}{2}$.
+
+    Note that the \textit{final} divided differences ($-\frac{3}{2}$ in the last example)
+    are invariant under permutations of the nodes.
+\end{example}
+
+\subsubsection{Error analysis}
+All of the previous approaches lead to the same polynomial,
+only the algorithm differs.
+\begin{theorem}
+    Let $f \in C^{n+1}([a, b])$ and $p(u)$ a polynomial of degree $\le n$
+    interpolating $f$ at $n + 1$ distinct nodes $u_0, \dots, u_n \in [a, b]$.
+    Then for any $u \in [a, b]$ there exists a $\xi \in (a, b)$
+    such that
+    \[
+        f(u) - p(u) = \frac{1}{(n + 1)!} f^{(n+1)}(\xi) \cdot 
+        \prod_{i=0}^n (u - u_i)
+    \]
+    For equidistant nodes $u_i = a + i \cdot \frac{b - a}{n}$:
+    \[
+        \abs{f(u) - p(u)} \le
+        \frac{1}{4(n+1)} M \Bigl(\frac{b - a}{n}\Bigr)^{n+1}
+        \text{ where }
+        M = \max_{x \in [a, b]} \abs{f^{n+1}(x)}
+    \]
+    (Here $M$ may be unbounded, which may cause problems.)
+\end{theorem}
+\begin{proof}
+    Take the error function
+    \[ r_n(u) \coloneqq f(u) - p_n(u),\ u \in [a, b] \]
+    where $p_n$ is a polynomial of degree $n$,
+    as well as
+    \[
+        g(t) \coloneqq r_n(t) - \frac{r_n(u)}{l(u)} l(t)
+        \text{ with } l(u) = (u - u_0) \dots (u - u_n)
+    \]
+    We see that $t = u$ is a root of $g(t)$, i.e.
+    $g(u) = 0$, as $l(u)$ and $l(t)$ will cancel out.
+
+    Also, the interpolation nodes $u_i$ are roots of $r_n$, because
+    we are interpolating in such a way that the polynomial is equal
+    to the function at the nodes $u_i$.
+
+    Therefore, $t = u_i$ are also roots of $g$, because
+    $r_n(u_i) = 0$ and $l(u_i) = 0$ (by definition).
+    Therefore, $g$ must have at least $n + 2$ roots 
+    (i.e. $g(u) = g(u_i) = 0$ for $i = 0, \dots, n$).
+
+    Rolle's theorem says that if $a < b$, $h : [a, b] \to \mathbb{R}$
+    is continuous and differentiable on $(a, b)$, and $h(a) = h(b)$,
+    then there exists $c \in (a, b)$, such that $h'(c) = 0$.
+
+    After differentiating $g(t)$ $n + 1$ times:
+    \begin{align*}
+        g^{(n+1)}(t) &= r_n^{(n+1)}(t) - \frac{r_n(u)}{l(u)} l^{(n+1)}(t)\\
+        &\left[
+            \begin{array}{c}
+                r_n(t) = f(t) - p_n(t) \implies p_n \text{ vanishes after $n+1$ differentiations}\\
+                l(t) = (t - u_0)\dots(t-u_n) = t^{n+1} + \ldots \implies
+                l^{(n+1)}(t) = (n + 1)!
+            \end{array}
+        \right]\\
+        &= f^{(n+1)}(t) - \frac{r_n(u)}{l(u)} (n + 1)!
+    \end{align*}
+    Let's look at the $n + 1$ subintervals generated by the the $n + 2$ roots of $g$
+    ($u, u_0, \dots, u_n$). $g = 0$ at each of the end points of those intervals,
+    therefore, we can apply Rolle's theorem on each of those subintervals.
+    We get that $g'$ has at least $n + 1$ roots. Now apply the same argument
+    to $g'$, therefore, $g''$ has at least $n$ roots, and so on.
+    At the end, we get that $g^{(n+1)}(t)$ has at least one root $\xi \in [a, b]$
+    (here $\xi$ depends on $u$). Inserting root $\xi$ gives us:
+    \begin{align*}
+        &0 = g^{(n+1)}(\xi) = f^{(n+1)}(\xi) - \frac{r_n(u)}{l(u)} (n + 1)!\\
+        \implies &r_n(u) = \frac{f^{(n+1)}(\xi)}{(n+1)!} l(u)
+        \overset{\text{definition of $l(u)$}}{=}
+        \frac{f^{(n+1)}(\xi)}{(n+1)!} \prod_{i=0}^n (u - u_i)
+    \end{align*}
+    Therefore, we've proved the first part about $f(u) - p(u) = \dots$
+
+    When we have equidistant nodes, we can reorder $u_i$'s, such that
+    $u_{k_1}$ is the closest to $u$, $u_{k_2}$ is the second closest to $u$, and so on.
+    For $u_{k_1}$ and $u_{k_2}$, we get
+    \[
+        \abs{(u - u_{k_1})(u - u_{k_2})} \le \frac{h^2}{4}
+        \text{, where } h = \frac{b - a}{n} = u_{k_2} - u_{k_1}
+    \]
+    (you can show this by solving the inequality to get conditions for
+    $u_{k_1} \le u \le u_{k_2}$. The ``equals'' sign is achieved
+    at $u = \frac{u_{k_1} + u_{k_2}}{2}$).
+
+    \begin{center}   
+        \begin{tikzpicture}
+            \begin{axis}[
+                axis x line=left,
+                axis y line=none,
+                axis line style={-{Stealth[scale=1.5]}},
+                xtick={-1, 0, 0.33, 1, 2},
+                xticklabels={$u_{k_3}$, $u_{k_1}$, $u$, $u_{k_2}$, $u_{k_4}$},
+                ytick=\empty,
+                xmin=-1.5, xmax=2.5, ymin=0, ymax=1
+            ]\end{axis}
+        \end{tikzpicture}
+    \end{center}
+
+    We can also write
+    \begin{align*}
+        \abs{u - u_{k_3}} &\le 2h\\
+        \abs{u - u_{k_4}} &\le 3h\\
+        &\vdots\\
+        \abs{u - u_{k_{n+1}}} &\le nh\\
+    \end{align*}
+    So we get
+    \[
+        \abs{\prod_{i=0}^n (u - u_i)} \le
+        \frac{h^2}{4} \cdot 2h \cdot \ldots \cdot nh = \frac{n!}{4} h^{n+1}
+    \]
+    Inserting this into the general result and setting
+    $M = \max_{[a, b]} \abs{f^{(n+1)}(x)}$ gives us the second result:
+    \[
+        \abs{f(u) - p(u)} = \frac{1}{(n+1)!} \abs{f^{(n+1)}(\xi)} \cdot
+        \abs{\prod_{i=0}^n (u - u_i)} \le
+        \frac{1}{(n+1)!} \cdot M \cdot \frac{n!}{4} h^{n+1} = 
+        \frac{1}{4(n+1)} M \Bigl(\frac{b - a}{n}\Bigr)^{n+1}
+    \]
+\end{proof}
+
+\subsubsection{Runge's phenomenon}
+
+Take $f(u) = \frac{1}{1+u^2},\ u \in [-5, 5]$ 
+(or, equivalently, $f(u) = \frac{1}{1 + 25u^2},\ u \in [-1, 1]$).
+
+For equidistant nodes:
+\[
+    \lim_{n \to \infty} \max_{[-5, 5]} \abs{f(u)- p_n(u)} = \infty
+\]
+
+\begin{comment}
+import numpy as np
+from numpy.polynomial.polynomial import Polynomial
+from scipy.interpolate import lagrange
+
+
+def main():
+    x = np.linspace(-5, 5, 12)
+    y = f(x)
+    poly = lagrange(x, y)
+    coef = np.array(poly.coef)
+    for i in range(0, len(coef), 2):
+        coef[i] = 0
+    result = str(Polynomial(coef[::-1]))
+    result = result.replace("**", "^")
+    result = result.replace("x", "* x")
+    print(result)
+
+
+def f(x):
+    return 1 / (1 + x ** 2)
+
+
+if __name__ == '__main__':
+    main()
+\end{comment}
+
+\begin{center}   
+    \begin{tikzpicture}
+        \begin{axis}[
+            axis x line=center,
+            axis y line=center,
+            axis line style={-{Stealth[scale=1.5]}},
+            xtick={-5, 5},
+            ytick=\empty,
+            xmin=-6, xmax=6, ymin=-0.3, ymax=1.3,
+            samples=100
+        ]
+            \tikzset{graph/.style={very thick, smooth, domain=-5:5}}
+
+            \addplot[blue, graph] {1 / (1 + x^2)};
+            \addlegendentry{$f(x)$}
+
+            \addplot[red, graph] {0.92296506 + 0.0 * x - 0.47848065 * x^2 + 0.0 * x^3 + 0.11161689 * x^4 +
+            0.0 * x^5 - 0.01179552 * x^6 + 0.0 * x^7 + 0.00055071 * x^8 + 0.0 * x^9 -
+            (9.16454576e-06) * x^10 + 0.0 * x^11};
+            \addlegendentry{$p_{11}(x)$}
+        \end{axis}
+    \end{tikzpicture}
+\end{center}
+
+The interpolation polynomials oscillate, there's no meaningful interpolation,
+errors close to the interval limits.
+The maximum error bound goes to infinity because of the derivatives.
+However, just because the upper bound goes to infinity, we can't say
+that error itself has to go to infinity.
+
+\textbf{Final remarks:}
+\begin{enumerate}
+    \item {
+        Higher order polynomial interpolation on equidistant nodes
+        can be problematic.
+    }
+    \item {
+        Use non-equidistant nodes, e.g. Chebyshev nodes:
+        \begin{align*}
+            &u_i = \frac{a + b}{2} + \frac{b - a}{2} u_{i,n}^{\text{Cheb}} \in [a,b]
+            \\&
+            u_{i,n}^{\text{Cheb}} \coloneqq \cos\Bigl(\pi \frac{2i + 1}{2n + 2}\Bigr),\
+            i = 0, \dots, n
+        \end{align*}
+        They minimize $\abs{\prod_{i=0}^n (u - u_i)}$ and we get
+        \[
+            \abs{f(u) - p_n(u)} \le \frac{1}{2^n (n + 1)!}
+            \Bigl(\frac{b - a}{2}\Bigr)^{n+1} \max_{\xi \in [a, b]} \abs{f^{(n+1)}(\xi)}
+        \]
+    }
+\end{enumerate}

@@ -1,0 +1,330 @@
+\pagebreak
+\subsection{Piecewise polynomial interpolation}
+Another remedy of the problems of high order polynomial interpolation is
+\textit{piecewise polynomial interpolation}.
+
+Subdivide $[a, b]$ into smaller pieces on which lower-order interpolation can be performed.
+\begin{center}   
+    \begin{tikzpicture}
+        \begin{axis}[
+            axis x line=left,
+            axis y line=left,
+            axis line style={-{Stealth[scale=1.5]}},
+            xtick={0,1,2,3},
+            xticklabels={$a$, $ $, $ $, $b$},
+            ytick=\empty,
+            xmin=-1, xmax=4, ymin=-1.5, ymax=1.5,
+            unit vector ratio=1 1 1,
+            samples=100,
+        ]
+            \tikzset{graph/.style={very thick, smooth, domain=0:3}}
+            \tikzset{graph_point/.style={fill,circle,inner sep=1.5pt}}
+            \addplot[blue, graph] {sin(150 * x)};
+            \node[graph_point] at (0, 0){};
+            \node[graph_point] at (1,  0.49999999999999994){};
+            \node[graph_point] at (2, -0.8660254037844386){};
+            \node[graph_point] at (3, 1.0){};
+        \end{axis}
+    \end{tikzpicture}
+\end{center}
+Problem: pieces of interpolations don't have the same derivatives on end points.
+The solution is to use Hermite interpolation, in which
+there are additional constraints on derivatives.
+
+\subsubsection*{Spline interpolation}
+\begin{definition}
+    A function $s(u)$ a called a \textit{spline} of degree $k$ on the domain
+    $[a, b]$ if:
+    \begin{itemize}
+        \item {
+            $s \in C^{k - 1}([a, b])$ (it's $k - 1$ times continuously differentiable)
+        }
+        \item {
+            There exist nodes $a = u_0 < u_1 < \dots < u_m = b$, such that
+            $s|_{[u_i, u_{i+1}]}$ is a polynomial of degree $k$
+            for $i = 0, \dots, m - 1$.
+        }
+    \end{itemize}
+\end{definition}
+
+\begin{example}
+    A spline of degree 1 is such that $s \in C([a, b])$
+    and $s|_{[u_i, u_{i+1}]}$ is linear.
+    \begin{center}   
+        \begin{tikzpicture}
+            \begin{axis}[
+                axis x line=left,
+                axis y line=left,
+                axis line style={-{Stealth[scale=1.5]}},
+                xtick={0,1,2,3},
+                xticklabels={$u_0$, $u_1$, $\dots$, $u_m$},
+                ytick=\empty,
+                xmin=-1, xmax=4, ymin=-1.5, ymax=1.5,
+                unit vector ratio=1 1 1,
+                samples=100,
+            ]
+                \tikzset{graph/.style={blue, very thick, smooth}}
+                \tikzset{graph_point/.style={fill,circle,inner sep=1.5pt}}
+                \addplot[graph, domain=0:1] {0.0 + 0.5 * x};
+                \addplot[graph, domain=1:2] {1.8660254 - 1.3660254 * x};
+                \addplot[graph, domain=2:3] {-4.59807621 + 1.8660254 * x};
+                \node[graph_point] at (0, 0){};
+                \node[graph_point] at (1,  0.49999999999999994){};
+                \node[graph_point] at (2, -0.8660254037844386){};
+                \node[graph_point] at (3, 1.0){};
+            \end{axis}
+        \end{tikzpicture}
+    \end{center}
+
+    A spline of degree 0 is just a piecewise constant function.
+    \begin{center}   
+        \begin{tikzpicture}
+            \begin{axis}[
+                axis x line=left,
+                axis y line=left,
+                axis line style={-{Stealth[scale=1.5]}},
+                xtick={0,1,2,3},
+                xticklabels={$u_0$, $u_1$, $\dots$, $u_m$},
+                ytick=\empty,
+                xmin=-1, xmax=4, ymin=-1.5, ymax=1.5,
+                unit vector ratio=1 1 1,
+                samples=100,
+            ]
+                \tikzset{graph/.style={blue, very thick, smooth}}
+                \tikzset{graph_point/.style={fill,circle,inner sep=1.5pt}}
+                \addplot[graph, domain=0:1] {0.0};
+                \addplot[graph, domain=1:2] {0.49999999999999994};
+                \addplot[graph, domain=2:3] {-0.8660254037844386};
+                \node[graph_point] at (0, 0){};
+                \node[graph_point] at (1,  0.49999999999999994){};
+                \node[graph_point] at (2, -0.8660254037844386){};
+                \node[graph_point] at (3, 1.0){};
+            \end{axis}
+        \end{tikzpicture}
+    \end{center}
+\end{example}
+\begin{definition}
+    A spline is in \textit{B-spline representation} (\textit{B}asis)
+    if it is of the form
+    \[ s(u) = \sum_{i=0}^m c_i N^n_i(u) \]
+    where the $N_i^n(u)$ are the \textit{basis spline functions}
+    of degree $n$ with minimal support
+    (\textit{support} is the set where a function is non-zero).
+
+    We define the basis splines (B-splines) $N_i^n(u)$ by recursion.
+    Let $u_i$ be a set of nodes $u_0 < u_1 < \dots < u_m$.
+    Then
+    \[
+        N_i^0(u) = \begin{cases}
+            1 & \text{for } u_i \le u < u_{i + 1}\\
+            0 & \text{else}
+        \end{cases}
+    \]
+    and further
+    \[
+        N_{i}^n(u) = \alpha_i^{n-1}(u) N_i^{n - 1}(u) +
+        \bigl(1 - \alpha_{i+1}^{n-1}(u)\bigr) N_{i + 1}^{n-1}(u)
+        \text{ where }
+        \alpha_i^{n-1}(u) =
+        \frac{u - u_i}{u_{i+n} - u_{i}}
+        \text{ is a local parameter}
+    \]
+\end{definition}
+\begin{example}
+    \mbox{}
+    \begin{enumerate}
+        \item {
+            $n = 0$ (piecewise constant)
+            \begin{center}   
+                \begin{tikzpicture}
+                    \begin{axis}[
+                        axis x line=left,
+                        axis y line=left,
+                        axis line style={-{Stealth[scale=1.5]}},
+                        xtick={0,1,2},
+                        xticklabels={$u_i$, $u_{i+1}$, $u_{i+2}$},
+                        ytick={1},
+                        xmin=-1, xmax=4, ymin=0, ymax=1.5,
+                        unit vector ratio=1 1 1,
+                        samples=100,
+                    ]
+                        \tikzset{graph/.style={very thick, smooth}}
+                        \addplot[red, graph, domain=0:1] {1};
+                        \addlegendentry{$N_i^0(u)$}
+                        \addplot[blue, graph, domain=1:2] {1};
+                        \addlegendentry{$N_{i+1}^0(u)$}
+                    \end{axis}
+                \end{tikzpicture}
+            \end{center}
+        }
+        \item {
+            $n = 1$ (piecewise linear)
+            \begin{center}   
+                \begin{tikzpicture}
+                    \begin{axis}[
+                        axis x line=left,
+                        axis y line=left,
+                        axis line style={-{Stealth[scale=1.5]}},
+                        xtick={0,1,2,3},
+                        xticklabels={$u_i$, $u_{i+1}$, $u_{i+2}$, $u_{i+3}$},
+                        ytick={1},
+                        xmin=-1, xmax=5, ymin=0, ymax=1.5,
+                        unit vector ratio=1 1 1,
+                        samples=100,
+                    ]
+                        \tikzset{graph/.style={very thick, smooth}}
+                        \addplot[red, graph, domain=0:2] {1 - abs(x - 1)};
+                        \addlegendentry{$N_{i}^1(u)$}
+                        \addplot[blue, graph, domain=1:3] {1 - abs(x - 2)};
+                        \addlegendentry{$N_{i + 1}^1(u)$}
+                    \end{axis}
+                \end{tikzpicture}
+            \end{center}
+        }
+        \item {
+            $n = 2$ (piecewise quadratic)
+            \begin{center}   
+                \begin{tikzpicture}
+                    \begin{axis}[
+                        axis x line=left,
+                        axis y line=left,
+                        axis line style={-{Stealth[scale=1.5]}},
+                        xtick={0,1,2,3,4},
+                        xticklabels={$u_i$, $u_{i+1}$, $u_{i+2}$, $u_{i+3}$, $u_{i+4}$},
+                        ytick={1},
+                        xmin=-1, xmax=6, ymin=0, ymax=1.5,
+                        unit vector ratio=1 1 1,
+                        samples=100,
+                    ]
+                        \tikzset{graph/.style={very thick, smooth}}
+                        \addplot[red, graph, domain=0:3] {
+                            max(0, 1 - abs(x - 1)) * x / 2 +
+                            max(0, 1 - abs(x - 2)) * (1 - (x - 1) / 2)
+                        };
+                        \addlegendentry{$N_{i}^2(u)$}
+                        \addplot[blue, graph, domain=1:4] {
+                            max(0, 1 - abs(x - 2)) * (x - 1) / 2 +
+                            max(0, 1 - abs(x - 3)) * (1 - (x - 2) / 2)
+                        };
+                        \addlegendentry{$N_{i+1}^2(u)$}
+                    \end{axis}
+                \end{tikzpicture}
+            \end{center}
+        }
+    \end{enumerate}
+\end{example}
+
+We have:
+\begin{enumerate}
+    \item {
+        $\operatorname{supp} N_i^n = [u_i, u_{i+n+1}]$
+    }
+    \item {
+        $N_i^n$ is a piecewise polynomial of degree $n$.
+    }
+    \item {
+        $N_i^n$ are positive on $(u_i, u_{i+n+1})$, zero outside.
+    }
+    \item {
+        $N_i^n$ have the partition of unity property:
+        \[ \sum_{i=-n}^n N_i^n(u) = 1 \quad \forall u \in [a, b] \]
+        \begin{center}   
+            \begin{tikzpicture}
+                \begin{axis}[
+                    axis x line=left,
+                    axis y line=left,
+                    axis line style={-{Stealth[scale=1.5]}},
+                    xtick={1,2,3},
+                    xticklabels={$a=u_0$, $u_1$, $b=u_2$},
+                    ytick={1},
+                    xmin=0, xmax=5, ymin=0, ymax=1.5,
+                    unit vector ratio=1 1 1,
+                    samples=100,
+                ]
+                    \tikzset{graph/.style={very thick, smooth}}
+                    \addplot[red, graph, domain=0:2] {1 - abs(x - 1)};
+                    \addlegendentry{$N_{-1}^1$}
+                    \addplot[green, graph, domain=1:3] {1 - abs(x - 2)};
+                    \addlegendentry{$N_0^1$}
+                    \addplot[blue, graph, domain=2:4] {1 - abs(x - 3)};
+                    \addlegendentry{$N_1^1$}
+                \end{axis}
+            \end{tikzpicture}
+        \end{center}
+    }
+\end{enumerate}
+
+\subsubsection*{Interpolation with splines.}
+Given nodes $u_0 < \dots < u_m$, values $p_0 < \dots < p_m$
+find
+\[ s(u) = \sum_{i=0}^m c_i N_i^n(u) \text{ such that } s(u_i) = p(i) \text{ for } i = 0,\dots, n \]
+$n$ (degree) and $m$ (number of nodes minus one) can be independent.
+
+Collocation matrix:
+\[
+    \Phi = \begin{bmatrix}
+        N_0^n(u_0) & \dots & N_m^n(u_0)\\
+        \vdots & \ddots & \vdots\\
+        N_0^n(u_m) & \dots & N_m^n(u_m)
+    \end{bmatrix}
+    \in \mathbb{R}^{(m + 1) \times (m + 1)}
+\]
+We need to solve a linear problem to find $c_i$:
+\[
+    \Phi \vec{c} = \vec{p} \quad \vec{c} = (c_0, \dots, c_m) \in \mathbb{R}^{m+1},\
+    \vec{p} = \mathbb{R}^{m+1}
+\]
+\begin{example}
+    \textit{Cubic splines} interpolation, $n = 3$.
+    Assume equidistant nodes $n_i = i + 2$.
+
+    Find
+    \[
+        \sum_{i=0}^n c_i N_i^3(u) \coloneqq s(u)
+    \]
+    such that $s(u_i) = p_i$.
+    \[
+        \Phi = \begin{bmatrix}
+            N_0^n(u_0) & \dots & N_m^3(u_0)\\
+            \vdots & \ddots & \vdots\\
+            N_0^3(u_m) & \dots & N_m^3(u_m)
+        \end{bmatrix}
+    \]
+    Therefore:
+    \begin{itemize}
+        \item {
+            $N_i^3(u_j) \ne 0$ when $j = i$ or $j = i + 1$ or $j = i - 1$.
+        }
+        \item {
+            $N_i^3(u_j) = 0$, otherwise
+        }
+        \item {
+            Also, $N_i^3(u_{i-1}) = N_i^3(u_{i+1})$.
+        }
+    \end{itemize}
+    So, the collocation matrix is symmetric and tridiagonal!
+
+    After computation, we find that
+    $N_i^3(u) = \frac{2}{3}$ and $N_i^3(u_{i \pm 1}) = \frac{1}{6}$.
+
+    Thus
+    \[
+        \Phi = \frac{1}{6}
+        \begin{bmatrix}
+            4 & 1 & & 0\\
+            1 & \ddots & \ddots &\\
+            & \ddots & \ddots & 1\\
+            0 & & 1 & 4
+        \end{bmatrix}
+    \]
+    The matrix is strictly positive definite, consequently a unique solution 
+    to $\Phi \vec{c} = \vec{p}$ exists.
+\end{example}
+
+\subsection{Least squares approximation}
+Instead of doing an actual interpolation
+we should look for an approximation, i.e. a curve, 
+that stays ``close'' to measurements and it's a certain (function) type.
+
+Polynomial interpolation is restrained to polynomials. In least squares
+approximation, we are free to choose the types of (function) type.

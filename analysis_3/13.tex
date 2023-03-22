@@ -1,0 +1,162 @@
+\begin{definition}
+    A function $f: E \to \overline{\mathbb{R}}$
+    is \text{integrable} if both $\int_E f^+$ and $\int_E f^-$ are finite.
+\end{definition}
+\begin{remark}
+    If $\int_E f^+$ and $\int_E f^-$ are both infinite, we can't subtract them in the previous
+    definition. Therefore, it is not enough to just say that $\int_E f$ has to be finite.
+\end{remark}
+
+\begin{theorem}
+    \label{the:integralLinearityIntegrable}
+    $f, g: E \to \mathbb{R}$ are measurable and integrable. Then 
+    for any $\alpha, \beta \in \mathbb{R}$ the linear combination
+    $\alpha f + \beta g$ is integrable, and 
+    \[ \int_E (\alpha f + \beta g) = \alpha \int_E f + \beta \int_E g \]
+\end{theorem}
+\begin{theorem}
+    \label{the:integralLinearityPositive}
+    $f, g: E \to \mathbb{R}$ are measurable and non-negative. Then for any 
+    $\alpha, \beta \ge 0$:
+    \[ \int_E (\alpha f + \beta g) = \alpha \int_E f + \beta \int_E g \]
+\end{theorem}
+\begin{proof}
+    The proof of these two theorems is technical, we are not gonna prove them here.
+    You can read them in the textbook.
+    Checking the linearity of simple functions is easy. But the moment 
+    we proceed to supremums and infimums it becomes more difficult.
+\end{proof}
+\begin{remark}
+    Why do we need two theorems instead of one? Notice that 
+    Theorem~\ref{the:integralLinearityPositive} doesn't 
+    require integrability. If $f$ and $g$ are non-negative, then 
+    their integrals are non-negative as well, therefore, we can add the two 
+    integrals and not worry about cases like $+\infty + (-\infty)$.
+
+    In Theorem~\ref{the:integralLinearityIntegrable}, we require integrability. Therefore, the integrals
+    of $f$ and $g$ are both finite, therefore, the right-hand side is well-defined.
+    But in $\int_E (\alpha f + \beta g)$ we could indeed have 
+    $+\infty + (-\infty)$. But that's not a problem: we will prove later,
+    that if a function is integrable, then it's infinite only on a subset
+    of measure 0.
+\end{remark}
+
+\subsection{Basic properties of Lebesgue integral}
+\begin{theorem}[Monotonicity]
+    Assume $f, g: E \to \overline{\mathbb{R}}$ are measurable and
+    either both integrable or both non-negative. Then 
+    if $f \le g$ on $E$, then 
+    \[ \int_E f \le \int_E g \]
+\end{theorem}
+\begin{proof}
+    We can use either Theorem~\ref{the:integralLinearityIntegrable} or 
+    Theorem~\ref{the:integralLinearityPositive}.
+    If $g = f + h$, then $g \ge f \implies h \ge 0 \implies \int_E h \ge 0$.
+    But $\int_E g = \int_E f + \int_E h$ by one of those theorems, therefore,
+    $\int_E g \ge \int_E f$.
+\end{proof}
+
+\begin{proposition}
+    $f : E \to \overline{\mathbb{R}}$ is measurable. Then
+    $f$ is integrable $\iff$ $\abs{f}$ is integrable.
+\end{proposition}
+\begin{proof}
+    $\abs{f} = f^+ + f^-$.
+    \begin{enumerate}
+        \item {
+            $\implies$.
+            If $f$ is integrable, then $\int f^+,\ \int f^- < \infty$ by definition.
+            Then
+            \[ \int \abs{f} = \int f^+ + \int f^- < \infty \]
+        }
+        \item {
+            $\impliedby$.
+            $0 \le f^+ \le \abs{f}$ and $0 \le f^- \le \abs{f}$.
+            If $\abs{f}$ is integrable, then, by monotonicity, $f^+$ and $f^-$
+            are integrable.
+        }
+    \end{enumerate}
+\end{proof}
+
+\begin{proposition}
+    $f : E \to \overline{\mathbb{R}}$, $g : E \to \overline{\mathbb{R}}$ --- integrable and
+    $g \ge 0$. If $\abs{f} \le g$ on $E$, then $f$ is integrable.
+\end{proposition}
+\begin{proof}
+    If $g$ is integrable, then by monotonicity $\abs{f}$ is integrable,
+    then by previous proposition $f$ is integrable.
+\end{proof}
+
+\begin{theorem}
+    $f: E \to \overline{\mathbb{R}}$ is measurable and either integrable
+    or non-negative. If $A, B \subset E$, $A \cap B = \emptyset$;
+    $A, B \in \mathcal{M}$, then
+    \[ \int_{A \cup B} f = \int_A f + \int_B f \]
+\end{theorem}
+\begin{proof}
+    \[ f\big|_{A \cup B} = f \cdot \chi_A + f \cdot \chi_B = h + g \]
+    If $f$ is integrable, then $h$ and $g$ are integrable by previous proposition,
+    because $\abs{h} \le \abs{f}$ and $\abs{g} \le \abs{f}$.
+    Now apply Theorem~\ref{the:integralLinearityIntegrable}.
+
+    If $f$ is non-negative, then $h, g \ge 0$, apply Theorem~\ref{the:integralLinearityPositive}.
+\end{proof}
+
+\begin{proposition}
+    If $f : E \to \overline{\mathbb{R}}$ is integrable, then
+    \[ \abs{\int_E f} \le \int_E \abs{f} \]
+\end{proposition}
+\begin{proof}
+    \[ \abs{\int_E f} = \abs{\int_E f^+ - \int_E f^-} \le \int_E f^+ + \int_E f^- = \int_E \abs{f} \]
+\end{proof}
+\begin{theorem}[Chebyshev's inequality]
+    $f : E \to \overline{\mathbb{R}}$ --- measurable, $f \ge 0$. Then $\forall \lambda > 0$:
+    \[ m(E_\lambda) = m \{ x \in E \mid f(x) \ge \lambda \} \le \frac{1}{\lambda} \int_E f \]
+\end{theorem}
+\begin{proof}
+    Put $h \coloneqq \lambda \cdot \chi_{E_\lambda}$. Since
+    $h$ is a simple function,
+    \[ \int_{E_\lambda} h = \lambda \cdot m(E_\lambda) \]
+    Therefore, it is enough to prove that
+    \[ \int_{E_\lambda} h  \le \int_E f \]
+    But $h \le f \big|_{E_\lambda}$,
+    because on $E_\lambda$ we have $h = \lambda$ and $f \ge \lambda$. Therefore, by monotonicity, 
+    \[ \int_{E_\lambda} h \le \int_{E_\lambda} f \le \int_{E} f \]
+\end{proof}
+
+\subsubsection*{Applications of the Chebyshev's inequality:}
+\begin{proposition}
+    $f : E \to \overline{\mathbb{R}}$ is measurable, $f \ge 0$.
+    Then \[ \int_E f = 0 \iff f = 0 \text{ almost everywhere on } \mathbb{R} \]
+\end{proposition}
+\begin{proof}\mbox{}
+    \begin{enumerate}
+        \item {
+            $\implies$.
+
+            If $\int_E f = 0$, then by Chebyshev's inequality,
+            \[ m(E_n) = m\Bigl\{x \in E \mathrel{\Big\vert} f(x) \ge \frac{1}{n} \Bigr\}  \le n \int_E f = 0 \]
+            The sequence $\{E_n\}$ is ascending. Since the measure of each one of them
+            is equal to zero, then, by \hyperref[the:continuityOfMeasure]{continuity of measure},
+            $m(\cup_{n=1}^\infty E_n) = m\{x \in E \mid f(x) > 0 \} = 0$.
+        }
+        \item {
+            $\impliedby$. Follows from Definition~\ref{def:definitionThree}.
+        }
+    \end{enumerate}
+\end{proof}
+
+\begin{proposition}
+    If $f: E \to \overline{\mathbb{R}}$ is integrable, then $f$ is finite
+    almost everywhere on $E$.
+\end{proposition}
+\begin{proof}
+    Without the loss of generality, assume that $f \ge 0$
+    (otherwise, prove separately for $f^+$ and $f^-$).
+    \[ 
+        m\{x \in E \mid f(x) = \infty \} \le m\{x \in E \mid f(x) \ge n \} 
+        \overset{\text{Chebyshev's inequality}}{\le} \frac{1}{n} \int_E f 
+        \underset{n \to \infty}{\longrightarrow} 0
+    \]
+    Here we've used that $\int_E f$ is finite, because $f$ is integrable.
+\end{proof}

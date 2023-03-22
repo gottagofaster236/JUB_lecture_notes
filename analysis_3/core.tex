@@ -65,59 +65,17 @@
 \usepackage{fancyhdr}
 \pagestyle{fancy}
 
-% Основано на коде С. Копелиовича.
-\newcommand\Section[2]{
-  \newpage % new page
-  \stepcounter{section}
-  \bigskip
-  \phantomsection
-  \addcontentsline{toc}{section}{\arabic{section}. #1}
-  \begin{center}
-    {\huge \bf \arabic{section}. #1}\\
-  \end{center}
-  \bigskip
-  \gdef\SectionName{#1}
-  \gdef\AuthorName{#2}
+\renewcommand{\sectionmark}[1]{\markright{#1}{}}
+\renewcommand{\subsectionmark}[1]{\markright{#1}{}}
 
-  \lhead{\ShortCourseName}
-  \chead{}
-  \rhead{\SectionName}
+\fancyhf{}
 
-  \cfoot{
-%    \topskip0pt\vspace*{\fill}
-    \thepage~of~\pageref*{LastPage}
-%    \vspace*{\fill}
-  }
-  
-  \renewcommand{\headrulewidth}{0.15 mm}
-
-  \ifx\LaconicFooter\undefined
-  \lfoot{
-%    \topskip0pt\vspace*{\fill}
-    Chapter \texttt{\#\arabic{section}}
-%    \vspace*{\fill}
-  }
-  \rfoot{
-%    \topskip0pt\vspace*{\fill}
-    Author: \AuthorName
-%    \vspace*{\fill}
-  }
-  \renewcommand{\footrulewidth}{0.15 mm}
-  \fi
-}
-
-\newcommand\Subsection[1]{
-  % Пока здесь нет никаких кастомизаций,
-  % Но рекомендуется использовать имено вариацию с большой буквы,
-  % На случай, если в будущем они появятся.
-  \subsection{#1}
-}
-
-\newcommand\Subsubsection[1]{
-  % Пока здесь нет никаких кастомизаций,
-  % Но рекомендуется использовать имено вариацию с большой буквы,
-  % На случай, если в будущем они появятся.
-  \subsubsection{#1}
+\fancyhead[L]{\leftmark}
+\fancyhead[R]{\rightmark} % 1. sectionname
+\fancyfoot[C]{\thepage}
+\fancypagestyle{plain}{%
+    \fancyhf{}%
+    \renewcommand{\headrulewidth}{0pt}% 
 }
 
 \newcommand\slashnl{~\\*[-26pt]}

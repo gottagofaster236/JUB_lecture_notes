@@ -1,0 +1,225 @@
+\subsection{Least squares approximation}
+
+Instead of doing an actual interpolation, we can look for an approximation, i.e. a curve that stays
+``close'' to the measurements and is of certain (function) type.
+
+Polynomial interpolation is restrained to polynomials. In least squares
+approximation, we are free to choose the types of (function) type.
+
+\begin{example}
+    Surface tension $S$ of a liquid depends on the liquid's temperature. It's known that the dependence is linear, i.e.
+    \[ S = S(T) = a + bt \]
+    for some $a, b \in \mathbb{R}$. In order to find $a$ and $b$ for a specific liquid we do measurements.
+    \begin{center}   
+        \begin{tikzpicture}
+            \begin{axis}[
+                axis x line=left,
+                axis y line=left,
+                axis line style={-{Stealth[scale=1.5]}},
+                xtick={0,1,2,3},
+                xticklabels={$T_0$, $T_1$, $T_2$, $T_3$},
+                ytick=\empty,
+                xmin=-0.5, xmax=3.5, ymin=-0.5, ymax=3.5,
+                unit vector ratio=1 1 1,
+                samples=100,
+                xlabel={$T$},
+                ylabel={$S$},
+            ]
+                \tikzset{graph/.style={very thick, smooth, domain=0:3}}
+                \tikzset{graph_point/.style={fill,circle,inner sep=1.5pt}}
+                \addplot[blue, graph] {x};
+                \node[graph_point] at (0, -0.1){};
+                \node[graph_point] at (1,  0.8){};
+                \node[graph_point] at (2, 2.1){};
+                \node[graph_point] at (3, 2.8){};
+            \end{axis}
+        \end{tikzpicture}
+    \end{center}
+    No straight line currently interpolates all the points.
+    Of all lines that could be considered a fit, which is the best?
+    It's an optimization problem, we want to minimize the error.
+
+    consider approximation error at nodes and minimize.
+    \begin{itemize}
+        \item {
+            Suppose we have $n + 1$ measurements $s_0, \dots, s_n$
+            for nodes $T_0, \dots, T_n$.
+        }
+        \item {
+            At any node $T_i$ the error is
+            \[ \abs{s_i - (a T_i + b)} \]
+        }
+        \item {
+            The sum of all local errors is (for fixed $a, b$):
+            \[ E_1(a, b) = \sum_{i=0}^n \abs{s_i - (a T_i + b)} \]
+            Here the \text{approximation error} is measured on $l_1$-norm.
+        }
+        \item {
+            To find the minimum we need to find critical points (i.e. roots of the derivative)
+            of $E_1(a, b)$. But $E_1(a, b)$ is not continuously differentiable
+            for all $a, b$, because we have a modulus function that is not differentiable at zero.
+        }
+        \item {
+            \textbf{Remedy:} go over to squares of local errors.
+        }
+        \item {
+            The approximation error in the $l_2$-norm:
+            \[ E_1(a, b) = \sum_{i=0}^n \bigl(s_i - (a T_i + b)\bigr)^2 \]
+            So now, to find the critical points we consider
+            \begin{align*}
+                \frac{\partial E_2}{\partial a} &=
+                \frac{\partial}{\partial a} \Bigl(
+                    \sum_{i=0}^n \bigl(s_i - (aT_i + b)\bigr)^2
+                \Bigr)\\
+                &= \sum \frac{\partial}{\partial a} \bigl(
+                    s_i - (aT_i + b)
+                \bigr)^2 = -\sum 2 \bigl(s_i - (aT_i + b)\bigr)T_i\\
+                &= -\sum 2 s_i T_i + 2a \sum T_i^2 + 2b \sum T_i
+            \end{align*}
+            \text{Critical point:}
+            \[ 
+                0 = \frac{\partial E_2}{\partial a} \iff 
+                a \sum T_i^2 + b \sum T_i = \sum s_i T_i \quad (1)
+            \]
+            And
+            \begin{align*}
+                \frac{\partial E_2}{\partial b} &=
+                \frac{\partial}{\partial b} \Bigl(\sum \bigl(
+                    s_i - (a T_i + b)
+                \bigr)^2\Bigr)\\
+                &= -2 \sum \bigl(s_i - (aT_i + b)\bigr)
+            \end{align*}
+            The critical point:
+            \begin{align*}
+                0 = \frac{\partial E_2}{\partial b} 
+                &\iff a \sum T_i + b \sum 1 = \sum S_i \\
+                &\iff a \sum T_i + b(n + 1) = \sum S_i \quad (2)
+            \end{align*}
+            (1) and (2) determine a linear system of equations in $a$ and $b$:
+            \[
+                \begin{bmatrix}
+                    \sum T_i^2 & \sum T_i\\
+                    \sum T_i & (n + 1)
+                \end{bmatrix}
+                \begin{pmatrix}
+                    a \\ b
+                \end{pmatrix} = \begin{bmatrix}
+                    \sum S_i T_i\\ \sum S_i
+                \end{bmatrix}
+            \]
+            To solve this we just have to invert a $2 \times 2$ matrix.
+            Note that this is the matrix for fitting a linear problem, it's 
+            gonna be different for different problems!
+        }
+    \end{itemize}
+\end{example}
+
+\textbf{In more generality:}
+The least squares approximation assumes that we have measurements $y_i,\ i = 0,\dots, n$
+at nodes $x_i,\ i = 0,\dots, n$. We are lookiing for a function
+\[
+    y(x) = \sum_{j=0}^m c_j g_j(x)
+\]
+for linearly independent functions $g_j(x)$ (otherwise one function could be replaced
+with a linear combination of others).
+
+In the least squares approach we are minimizing the $l_2$-error:
+\[
+    \varphi(c_0, \dots, c_m) = \sum_{i = 0}^n \Bigl(
+        y_i - \sum_{j=0}^m c_j g_j(x_i)
+    \Bigr)^2
+\]
+A necessary condition is vanishing partial derivatives:
+\[ \frac{\partial \varphi}{\partial c_k} = 0 \text{ for } k = 0, \dots, m\]
+In fact:
+\begin{align*}
+    &\frac{\partial \varphi}{\partial c_k} =
+    -\sum_{i=0}^n 2 \Bigl(y_i - \sum_{j=0}^m c_j g_j(x_i)\Bigr) g_k(x_i) \overset{!}{=} 0
+    \\&\iff \sum_{j=0}^m \Bigl(
+        \sum_{i=0}^n g_j(x_i) g_k(x_i)
+    \Bigr) c_j = \sum_{i=0}^n y_i g_k(x_i)
+    \text{ for } k = 0,\dots, m
+\end{align*}
+These equations are called \textit{normal equations}.
+They yield an $(m + 1) \times (m + 1)$ system.
+We need $n \ge m$ in order to have a unique solution (i.e.,
+the number of data points shouldn't be less than the number of free variables).
+Otherwise, the system will be linearly dependent.
+
+\textbf{General examples:}
+\begin{itemize}
+    \item {
+        Drag force is proportional to wind speed squared.
+    }
+    \item {
+        Deformation of a spring is linear function of applied force.
+    }
+\end{itemize}
+
+\begin{example}
+    $y(x) = a \log(x) + b\cos(x)$.
+    Write the \textit{normal equations}.
+
+    Assume nodes $x_i$ and values $y_i$ given for
+    $i = 0, \dots, n$. Error in $l_2$-norm:
+    \[
+        E_2(a, b) = \sum_{i=0}^n \bigl(y_i - y(x)\bigr)^2 = 
+        \sum_{i=0}^n (y_i - a\log(x) - b\cos(x_i))^2
+    \]
+    necessary conditions:
+    \[
+        \frac{\partial E_2}{\partial a} = \frac{\partial E_2}{\partial b} = 0
+    \]
+    The second derivative is not needed, because the function is convex in $a$ and $b$
+    (it's a quadratic function with a positive coefficient before $x^2$).
+    Therefore, the only critical point is the minimum.
+    \begin{align*}
+        &\frac{\partial E_2}{\partial a} =
+        \sum 2\bigl(a \log(x_i) + b\cos(x_i) - y_i\bigr) \log(x_i)\\
+        &\frac{\partial E_2}{\partial a} \overset{!}{=} \iff
+        a \sum \log(x_i)^2 + b\sum \cos(x_i) \log(x_i) = 
+        \sum y_i \log(x_i)
+    \end{align*}
+    In the same way, we can derive that
+    \[
+        \frac{\delta E_2}{\delta b} = 0 \iff
+        a \sum \log(x_i) \cos(x_i) + b\sum \cos^2(x_i) = 
+        \sum y_i \cos(x_i)
+    \]
+    This linear system of equations can be formulated as 
+    \begin{align*}
+        &\Phi \Phi^\intercal \begin{pmatrix}
+            a \\ b
+        \end{pmatrix} = \Phi \vec{y}
+        \\&
+        \Phi = \begin{bmatrix}
+            \log(x_0) & \dots & \log(x_n)\\
+            \cos(x_0) & \dots & \cos(x_n)
+        \end{bmatrix}
+    \end{align*}
+    $\Phi^\intercal$ is the \textit{collocation matrix}.
+    For the exam, it's much quicker
+    to memorize the collocation matrix and use this formula,
+    instead of remembering how to get to those equations by hand.
+    \[
+        \begin{bmatrix}
+            \log(x_0) & \dots & \log(x_n)\\
+            \cos(x_0) & \dots & \cos(x_n)
+        \end{bmatrix}
+        \begin{bmatrix}
+            \log(x_0) & \cos(x_0) \\
+            \vdots & \vdots\\
+            \log(x_n) & \cos(x_n)
+        \end{bmatrix}
+        \begin{pmatrix}
+            a \\ b
+        \end{pmatrix} = 
+        \begin{bmatrix}
+            \log(x_0) & \dots & \log(x_n)\\
+            \cos(x_0) & \dots & \cos(x_n)
+        \end{bmatrix} 
+        \begin{pmatrix}
+            y_0 \\ \vdots \\ y_n
+        \end{pmatrix}
+    \]
+\end{example}

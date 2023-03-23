@@ -28,10 +28,10 @@ approximation, we are free to choose the types of (function) type.
                 \tikzset{graph/.style={very thick, smooth, domain=0:3}}
                 \tikzset{graph_point/.style={fill,circle,inner sep=1.5pt}}
                 \addplot[blue, graph] {x};
-                \node[graph_point] at (0, -0.1){};
-                \node[graph_point] at (1,  0.8){};
-                \node[graph_point] at (2, 2.1){};
-                \node[graph_point] at (3, 2.8){};
+                \node[graph_point] at (0, -0.3){};
+                \node[graph_point] at (1,  0.7){};
+                \node[graph_point] at (2, 2.3){};
+                \node[graph_point] at (3, 2.7){};
             \end{axis}
         \end{tikzpicture}
     \end{center}
@@ -39,7 +39,7 @@ approximation, we are free to choose the types of (function) type.
     Of all lines that could be considered a fit, which is the best?
     It's an optimization problem, we want to minimize the error.
 
-    consider approximation error at nodes and minimize.
+    Consider approximation error at nodes and minimize.
     \begin{itemize}
         \item {
             Suppose we have $n + 1$ measurements $s_0, \dots, s_n$

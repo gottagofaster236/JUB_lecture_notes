@@ -1,0 +1,280 @@
+\subsection{Convergence theorems}
+\begin{proposition}
+    \label{prop:integralUniformLimit}
+    $f_n : E \to \overline{\mathbb{R}}$ --- measurable, integrable, $m(E) < \infty$. If $f_n \to f$ uniformly and
+    $f$ is bounded on $E$, then 
+    \[ \lim_{n \to \infty} \int_E f_n = \int_E f \] 
+\end{proposition}
+\begin{proof}
+    $f$ is measurable (as a pointwise limit). Therefore, $\int_E f$ exists.
+    For any $\varepsilon > 0$, choose $N > 0$, such that
+    \[
+        \abs{f - f_n} < \frac{\varepsilon}{m(E)}, \quad \forall n \ge N
+    \]
+    Then
+    \[
+        \abs{\int_E f - \int_E f_n} = \abs{\int_E(f - f_n)} \le
+        \int_E \abs{f - f_n} < \frac{\varepsilon}{m(E)} \cdot m(E) = \varepsilon
+    \]
+\end{proof}
+
+\begin{remark}
+    This proposition does not hold for pointwise convergence.
+\end{remark}
+\begin{example}[1]
+    $E = (0, 1],\ f_n \coloneqq n \cdot \chi_{(0, 1/n)}$.
+    Then $f_n \to 0$ pointwise. But:
+    \[ \int_E f_n = 1 \quad \int_E f = 0 \]
+\end{example}
+\begin{example}[2]
+    $E = \mathbb{R},\ f_n = \chi_{[n, n + 1]}$.
+    If we choose an $x$, then for any $n > x$
+    this interval will be to the right of $x$, and thus $f_n(x) = 0$.
+    Therefore, $f_n \to 0$ pointwise. But:
+    \[ \int_E f_n = 1 \quad \int_E f = 0 \]
+\end{example}
+
+\begin{theorem}[Bounded convergence theorem]
+    $f_n : E \to \overline{\mathbb{R}}$ --- measurable, $m(E) < \infty$.
+    Assume that there exists an $M > 0$, such that $\abs{f_n} < M$ on $E$ for all $n$.
+    Then if $f_n \to f$ pointwise on $E$, then 
+    \[ \lim_{n \to \infty} \int_E f_n = \int_E f \]
+\end{theorem}
+\begin{remark}
+    If we look at the two examples stated earlier as a movie about a function,
+    with frames $f_n$, then we can see how the ``mass'' of a function \textit{(not formal)} is moving.
+    In the first example, the ``mass'' of the function was escaping vertically. Here
+    it's prevented by $\abs{f_n} < M$. In the second example, the ``mass''
+    was escaping horizontally. Here it's prevented by $m(E) < \infty$.
+\end{remark}
+\begin{proof}
+    We're gonna use Egoroff's theorem.
+    \begin{enumerate}
+        \item {
+            $f$ is measurable (as a pointwise limit). 
+            $\abs{f} \le M$.
+        }
+        \item {
+            For any $\varepsilon > 0$, take $A \subset E$, such that
+            $m(E \setminus A) < \frac{\varepsilon}{4M}$ and $f_n \to f$
+            uniformly on $A$ (by Egoroff's theorem).
+            Then, 
+            \[
+                \abs{\int_E f_n - \int_E f} \le
+                \abs{\int_A f_n - \int_A f} +
+                \abs{\int_{E \setminus A} f_n - \int_{E \setminus A} f} = (*)
+            \]
+            Since $f_n \to f$ uniformly on $A$, we have (by Proposition~\ref{prop:integralUniformLimit})
+            that $\abs{\int_A f_n - \int_A f} \to 0$ as $n \to \infty$.
+            Now,
+            \[
+                \abs{\int_{E \setminus A} f_n - \int_{E \setminus A} f} \le
+                2M \cdot m(E \setminus A) < \frac{\varepsilon}{2}
+            \]
+            Since we can make the first modulus be smaller than 
+            $\frac{\varepsilon}{2}$ by choosing a sufficiently large $n$, 
+            we get that
+            \[ (*) \le \frac{\varepsilon}{2} + \frac{\varepsilon}{2} = \varepsilon \]
+        }
+    \end{enumerate}
+\end{proof}
+
+\begin{lemma}[Fatou's lemma]
+    $f_n : E \to \overline{\mathbb{R}}$ --- measurable, $f_n \ge 0$.
+    If $f_n \to f$ pointwise almost everywhere on $E$, then
+    \[
+        \int f \le \liminf_{n \to \infty} \int_E f_n 
+    \]
+\end{lemma}
+\begin{remark}
+    The sequence of integrals may not have a limit, therefore, we have to use
+    $\liminf$ in the statement. By definition,
+    \[ \liminf_{n \to \infty} a_n = \lim_{k \to \infty} \inf_{n \ge k} a_n \]
+    The since $\inf_{n \ge k} a_n$ is a non-decreasing sequence, the limit
+    (possibly infinite) always exists.
+\end{remark}
+\begin{remark}
+    If we think in terms of our escape of the mass analogy, the theorem states that mass can escape,
+    but can't enter the limit.
+\end{remark}
+\begin{proof}
+    Exclude a set of measure zero (by Egoroff's theorem), now the convergence is pointwise.
+    $f \ge 0$ and $f$ is measurable.
+
+    Recall Definition~\ref{def:definitionThree}.
+    Take $h : E \to \overline{\mathbb{R}}$ to be any bounded measurable function with 
+    $m(\supp h) < \infty$ and $0 \le h \le f$ on $E$, like in that definition.
+
+    Let $M$ be such that $h \le M$ on $E$ (since $h$ is bounded) and $E_0 \coloneqq \supp h$.
+    Define $h_n : E \to \mathbb{R}$ by $h_n \coloneqq \min\{h, f_n\}$. Then:
+    \begin{enumerate}
+        \item {
+            $h_n$ is measurable, because both $h$ and $f_n$ are measurable by their
+            respective definitions, and $h_n$ is the minimum of two measurable functions.
+        }
+        \item {
+            $0 \le h_n \le M$, because $h \le M$ on $E$.
+        }
+        \item {
+            $\supp h_n \subset E_0$, as $h_n \le h$.
+        }
+        \item {
+            $h_n \to h$ pointwise on $E$. That's because $f_n$ converges to $f$ pointwise
+            and $h \le f$. Therefore, at every point, starting from some $n$, 
+            Thus, $h$ will be either less than $f_n$ or arbitrarily close to it, if
+            $h = f$ at that point. Since $h_n = \min\{f, h\}$ and 
+            $\min\{f, h\} \to h$, we get that $h_n \to h$.
+        }
+    \end{enumerate}
+    By Bounded convergence theorem:
+    \[ 
+        \lim_{n \to \infty} \int_E h_n 
+        \overset{\supp h_n \subset E_0}{=} \lim_{n \to \infty} \int_{E_0} h_n
+        \overset{\text{BCT}}{=}
+        \int_{E_0} h \overset{\supp h = E_0}{=} \int_E h
+    \]
+    On the other hand,
+    \[
+        h_n \le f_n \implies \int_E f_n \ge \int_E h_n \implies
+        \int_E h \le \liminf_{n \to \infty} \int_E f_n
+    \]
+    Since $h$ is arbitrary, by Definition~\ref{def:definitionThree},
+    \[
+        \int_E f \le \liminf_{n \to \infty} \int_E f_n
+    \]
+\end{proof}
+
+\begin{theorem}[Monotone convergence theorem]
+    $f_n : E \to \overline{\mathbb{R}}$, $f_n \ge 0$, measurable.
+    The sequence $\{f_n\}$ is increasing on $E$
+    ($f_n \ge f_k$ for $n > k$).
+    If $f_n \to f$ pointwise almost everywhere on $E$, then 
+    \[ \lim_{n \to \infty} \int_E f_n = \int_E f \]
+\end{theorem}
+\begin{proof}
+    \mbox{}
+    \begin{enumerate}
+        \item {
+            From Fatou's lemma,
+            \[ \int_E f \le \liminf \int_E f_n \]
+        }
+        \item {
+            \[ f_n \nearrow \implies \int_E f \ge \limsup \int_E f_n \implies
+            \text{all three are equal} \]
+        }
+    \end{enumerate}
+\end{proof}
+
+\begin{theorem}[Lebesgue's dominated convergence theorem]
+    Let $f_n: E \to \overline{\mathbb{R}}$ --- measurable. Let
+    $g : E \to \overline{\mathbb{R}}$ be integrable over $E$, $g \ge 0$.
+    Assume that $\abs{f_n} \le g$ for all $n$.
+
+    If $f_n \to f$ pointwise almost everywhere on $E$, then $f$ is integrable
+    on $E$ and
+    \[
+        \lim_{n \to \infty} \int_E f_n = \int_E f
+    \]
+\end{theorem}
+\begin{remark}
+    Bounded convergence theorem is a special case with
+    \[
+        g(x) = \begin{cases}
+            M,& x \in E\\
+            0,& x \not\in E
+        \end{cases}
+    \]
+\end{remark}
+\begin{proof}
+    The idea of the proof is to apply Fatou's lemma to $g + f$ and $g - f$.
+    \begin{enumerate}
+        \item {
+            Since $\abs{f_n} \le g$, we have $\abs{f} \le g$ almost everywhere on $E$.
+            Therefore, $f$ is integrable as we proved \hyperref[prop:boundedIntegrable]{earlier}.
+        }
+        \item {
+            Remove a subset of measure 0 so that $f$ and each $f_n$ are finite on $E$.
+            That's possible, because each of the functions $f$ and $f_n$ has an infinite value on a subset of measure 0,
+            and the countable union of subsets of measure 0 also has measure 0.
+            Now $g \pm f$ and $g \pm f_n$ are well-defined.
+        }
+        \item {
+            Apply Fatou's lemma:
+            \begin{enumerate}
+                \item {
+                    $f_n \to f$, and $g - f_n$ are non-negative due to the dominance by $g$.
+                    \[ 
+                        \int_E (g - f) \le \liminf \int_E (g - f_n) =
+                        \int_E g- \limsup \int_E f_n
+                    \]
+                    Now we can cancel out $\int_E g$ on both sides, since it's finite. We get that
+                    \[
+                        \int_E f \ge \limsup \int_E f_N
+                    \]
+                }
+                \item {
+                    Apply Fatou's lemma to the sequence of $g + f_n$, which is also 
+                    non-negative due to the dominance by $g$:
+                    \[
+                        \int_E (g + f) \le \liminf\int_E(g + f_n) =
+                        \int_E g + \liminf \int_E f_n \implies
+                        \int_E f \le \liminf \int_E f_n
+                    \]
+                }
+            \end{enumerate}
+            \[
+                \text{(a)} + \text{(b)} \implies \int_E f = \lim_{n \to \infty} \int_E f_n
+            \]
+        }
+    \end{enumerate}
+\end{proof}
+
+\begin{theorem}[Countable additivity of integration]$ $\\
+    $f : E \to \overline{\mathbb{R}}$ --- integrable.
+    $\{E_n\}^\infty$ are disjoint measurable subsets of $E$,
+    $E = \cup_{1}^\infty E_n$.
+    Then
+    \[ \int_E f = \sum_{n=1}^\infty \int_{E_n} f \]
+\end{theorem}
+\begin{proof}
+    Let
+    $\chi_n \coloneqq \chi_{\cup_1^n E_k},\ f_n \coloneqq f \cdot \chi_n$.
+    Then $f_n$ are measurable and $\abs{f_n} \le \abs{f}$ on $E$
+    and $f_n \to f$ pointwise on $E$.
+    Hence by Lebesgue's dominance convergence theorem (with $g = f$),
+    \[
+        \int_E f = \lim_{n \to \infty} \int_E f_n \overset{(*)}{=} \sum_1^\infty \int_{E_n} f
+    \]
+    Here (*) holds true, because the for a finite sum this equality is true by
+    applying induction to \hyperref[the:integralOnUnion]{this theorem}, and 
+    then we can take the limits.
+\end{proof}
+
+\begin{theorem}[Continuity of integration]
+    $f : E \to \overline{\mathbb{R}}$ --- integrable.
+    \begin{enumerate}
+        \item {
+            If $\{E_n\}_1^\infty$ --- ascending, each $E_n$ is measurable, then
+            \[
+                \int\limits_{\cup_1^\infty E_n} f = \lim_{n \to \infty} \int_{E_n} f
+            \]
+        }
+        \item {
+            If $\{E_n\}_1^\infty$ --- descending, each $E_n$ is measurable, then
+            \[
+                \int\limits_{\cap^\infty E_n} f = \lim_{n \to \infty} \int_{E_n} f
+            \]
+        }
+    \end{enumerate}
+\end{theorem}
+\begin{proof}
+    We're not gonna give the full proof, just the proof idea.
+    We can use the dominated convergence theorem.
+    
+    In the first case, define $f_n \coloneqq f \cdot \chi_{E_n}$.
+    Since it's an ascending sequence, we'll have $f_n \to f$ pointwise on 
+    $\cup_1^\infty E_n$.
+    Now apply dominated convergence theorem with $g = f$ on $\cup_1^\infty E_n$.
+
+    The second case is analogous, but we'll have to look at the complement.
+\end{proof}

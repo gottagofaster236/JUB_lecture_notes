@@ -124,9 +124,9 @@ Euclid's algorithm converts $(x)_{10}$ to $(y)_b$.
         For $i=n$ to $0$ do:
         \begin{align*}
             &
-            a_i \coloneqq x\ \mathrm{div}\ b^{i} \text{ (integer division)}
+            a_i \coloneqq x\mathrel{\text{div}} b^{i} \text{ (integer division)}
             \\&
-            x \coloneqq x\ \mathrm{mod}\ b^{i} \text{ (the remainder)}
+            x \coloneqq x\mathrel{\text{mod}} b^{i} \text{ (the remainder)}
         \end{align*}
     }
     \item {
@@ -145,17 +145,17 @@ Euclid's algorithm converts $(x)_{10}$ to $(y)_b$.
         \item {
             \begin{align*}
                 &
-                i = 3:\ a_3 = 13 \ \mathrm{div}\ 2^3 = 1,\
-                x = 13 \ \mathrm{mod}\ 2^3 = 5
+                i = 3:\ a_3 = 13 \mathrel{\text{div}} 2^3 = 1,\
+                x = 13 \mathrel{\text{mod}} 2^3 = 5
                 \\&
-                i = 2:\ a_2 = 5 \ \mathrm{div}\ 2^2 = 1,\
-                x = 5 \ \mathrm{mod}\ 2^2 = 1
+                i = 2:\ a_2 = 5 \mathrel{\text{div}} 2^2 = 1,\
+                x = 5 \mathrel{\text{mod}} 2^2 = 1
                 \\&
-                i = 1:\ a_1 = 1 \ \mathrm{div}\ 2^1 = 0,\
-                x = 1 \ \mathrm{mod}\ 2^1 = 1
+                i = 1:\ a_1 = 1 \mathrel{\text{div}} 2^1 = 0,\
+                x = 1 \mathrel{\text{mod}} 2^1 = 1
                 \\&
-                i = 0:\ a_0 = 1 \ \mathrm{div}\ 2^0 = 1,\
-                x = 1 \ \mathrm{mod}\ 2^0 = 0
+                i = 0:\ a_0 = 1 \mathrel{\text{div}} 2^0 = 1,\
+                x = 1 \mathrel{\text{mod}} 2^0 = 0
             \end{align*}
         }
         \item {
@@ -192,9 +192,9 @@ The algorithm is the following:
         While $x > 0$ do:
         \begin{align*}
             &
-            a_i \coloneqq x \ \mathrm{mod}\ b
+            a_i \coloneqq x \mathrel{\text{mod}} b
             \\&
-            x \coloneqq x \ \mathrm{div}\ b
+            x \coloneqq x \mathrel{\text{div}} b
             \\&
             i \coloneqq i + 1
         \end{align*}

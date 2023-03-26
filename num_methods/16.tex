@@ -73,7 +73,7 @@ Now take the two Taylor series expansions and subtract them:
     &
     f(x+h) = f(x) + hf'(x) + \frac{h^2}{2} f''(x) + \frac{h^3}{3!} f'''(\xi_1),\quad \xi_1 \in (x, x + h)
     \\&
-    f(x-h) = f(x) - hf'(x) + \frac{h^2}{2} f''(x) - \frac{h^3}{3!} f'''(\xi_1),\quad \xi_2 \in (x, x + h)
+    f(x-h) = f(x) - hf'(x) + \frac{h^2}{2} f''(x) - \frac{h^3}{3!} f'''(\xi_2),\quad \xi_2 \in (x, x + h)
     \\&
     f(x + h) - f(x - h) = 2h f'(x) + \frac{h^3}{3!} \bigl(f'''(\xi_1) + f'''(\xi_2)\bigr)
     \\&
@@ -90,7 +90,7 @@ Now take the two Taylor series expansions and subtract them:
 \end{figure*}
 
 \subsubsection{Richardson extrapolation}
-Approach for producing higher order approximations from lower orrder approximations.
+Approach for producing higher order approximations from lower order approximations.
 
 Suppose we have a low order approximation $\varphi(h)$ of a derivative, e.g.
 \[

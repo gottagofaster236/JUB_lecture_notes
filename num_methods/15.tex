@@ -4,7 +4,7 @@ Instead of doing an actual interpolation, we can look for an approximation, i.e.
 ``close'' to the measurements and is of certain (function) type.
 
 Polynomial interpolation is restrained to polynomials. In least squares
-approximation, we are free to choose the types of (function) type.
+approximation, we are free to choose the types of functions.
 
 \begin{example}
     Surface tension $S$ of a liquid depends on the liquid's temperature. It's known that the dependence is linear, i.e.
@@ -64,7 +64,7 @@ approximation, we are free to choose the types of (function) type.
         }
         \item {
             The approximation error in the $l_2$-norm:
-            \[ E_1(a, b) = \sum_{i=0}^n \bigl(s_i - (a T_i + b)\bigr)^2 \]
+            \[ E_2(a, b) = \sum_{i=0}^n \bigl(s_i - (a T_i + b)\bigr)^2 \]
             So now, to find the critical points we consider
             \begin{align*}
                 \frac{\partial E_2}{\partial a} &=
@@ -92,8 +92,8 @@ approximation, we are free to choose the types of (function) type.
             The critical point:
             \begin{align*}
                 0 = \frac{\partial E_2}{\partial b} 
-                &\iff a \sum T_i + b \sum 1 = \sum S_i \\
-                &\iff a \sum T_i + b(n + 1) = \sum S_i \quad (2)
+                &\iff a \sum T_i + b \sum 1 = \sum s_i \\
+                &\iff a \sum T_i + b(n + 1) = \sum s_i \quad (2)
             \end{align*}
             (1) and (2) determine a linear system of equations in $a$ and $b$:
             \[
@@ -104,7 +104,7 @@ approximation, we are free to choose the types of (function) type.
                 \begin{pmatrix}
                     a \\ b
                 \end{pmatrix} = \begin{bmatrix}
-                    \sum S_i T_i\\ \sum S_i
+                    \sum s_i T_i\\ \sum s_i
                 \end{bmatrix}
             \]
             To solve this we just have to invert a $2 \times 2$ matrix.

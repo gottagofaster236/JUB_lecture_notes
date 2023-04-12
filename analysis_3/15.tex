@@ -1,0 +1,134 @@
+\pagebreak
+\section{$L^p$-spaces}
+\begin{definition}
+    $E$ --- measurable, $1 \le p < \infty$.
+    $\hat{L}^p(E)$ is the collection of measurable functions
+    $f : E \to \overline{\mathbb{R}}$, such that
+    $\abs{f}^p$ is integrable over $E$.
+\end{definition}
+\begin{remark}
+    This is the definition $\hat{L}^p(E)$.
+    The definition of $L^p(E)$ is almost the same except a small detail, we will fix it later.
+\end{remark}
+\begin{remark}
+    An integrable function has a \textit{finite} integral.
+\end{remark}
+Properties of $L^p$:
+\begin{definition}[Completeness of reals]
+    If $\lim_{n, m \to \infty} \abs{a_n - a_m} = 0$, then there exists $a \in \mathbb{R}$, 
+    such that $\lim_{n \to \infty} \abs{a_n - a} = 0$.
+\end{definition}
+\begin{remark}
+    An equivalent formulation: 
+    if $\{a_n\}_1^\infty$ is a Cauchy sequence, then
+    there exists $a \in \mathbb{R}$, such that
+    $\lim_{n \to \infty} a_n = a$.
+\end{remark}
+
+\begin{itemize}
+    \item {
+        Completeness of $L^p(E)$:
+        if
+        \[ \lim_{n, m \to \infty} \int \abs{f_n - f_m}^p = 0 \]
+        them there exists $f \in L^p(E)$, such that
+        \[ \lim_{n \to \infty} \int_E \abs{f_n - f}^p = 0 \]
+        This is Riesz–Fischer theorem.
+    }
+    \item {
+        $L^p$ is a normed linear space with completeness. With completeness, it 
+        follows that
+        $L^p$ is a Banach space.
+    }
+    \item {
+        $L^p$ is separable: there exists a countable dense subset in $L^p$.
+    }
+\end{itemize}
+
+\subsection{Normed linear spaces}
+We are going to only consider linear spaces over $\mathbb{R}$.
+
+Examples:
+\begin{enumerate}
+    \item {
+        $C[a, b]$ --- the space of all continuous functions on $[a, b]$.
+        The sum of two continuous functions is continuous.
+        The null vector is $f(x) \equiv 0$.
+        We'll leave the full proof as an exercise.
+    }
+    \item {
+        $B[a, b]$ --- the space of all bounded functions on $[a, b]$.
+        If we take the sum of two bounded functions, it will be bounded as well.
+        Multiplying by a scalar doesn't break the boundedness, either.
+    }
+    \item {
+        $\hat{L}^p(E)$ --- the space of $f$, such that $\abs{f}^p$ is integrable.
+        We need to prove that $f + g \in \hat{L}^p(E)$
+        for $f, g \in \hat{L}^p(E)$, i.e. that $\abs{f+g}^p$ is integrable.
+        \begin{proof}
+            $f$ and $g$ are infinite on a subset of measure 0, therefore, 
+            $f + g$ is undefined on a subset of measure 0. Let's consider the case if
+            both $f$ and $g$ are finite:
+            \[ \abs{f + g}^p \le \bigl(2 \max(\abs{f}, \abs{g})\bigr)^p \le
+            2^p \bigl(\abs{f}^p + \abs{g}^p\bigr) \]
+            $\abs{f}^p$ and $\abs{g}^p$ are both integrable, therefore, their sum
+            is integrable, and if we multiply it by a constant ($2^p$) it's still integrable.
+        \end{proof}
+    }
+\end{enumerate}
+\pagebreak
+\begin{definition}[Norm]
+    $X$ --- linear space. $\norm{\, \cdot \,}$ --- a real-valued function on $X$, such that
+    \begin{enumerate}
+        \item {
+            $\norm{f + g} \le \norm{f} + \norm{g}$
+        }
+        \item {
+            $\norm{\alpha f} = \abs{\alpha} \cdot \norm{f}$.
+        }
+        \item {
+            $\norm{f} \ge 0$ and $\abs{f} = 0$ if and only if $f = \vec{0}$.
+        }
+    \end{enumerate}
+\end{definition}
+\begin{remark}
+    A norm defines a metric:
+    $l(f, g) \coloneqq \abs{f - g}$.
+    However, it doesn't work in the other way: we wouldn't get property 3 from a metric.
+\end{remark}
+Examples:
+\begin{enumerate}
+    \item {
+        $X = C[a, b],\ \norm{f} \coloneqq \max_{x \in [a, b]} \abs{f(x)}$.
+    }
+    \item {
+        $X = B[a, b],\ \norm{f} \coloneqq \sup_{x \in [a, b]} \abs{f(x)}$.
+    }
+    \item {
+        \[
+            X = \hat{L}^p(E),\ \norm{f}_p \coloneqq \biggl(\int_E \abs{f}^p\biggr)^{\frac{1}{p}}
+        \]
+        Here we take the root of power $p$, because property 2 (multiplication by scalar)
+        has to hold.
+        However, property 3 doesn't hold, because if $f$ is non-zero on a subset of measure 0.
+        then $\norm{f} = 0$, but $f \ne 0$. We can fix this by putting functions that
+        differ on a subset of measure zero.
+        into a single equivalence class:
+        $f \sim g$ if $f = g$ almost everywhere.
+        Now we arrive at the correct definition of $L^p$:
+        \begin{definition}
+            $L^p(E) \coloneqq \hat{L}^p(E) / {\sim }$
+        \end{definition}
+    }
+\end{enumerate}
+\begin{definition}
+    $f : E \to \overline{\mathbb{R}}$ is \textit{essentially bounded}, if
+    there exists $M \ge 0$, such that
+    $f(x) \le M$ for almost every $x \in E$. $M$ is called an \textit{essential upper bound}.
+\end{definition}
+\begin{definition}
+    $L^\infty(E)$ is the collection of all equivalence classes $[f]$ of 
+    measurable functions $f$ that are essentially bounded.
+
+    $\norm{f}_\infty$ is the infimum of all essential upper bounds of $f$.
+    It is also called the \text{essential supremum}. 
+\end{definition}

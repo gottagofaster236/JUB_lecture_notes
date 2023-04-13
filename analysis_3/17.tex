@@ -1,0 +1,161 @@
+\begin{theorem}[Minkowski inequality]
+    $E$ --- measurable, $1 \le p \le \infty$.
+    If $f, g \in L^p(E)$, then 
+    $f + g \in L^p$ and 
+    $\norm{f + g}_p \le \norm{f}_p + \norm{g}_p$
+\end{theorem}
+\begin{proof}
+    \mbox{}
+    \begin{enumerate}[label={Case \arabic*.}]
+        \item {
+            $p = 1$ --- obvious, $p = \infty$ --- exercise (use essential supremum).
+        }
+        \item {
+            $p \in (1, +\infty)$. Assume that $[f + g] \ne [0]$.
+            By part 2 of the previous theorem,
+            \begin{align*}
+                &\norm{f + g}_p = \int_E (f + g)(f + g)^* = 
+                \int_E f (f + g)^* + \int_E g(f+g)^* = \text{(*)}
+                \\&
+                f \in L^p(E),\ (f+g) \in L^p(E) \implies (f+g)^* \in L^q(E)
+                \text{, now use Hölder's inequality:}
+                \\&
+                \text{(*)} = \norm{f}_p \norm{(f+g)^*}_q +
+                \norm{g}_p \norm{(f+g)^*}_q = \norm{f}_p + \norm{g}_p
+            \end{align*}
+            Note that $f + g \in L^p$, as we proved
+            \hyperref[prop:sumIsInLp]{earlier}.
+        }
+    \end{enumerate}
+\end{proof}
+\begin{remark}
+    There's another way of looking at the Minkowski inequality.
+    \begin{center}   
+        \begin{tikzpicture}
+            \begin{axis}[
+                axis x line=left,
+                axis y line=left,
+                axis line style={-{Stealth[scale=1.5]}},
+                xtick={0,1,2},
+                xticklabels={$x$, $\frac{x+y}{2}$, $y$},
+                ytick=\empty,
+                xmin=-0.5, xmax=2.5, ymin=-0.2, ymax=1.8,
+                unit vector ratio=1 1 1,
+                samples=100,
+            ]
+                \tikzset{graph/.style={very thick, smooth}}
+                \tikzset{graph_point/.style={fill,circle,inner sep=1.5pt}}
+                \addplot[blue, graph, domain=0:2] {(x - 1)^2};
+                \addplot[red, graph, domain=0:2] {1};
+                \addlegendentry{$f(x)$}
+                \node[graph_point,label={$f(x)$}] at (0, 1){};
+                \node[graph_point,label={$\frac{f(x) + f(y)}{2}$}] at (1, 1){};
+                \node[graph_point,label={$f\bigl(\frac{x + y}{2}\bigr)$}] at (1, 0){};
+                \node[graph_point,label={$f(y)$}] at (2, 1){};
+                %\node[graph_point] at (2, 1){$f(y)$};
+            \end{axis}
+        \end{tikzpicture}
+    \end{center}
+    A function $f$ is convex if and only if for every $x, y$ we have
+    \[
+        f\Bigl(\frac{x+y}{2}\Bigr) \le \frac{f(x) + f(y)}{2}
+    \]
+    Minkowski inequality states that the norm of $f$ is a convex function:
+    \[ 
+        \norm{f+g}_p \le \norm{f}_p + \norm{g}_p \iff 
+        \left\lVert{\frac{f+g}{2}}\right\rVert_p \le \frac{\norm{f}_p + \norm{g}_p}{2}
+    \]
+    The function $f(x) = x^p$ is only convex for $p \ge 1$, hence we have $p \ge 1$
+    in Minkowski inequality statement. (The lecturer forgot the proof here).
+\end{remark}
+
+\begin{theorem}[Cauchy-Schwarz inequality]
+    If $f, g \in L^2$, then
+    \[ \int fg \le \sqrt{\int f^2 \cdot \int g^2} \]
+    In linear algebra, we prove that inequality for two vectors in $\mathbb{R}^n$
+    and their inner product.
+    Therefore, we can define
+    \[ \langle f, g \rangle \coloneqq \int fg \]
+    Then a lot of properties that hold for vectors will also hold for such an inner product.
+\end{theorem}
+\begin{proof}
+    This is Hölder's inequality for $p = q = 2$.
+\end{proof}
+\pagebreak
+\begin{theorem}
+    $m(E) < \infty$. If $1 \le p_1 < p_2 \le \infty$, then
+    $L^{p_2}(E) \subset L^{p_1}(E)$.
+\end{theorem}
+\begin{proof}
+    Case $p_2 = \infty$ --- exercise. Now assume that $p_2$ is finite.
+    Let's define
+    $p \coloneqq \frac{p_2}{p_1} > 1,\ q = \overline{p}$.\\
+    If $f \in L^{p_2}(E)$, then
+    $ \abs{f}^{p_1} \in L^p(E) $.
+    Let's define $g$ as follows:
+    \[ g \coloneqq \chi_E \implies \int_E g^q = \int_E 1 = m(E) < \infty \implies
+    f \in L^q(E) \]
+    Here $\chi_E$ is the characteristic function of $E$.
+    Now apply Hölder's inequality:
+    \[
+        \int_E \abs{f}^{p_1} = \int_E \abs{f}^{p_1} g \le
+        \norm{\abs{f}^{p_1}}_p \cdot \norm{g}_q
+        \overset{p_1 \cdot p = p_2}{=}
+        \Bigl(\int_E \abs{f}^{p_2}\Bigr) \cdot
+        \Bigl(\int_E \abs{g}^q\Bigr)^\frac{1}{q} 
+        \overset{g^q = g}{=}
+        \norm{f}_{p_2}^{p_1} \cdot \bigl(m(E)\bigr)^\frac{1}{q}
+    \]
+    $\norm{f}_{p_2}$ is finite, as $f \in L^{p_2}(E)$, and $m(E)$ is finite as well,
+    therefore, the right side is finite, therefore, $f \in L^{p_1}{E}$.
+\end{proof}
+\begin{remark}
+    
+\end{remark}
+\begin{proposition}
+    We have proved the non-strict inclusion.
+    Let's prove that $L^{p_1}(E) \ne L^{p_2}(E)$, i.e.
+    that the inclusion is actually strict.
+\end{proposition}
+\begin{proof}
+    Take $E = (0, 1]$, $f(x) = \frac{1}{x^\alpha}$.
+    Let's take $\alpha$ such that $\alpha p_2 > 1$ and $\alpha p_1 < 1$
+    (which is possible as $p_1 < p_2$).
+    Then:
+    \begin{align*}
+        &\alpha p_2 > 1 \implies \int_E f^{p_2} = 
+        \int_0^1 \frac{1}{x^{\alpha p_2}} = \infty \implies
+        f \not\in L^{p_2}
+        \\&
+        \alpha p_1 < 1 \implies \int_E f^{p_1} = 
+        \int_0^1 \frac{1}{x^{\alpha p_1}} < \infty \implies
+        f \in L^{p_1}
+        \\&
+        f \not\in L^{p_2} \land f \in L^{p_1} \implies L^{p_2} \ne L^{p_1}
+    \end{align*}
+\end{proof}
+
+\subsection{Separability of $L^p$}
+\begin{theorem}
+    $E$ --- measurable. If $1 \le p < \infty$, then $L^p(E)$ is separable
+    (i.e. there exists a countable dense subset in $L^p(E)$).
+    However, $L^\infty[a, b]$ is not separable.
+\end{theorem}
+\begin{proposition}
+    $E$ --- measurable, $1 \le p \le \infty$. Then the space of all simple functions is
+    dense in $L^p(E)$.
+\end{proposition}
+\begin{proposition}
+    $[a, b]$ is a bounded interval, $1 \le p < \infty$. Then the step functions are dense
+    in $L^p([a, b])$.
+\end{proposition}
+
+After those propositions are proved, the proof of the theorem is going to go as follows.
+For $[a, b]$, let $S[a, b]$ be the set of all step functions with rational values
+and rational points of the subdivition. In this case, the set $S[a, b]$ is already countable.
+$S[a, b]$ si dense in $L^p[a, b]$. Now, if $E$ is arbitrary, 
+we could consider the family 
+\[ \mathcal{F} = \bigcup_1^\infty S[-n, n] \]
+$\mathcal{F}$ is dense in $L^p(\mathbb{R})$.
+For any $E \subset \mathbb{R}$ restrict the functions from
+$\mathcal{F}$ to $E$.

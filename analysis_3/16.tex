@@ -1,0 +1,169 @@
+\subsection{Useful inequalities}
+\begin{definition}[Conjugate]
+    For any $p \in (1, +\infty)$, we will call $q \in (1, +\infty)$
+    its \textit{conjugate}, if 
+    \[ \frac{1}{p} + \frac{1}{q} = 1 \]
+    We will denote it as $q = \overline{p}$.
+\end{definition}
+\begin{remark}
+    This is not the same conjugate as in complex analysis.
+\end{remark}
+\begin{remark}
+    It's natural to say that the conjugate of 1 is $+\infty$, and vice versa.
+\end{remark}
+
+\begin{theorem}[Young's inequality]
+    For all $a, b > 0,\ 1 < p < \infty$ and $q = \overline{p}$, we have
+    \[
+        ab \le \frac{a^p}{p} + \frac{b^q}{q}
+    \]
+\end{theorem}
+\begin{proof}
+    Consider $g(x)$:
+    \begin{align*}
+        &
+        g(x) = \frac{x^p}{p} + \frac{1}{q} - x
+        \\&
+        g(1) = \frac{1}{p} + \frac{1}{q} - 1 = 0
+        \\&
+        g'(x) = x^{p-1} - 1 \implies g'(x) > 0
+        \text{ for } x > 1 \text{ and } g'(x) < 0 \text{ for } x \in (0, 1)
+    \end{align*}
+    So, the derivative to the right of 1 is positive, and the derivative to the left of 1 is negative.
+    \begin{center}   
+        \begin{tikzpicture}
+            \begin{axis}[
+                axis x line=left,
+                axis y line=left,
+                axis line style={-{Stealth[scale=1.5]}},
+                xtick={1},
+                ytick=\empty,
+                xmin=0, xmax=2, ymin=0, ymax=1.2,
+                unit vector ratio=1 1 1,
+                samples=100,
+            ]
+                \tikzset{graph/.style={very thick, smooth}}
+                \addplot[blue, graph, domain=0:2] {(x - 1)^2};
+                \addlegendentry{$g(x)$}
+            \end{axis}
+        \end{tikzpicture}
+    \end{center}
+    Therefore, $g(1) = 0$ is the minimum of $g$, thus:
+    \begin{align*}
+        &
+        g(x) \ge 0 \quad \forall x \in (0, +\infty) \implies
+        \frac{x^p}{p} + \frac{1}{q} \ge x
+        \\&
+        \text{Take } x = \frac{a}{b^{q - 1}}  \implies
+        \frac{a^p}{pb^{p(q-1)}} + \frac{1}{q} \ge \frac{a}{b^{q-1}} \implies
+        \frac{a^p}{b^{pq - p - q}} + \frac{b^q}{q} \ge ab
+        \\&
+        \frac{1}{p} + \frac{1}{q} = 1 \overset{\times pq}{\implies} p + q = pq \implies 
+        pq - p - q = 0
+        \\&
+        \implies \frac{a^p}{p b^0} + \frac{b^q}{q} \ge ab \implies
+        \frac{a^p}{p} + \frac{b^q}{q} \ge ab 
+    \end{align*}
+\end{proof}
+\begin{remark}
+    This function $g$ looks a bit artificial.
+    It's not the only choice of such function, but it's not the key idea of
+    the proof.
+    The main idea is to create an inequality using derivatives (as we did).
+\end{remark}
+\begin{theorem}
+    $E$ --- measurable, $1 \le p < \infty$, $q = \overline{p}$.
+    If $f \in L^p(E)$ and $g \in L^q(E)$, then:
+    \begin{enumerate}
+        \item {
+            $f \cdot g \in L^1(E)$ and
+            \[
+                \int_E \abs{fg} \le \norm{f}_p \cdot \norm{g}_q \qquad
+                \text{(Hölder's inequality)}
+            \]
+        }
+        \item {
+            If $f$ is non-zero on a subset of positive measure (i.e.
+            $[f] \ne [0]$), then
+            \begin{align*}
+                &
+                f^*(x) \coloneqq \norm{f}_p^{1 - p} \cdot 
+                \operatorname{sgn}(f(x)) \cdot \abs{f(x)}^{p-1} \in L^q(E),\ \norm{f^*}_q = 1
+                \\&
+                \text{and } \int_E f \cdot f^* = \norm{f}_p
+            \end{align*}
+        }
+    \end{enumerate}
+\end{theorem}
+\begin{remark}
+    $f^*$ is, in a sense, a rescaling of $\abs{f(x)^{p-1}}$.
+    We multiply it by the sign function to preserve the sign of $f$.
+\end{remark}
+\begin{proof}
+    \mbox{}
+    \begin{enumerate}[label={Case \arabic*.}]
+        \item {
+            $p = 1$, $q = \infty$. In this case Hölder's inequality is obvious
+            if we replace $g$ with its essential supremum:
+            \[
+                \int_E \abs{fg} \le 
+                \int_E \abs{f} \cdot \operatorname{ess\,sup}_{E} \abs{g} = 
+                \int_E \abs{f} \cdot \norm{g}_q =
+                \norm{f}_p \cdot \norm{g}_q
+            \]
+            Now for the second part:
+            \begin{align*}
+                &p = 1 \implies f^*(x) = \operatorname{sgn}(f(x)) \in L^\infty(E)
+                \overset{f^* \text{ is sgn}} \implies 
+                \norm{f}_\infty = 1 \implies f \in L^\infty(E)
+                \\&
+                \text{and }
+                \int_E f f^* = \int_E \abs{f} = \norm{f}_1
+            \end{align*}
+        }
+        \item {
+            $p, q \ne 1$. 
+            Hölder's inequality is homogeneous (i.e. you can multiply or divide
+            $f$ and $g$ by a constant and the inequality will still hold),
+            therefore, without the loss of generality, we can assume that
+            $\norm{f}_p = \norm{g}_q = 1$. Therefore, we need to prove that
+            \[ \int_E \abs{fg} \le 1 \]
+            Since $\abs{f}^p$ and $\abs{g}^q$ are integrable, it follows that
+            $f$ and $g$ are infinite on subset of measure 0.
+            Outside of that subset, by Young's inequality,
+            \[
+                \abs{fg} = \abs{f} \cdot \abs{g} \le
+                \frac{\abs{f}^p}{p} + \frac{\abs{g}^q}{q}
+                \text{ almost everywhere on } E
+            \]
+            Now let's put integrals on both sides:
+            \[
+                \int_E \abs{fg} \le
+                \int_E \frac{\abs{f}^p}{p} + \int_E \frac{\abs{g}^q}{q}
+                =
+                \left[
+                    \int_E \abs{f}^p = \norm{f}_p^p = 1^p = 1,\
+                    \int_E \abs{g}^q = \norm{g}_q^q = 1^q = 1
+                \right] = 
+                \frac{1}{p} + \frac{1}{q} = 1
+            \]
+
+            Now let's do the second part.
+            \begin{align*}
+                &f f^* \overset{\operatorname{sgn}(f) \text{ cancels out}}{=}
+                \norm{f}_p^{1 - p} \cdot \abs{f}^p 
+                \text{ on } E \implies
+                \int_E f f^* = \norm{f}_p^{1-p} \int_E \abs{f}^p =
+                \norm{f}_p^{1-p} \cdot \norm{f}_p^p = \norm{f}_p
+                \\&
+                \int_E \abs{f^*}^q = 
+                \norm{f}_p^{(1-p)q} \int_E \abs{f}^{(p-1)q} =
+                \left[pq - p - q = 0\right] =
+                \norm{f}_p^{-p} \cdot \int_E \abs{f}^p = 
+                \norm{f}_p^{-p} \cdot \norm{f}_p^p = 1
+                \\&
+                \int_E \abs{f^*}^q = 1 \implies f^* \in L^q(E)
+            \end{align*}
+        }
+    \end{enumerate}
+\end{proof}

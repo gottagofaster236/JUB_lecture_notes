@@ -30,7 +30,7 @@ Properties of $L^p$:
         Completeness of $L^p(E)$:
         if
         \[ \lim_{n, m \to \infty} \int \abs{f_n - f_m}^p = 0 \]
-        them there exists $f \in L^p(E)$, such that
+        then there exists $f \in L^p(E)$, such that
         \[ \lim_{n \to \infty} \int_E \abs{f_n - f}^p = 0 \]
         This is Riesz–Fischer theorem.
     }
@@ -61,6 +61,7 @@ Examples:
         Multiplying by a scalar doesn't break the boundedness, either.
     }
     \item {
+        \label{prop:sumIsInLp}
         $\hat{L}^p(E)$ --- the space of $f$, such that $\abs{f}^p$ is integrable.
         We need to prove that $f + g \in \hat{L}^p(E)$
         for $f, g \in \hat{L}^p(E)$, i.e. that $\abs{f+g}^p$ is integrable.
@@ -107,19 +108,30 @@ Examples:
         \[
             X = \hat{L}^p(E),\ \norm{f}_p \coloneqq \biggl(\int_E \abs{f}^p\biggr)^{\frac{1}{p}}
         \]
-        Here we take the root of power $p$, because property 2 (multiplication by scalar)
-        has to hold.
-        However, property 3 doesn't hold, because if $f$ is non-zero on a subset of measure 0.
-        then $\norm{f} = 0$, but $f \ne 0$. We can fix this by putting functions that
-        differ on a subset of measure zero.
-        into a single equivalence class:
-        $f \sim g$ if $f = g$ almost everywhere.
-        Now we arrive at the correct definition of $L^p$:
-        \begin{definition}
-            $L^p(E) \coloneqq \hat{L}^p(E) / {\sim }$
-        \end{definition}
     }
 \end{enumerate}
+Here we take the root of power $p$, because property 2 (multiplication by scalar)
+has to hold.
+
+However, property 3 doesn't hold, because if $f$ is 0 almost everywhere,
+then $\norm{f} = 0$, but $f \ne 0$. We can fix this by putting functions that
+differ on a subset of measure zero
+into a single equivalence class:
+$f \sim g$ if $f = g$ almost everywhere.
+Now we arrive at the correct definition of $L^p$:
+\begin{definition}
+    $L^p(E) \coloneqq \hat{L}^p(E) / {\sim }$
+\end{definition}
+\begin{remark}
+    If $X(f) = 0$ for an $f \in \hat{L}^p(E)$,
+    then $f$ is non-zero on a subset of measure 0, therefore, it's
+    in the same equivalence class as $g \equiv 0$.
+\end{remark}
+\begin{remark}
+    When we write $f \in L^p(E)$, we will imply that we're talking about the corresponding
+    equivalence class $[f]$.
+\end{remark}
+
 \begin{definition}
     $f : E \to \overline{\mathbb{R}}$ is \textit{essentially bounded}, if
     there exists $M \ge 0$, such that

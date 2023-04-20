@@ -1,0 +1,225 @@
+\begin{proof}[Proof of Proposition~\ref{prop:propOneSeparability}]
+    \mbox{}
+    \begin{enumerate}
+        \item {
+            $p = \infty$. Let $g \in L^\infty(E)$. We want to approximate $g$
+            with a sequence of simple functions that converge to $g$.
+            $g \in L^\infty(E)$, thus, $g$ is bounded outside
+            $E_0,\ m(E_0) = 0$.
+            Now let's apply the \hyperref[lem:simpleApproxLemma]{simple approximation lemma}
+            for $f$ restricted onto $E \setminus E_0$.
+        }
+        \item {
+            $p < \infty$. Then we can't use the simple approximation lemma directly,
+            as we don't have essential boundness. Let's use the
+            \hyperref[the:simpleApproxTheorem]{simple approximation theorem instead}:
+            there exists a sequence of simple functions $\{\varphi_n\}$, such that
+            $\varphi_n \to g$ pointwise on $E$ and $\abs{\varphi_n(x)} \le \abs{g(x)}\ \forall n, x$.
+            It follows that $\norm{\varphi_n}_p \le \norm{g}_p < \infty \implies
+            \varphi_n \in L^p(E) \ \forall n$.
+
+            Since $\abs{\varphi_n(x)} \le \abs{g(x)}$, we can also write that
+            \[
+                \abs{\varphi_n - g}^p \le (2 \abs{g})^p = 2^p \abs{g}^p
+            \]
+            Now we want to use the \hyperref[the:domConv]{dominated convergence theorem}.
+            $g \in L^p(E)$, therefore, $\abs{g}^p$ is integrable, and multiplying it 
+            by a constant ($2^p$) does not change that. So, we have dominated
+            $\abs{\varphi_n - g}^p$ with $2^p \abs{g}^p$. Therefore, by dominated convergence theorem, we have:
+            \[
+                \lim_{n \to \infty} \int \abs{\varphi_n - g}^p = \int \abs{\lim_{n \to \infty} \varphi_n - g}^p = 0 
+                \int \abs{g - g}^p = 0 \implies
+                \lim_{n \to \infty} \int \abs{\varphi_n - g}^p = 0
+            \]
+            Therefore, $\varphi_n \to g$ in $L^p(E)$ by definition.
+        }
+    \end{enumerate}
+\end{proof}
+
+\begin{proof}[Proof of Proposition~\ref{prop:propTwoSeparability}]
+    A simple function can be represented as 
+    \[ \sum_{i=1}^n c_i \chi_{A_i} \]
+    Let's approximate each of the characteristic functions, and then take
+    the linear combination with $c_i$ as the coefficients.
+
+    So, we want to approximate $\chi_A$ by a step function.
+    $A$ is a measurable set of finite measure (since $[a, b]$ is bounded).
+    
+    Therefore, as we have proved previously,
+    for any $\varepsilon > 0$ there exists a finite
+    disjoint collection of open intervals $\{I_k\}$, such that if
+    $U = \cup I_k$, then $m(U \triangle A) < \varepsilon$.
+    Let's choose $\varepsilon = \varepsilon^p$, then $m(U \triangle A) < \varepsilon^p$ 
+    instead. So:
+    \[
+        \norm{\chi_A - \chi_U}_p = \Bigl(\int_{A \triangle U} 1^p\Bigr) \le
+        (\varepsilon^p)^{\frac{1}{p}} \le \varepsilon
+    \]
+\end{proof}
+
+Now let's prove that $L^\infty[a,b]$ is not separable.
+\begin{proof}
+    Let $[a, b] = [0, 1]$.
+    
+    For every $y \in (0, 1)$, let's define $f_y = \chi_{[0, y]}$.
+    If $y_1 \ne y_2$, then $\abs{f_{y_1}(x) - f_{y_2}(x)} = 1$ for every $x$
+    between $y_1$ and $y_2$. Therefore, 
+    $\norm{f_{y_1} - f_{y_2}}_\infty = 1$. 
+    If we now take balls in $L^\infty[a,b]$ of radius $\frac{1}{2}$
+    centered in those functions, they will not intersect (as the pairwise distances between centers are 1).
+    Therefore, $L^\infty[a,b]$ is not separable, because we'd have to have at least one function 
+    in every one of those balls, but there's countably many of them.
+\end{proof}
+
+\subsection{Completeness of $L^p$}
+\begin{definition}
+    $X$ --- normed vector space.
+    
+    \textit{Convergence}: 
+    $f_n \to f$ if $\forall \varepsilon > 0 :\ \exists N: \forall n \ge N:\ \norm{f_n - f} < \varepsilon$.
+
+    A sequence $\{f_n\}$ is \textit{Cauchy} if 
+    $
+        \forall \varepsilon > 0: \
+        \exists N:\ \forall m, n \ge N:\ \norm{f_n - f_m} < \varepsilon
+    $
+\end{definition}
+\begin{proposition}
+    $X$ --- normed space. Then:
+    \begin{enumerate}
+        \item {
+            Every convergent sequence is Cauchy.
+        }
+        \item {
+            If a Cauchy sequence has a convergent subsequence, then
+            if converges.
+        }
+    \end{enumerate}
+\end{proposition}
+\begin{proof}
+    We'll leave the proof as an exercise. The main idea is that
+    once we can guess the limiting function $f$,
+    we can usually prove the convergence by definition.
+\end{proof}
+\begin{definition}
+    A sequence $\{f_n\}$ in $X$ is called \textit{rapidly Cauchy}, if there
+    exists a convergent series of positive numbers
+    $\sum_1^\infty \varepsilon_k$, such that
+    \[ \norm{f_{k+1} - f_k} \le \varepsilon_k^2 \quad \forall k \]
+\end{definition}
+\begin{proposition}
+    \begin{enumerate}
+        \item {
+            Every rapidly Cauchy sequence is Cauchy.
+        }
+        \item {
+            Every Cauchy sequence has a rapidly Cauchy subsequence.
+        }
+    \end{enumerate}
+\end{proposition}
+\begin{proof}
+    \begin{enumerate}
+        \item {
+            If $\sum_1^\infty \varepsilon_k$ converges, then
+            $\sum_1^\infty \varepsilon_k^2$ converges as well
+            (as once the epsilons get less than one, that the squaring will only
+            speed the convegence up).
+
+            Therefore,
+            \[
+                \norm{f_n - f_m} \le \sum_n^{m - 1} \varepsilon_k^2
+            \]
+            and the tails of a convergent functions converge to 0.
+        }
+        \item {
+            Each next element should be chosen sufficiently far in the line, 
+            to ensure the consequtive differences are small enough.
+        }
+    \end{enumerate}
+\end{proof}
+
+\begin{theorem}
+    $E$ --- measurable, $1 \le p \le \infty$. Then every rapidly Cauchy sequence
+    in $L^p(E)$ converges both with respect to $\norm{\, \cdot \,}_p$
+    and pointwise almost everywhere on $E$ to a function in $L^p(E)$.
+\end{theorem}
+\begin{proof}
+    The case $p = \infty$ will be in the homework. Assume that $p < \infty$,
+    $\{f_n\}$ --- rapidly Cauchy.
+    Since our functions belong to the $L^p$ space, every such function
+    is finite except a subset of measure zero. Let's throw this subset
+    of measure zero out for every one of our functions.
+    Since there's a countable number of functions, the set that
+    we will throw out will still have measure 0.
+    
+    $\{f_n\}$ is rapidly Cauchy. Let's take the definition of a rapidly Cauchy
+    sequence and exponentiate both sides to power $p$:
+    \[
+        \norm{f_{k+1} - f_k}_p = \Bigl(\int_E \abs{f_{k+1} - f_k}^p\Bigr)^\frac{1}{p}
+        \le \varepsilon_k^{2} \quad \forall k \implies
+        \int_E \abs{f_{k+1} - f_k}^p \le \varepsilon_k^{2p} \quad \forall k
+    \]
+    By \hyperref[the:cheb]{Chebyshev}, 
+    \[
+        m\{ x \in E \mathrel{\big\vert} \abs{f_{k+1}(x) - f_k(x)} \ge \varepsilon_k \} = 
+        m\{ x \in E \mathrel{\big\vert} \abs{f_{k+1}(x) - f_k(x)}^p \ge \varepsilon_k^p \} \le
+        \frac{1}{\varepsilon_k^p} \abs{f_{k+1}(x) - f_k(x)}^p \le \varepsilon_k^p
+    \]
+    $p \ge 1,\ \sum_1^\infty \varepsilon_k < \infty \implies \sum_1^\infty \varepsilon_k^p < \infty$.
+    Now we can use the \hyperref[lem:borCantelly]{Borel–Cantelli lemma}.
+    Let's say $E_0 \subset E$ is the subset of measure zero where Borel-Cantelli doesn't hold.
+    Then every $x \in E \setminus E_0$ belongs to a finite number of such suts. Let's
+    put $K(x)$ as the maximum index of such set plus one. Therefore:
+    \[
+        \abs{f_{k+1}(x) - f_k(x)} < \varepsilon_k \quad \forall k \ge K(x)
+    \]
+    Therefore, for every $x \in E \setminus E_0$, $\{f_k(x)\}$ is a Cauchy sequence.
+    As a result, $f_k$ converges to some function $f$ pointwise on $E \setminus E_0$.
+
+    Now we have a candidate for convergence, but we have to prove that it converges in the $L_p$ space.
+    \[
+        \int_E \abs{f_{n+k} - f_n}^p \le \sum_{m=n}^\infty \varepsilon^{2p} \quad 
+        \forall n, k
+    \]
+    Take $k \to \infty$:
+    \begin{align*}
+        &
+        \int_E \abs{f - f_n}^p \overset{\text{Fatou's lemma}}{\le} 
+        \liminf_{k \to \infty} \int_E \abs{f_{n+k} - f_n}^p
+        \\&
+        \norm{f - f_n}_p \le \sum_{m=n}^\infty \varepsilon_m^2
+    \end{align*}
+    This is the tail of a converging series, and thus it converges to 0.
+    Therefore, $f_n \to f$ in the $L^p$ norm.
+
+    Why is $f \in L^p$? That's true as $L^p$ is a vector space,
+    $f_n \in L^p, f - f_n \in L^p$. Then their sum is also in $L^p$:
+    $f_n + (f - f_n) = f \in L^p$.
+\end{proof}
+
+Does pointwise convergence cause convergence in $L^p$, or vice versa?
+It turns out that neither is true.
+\begin{example}[1]
+    \[ f_n = n^{1/p} \cdot \chi_{(0,\, 1/n]},\ E = [0, 1] \]
+    $f_n \to 0$ pointwise. But:
+    \[
+        \int_E \abs{f_n - 0}^p = \int_0^{1/n} n = 1
+    \]
+\end{example}
+\begin{example}
+    Let's imagine a piano.
+    When we're playing a piano, we're pressing the keys one by one from left to right.
+    Let's split the interval of $[0, 1]$ into $n$ pieces, and ``move from left to right''
+    by selecting functions equal to $\chi_{[k / n,\, (k+1) / n]}$.
+    We can imagine that when we press a key (which is $[k / n,\, (k+1) / n]$)  it is ``lifted up'' by 1
+    (as opposed to being pushed down as on a real piano).
+
+    When we've pressed every key from 1 to $n$ from left to right, let's subdivide
+    each key into two, so now we have $2n$ keys. Now let's press every key from 1
+    to $2n$ from left to right, and subdivide again, and so on.
+
+    Each time the width of our piano keys will be smaller and smaller and smaller,
+    and, therefore, the integral will converge to 0.
+    However, there's no pointwise convergence on any subset of the interval,
+    because every point on $[0, 1]$ will be ``played'' infinitely many times.
+\end{example}

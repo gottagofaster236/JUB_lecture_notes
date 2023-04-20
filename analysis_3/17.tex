@@ -29,7 +29,8 @@
     \end{enumerate}
 \end{proof}
 \begin{remark}
-    There's another way of looking at the Minkowski inequality.
+    There's another way of looking at the Minkowski inequality --- by considering convex functions.
+    Let's use that to find a counterexample to the Minkowski inequality for $p < 1$.
     \begin{center}   
         \begin{tikzpicture}
             \begin{axis}[
@@ -57,16 +58,48 @@
         \end{tikzpicture}
     \end{center}
     A function $f$ is convex if and only if for every $x, y$ we have
+    \begin{align*}
+        &f\Bigl(\frac{x+y}{2}\Bigr) \le \frac{f(x) + f(y)}{2}
+        \\&
+        f(\text{average}) \le \operatorname{average}(f)
+    \end{align*}
+    An integral is essentialy an average of an infinite number of points, therefore,
+    we can write the same inequality in the integral form:
+    \[ f\Bigl(\int \varphi\Bigr) \le \int (f \circ \varphi) \]
+    If we define $\varphi$ as 
     \[
-        f\Bigl(\frac{x+y}{2}\Bigr) \le \frac{f(x) + f(y)}{2}
+        \varphi(x) = \begin{cases}
+            a, & 0 \le x \le \frac{1}{2}\\
+            b, & \frac{1}{2} \le x \le 1
+        \end{cases}
     \]
-    Minkowski inequality states that the norm of $f$ is a convex function:
-    \[ 
-        \norm{f+g}_p \le \norm{f}_p + \norm{g}_p \iff 
-        \left\lVert{\frac{f+g}{2}}\right\rVert_p \le \frac{\norm{f}_p + \norm{g}_p}{2}
+    Then we get the original inequality for two points.
+
+    Let $E = [0, 1]$ and $f = c > 0,\ f = c = f_1 + f_2$.
+    Then:
+    \[
+        \norm{f}_p = \Bigl(\int_E \abs{f}^p\Bigr)^\frac{1}{p} = 
+        (c^p)^\frac{1}{p} = c
     \]
-    The function $f(x) = x^p$ is only convex for $p \ge 1$, hence we have $p \ge 1$
-    in Minkowski inequality statement. (The lecturer forgot the proof here).
+    $x^p$ is a concave function for $p < 1$. Therefore, the inequality will be in the other side:
+    \begin{align*}
+        &
+        \Bigl(\int_E f_1\Bigr)^p \ge \int_E f_1^p  \implies
+        \int_E f_1 \ge \norm{f_1}_p
+        \\&
+        \Bigl(\int_E f_2\Bigr)^p \ge \int_E f_2^p  \implies
+        \int_E f_2 \ge \norm{f_2}_p
+    \end{align*}
+    If $f_1$ and $f_2$ are not constant, then the above inequalities are strict.
+    Let's now sum up the two inequalities:
+    \begin{align*}
+        &
+        \norm{f_1}_p + \norm{f_2}_p <
+        \int_E f_1 + \int_E f_2 = \int_E c = c = \norm{f}_p
+        \\&
+        \norm{f_1}_p + \norm{f_2}_p < \norm{f}_p
+    \end{align*}
+    Which is what we wanted.
 \end{remark}
 
 \begin{theorem}[Cauchy-Schwarz inequality]
@@ -81,7 +114,7 @@
 \begin{proof}
     This is Hölder's inequality for $p = q = 2$.
 \end{proof}
-\pagebreak
+
 \begin{theorem}
     $m(E) < \infty$. If $1 \le p_1 < p_2 \le \infty$, then
     $L^{p_2}(E) \subset L^{p_1}(E)$.
@@ -138,22 +171,25 @@
 \subsection{Separability of $L^p$}
 \begin{theorem}
     $E$ --- measurable. If $1 \le p < \infty$, then $L^p(E)$ is separable
-    (i.e. there exists a countable dense subset in $L^p(E)$).
-    However, $L^\infty[a, b]$ is not separable.
+    (i.e. there exists a countable dense subset in $L^p(E)$),
+    and $L^\infty[a, b]$ is not separable.
 \end{theorem}
 \begin{proposition}
-    $E$ --- measurable, $1 \le p \le \infty$. Then the space of all simple functions is
+    \label{prop:propOneSeparability}
+    $E$ --- measurable, $1 \le p \le \infty$. Then the subspace of all simple functions is
     dense in $L^p(E)$.
 \end{proposition}
 \begin{proposition}
-    $[a, b]$ is a bounded interval, $1 \le p < \infty$. Then the step functions are dense
+    \label{prop:propTwoSeparability}
+    $[a, b]$ is a bounded interval, $1 \le p < \infty$. Then the step functions
+    are dense in the space of all simple functions on $[a, b]$.
     in $L^p([a, b])$.
 \end{proposition}
 
 After those propositions are proved, the proof of the theorem is going to go as follows.
 For $[a, b]$, let $S[a, b]$ be the set of all step functions with rational values
 and rational points of the subdivition. In this case, the set $S[a, b]$ is already countable.
-$S[a, b]$ si dense in $L^p[a, b]$. Now, if $E$ is arbitrary, 
+By those two propositions, $S[a, b]$ is dense in $L^p[a, b]$. Now, if $E$ is arbitrary, 
 we could consider the family 
 \[ \mathcal{F} = \bigcup_1^\infty S[-n, n] \]
 $\mathcal{F}$ is dense in $L^p(\mathbb{R})$.

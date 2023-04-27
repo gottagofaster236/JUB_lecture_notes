@@ -184,10 +184,10 @@ Now let's prove that $L^\infty[a,b]$ is not separable.
     Take $k \to \infty$:
     \begin{align*}
         &
-        \int_E \abs{f - f_n}^p \overset{\text{Fatou's lemma}}{\le} 
+        \int_E \abs{f - f_n}^p \overset{\hyperref[lem:fatou]{\text{Fatou's lemma}}}{\le} 
         \liminf_{k \to \infty} \int_E \abs{f_{n+k} - f_n}^p
         \\&
-        \norm{f - f_n}_p \le \left( \sum_{m=n}^\infty \varepsilon_m^{2p} \right)^{\frac{1}{p}}
+        \norm{f - f_n}_p \le \Bigl( \sum_{m=n}^\infty \varepsilon_m^{2p} \Bigr)^{\frac{1}{p}}
     \end{align*}
     This is the tail of a converging series, and thus it converges to 0.
     Therefore, $f_n \to f$ in the $L^p$ norm.
@@ -206,7 +206,7 @@ It turns out that neither is true.
         \int_E \abs{f_n - 0}^p = \int_0^{1/n} n = 1
     \]
 \end{example}
-\begin{example}
+\begin{example}[2]
     Let's imagine a piano.
     When we're playing a piano, we're pressing the keys one by one from left to right.
     Let's split the interval of $[0, 1]$ into $n$ pieces, and ``move from left to right''

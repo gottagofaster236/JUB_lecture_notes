@@ -123,7 +123,7 @@ Now let's prove that $L^\infty[a,b]$ is not separable.
             If $\sum_1^\infty \varepsilon_k$ converges, then
             $\sum_1^\infty \varepsilon_k^2$ converges as well
             (as once the epsilons get less than one, that the squaring will only
-            speed the convegence up).
+            speed the convergence up).
 
             Therefore,
             \[
@@ -133,7 +133,7 @@ Now let's prove that $L^\infty[a,b]$ is not separable.
         }
         \item {
             Each next element should be chosen sufficiently far in the line, 
-            to ensure the consequtive differences are small enough.
+            to ensure the consecutive differences are small enough.
         }
     \end{enumerate}
 \end{proof}
@@ -163,12 +163,12 @@ Now let's prove that $L^\infty[a,b]$ is not separable.
     \[
         m\{ x \in E \mathrel{\big\vert} \abs{f_{k+1}(x) - f_k(x)} \ge \varepsilon_k \} = 
         m\{ x \in E \mathrel{\big\vert} \abs{f_{k+1}(x) - f_k(x)}^p \ge \varepsilon_k^p \} \le
-        \frac{1}{\varepsilon_k^p} \abs{f_{k+1}(x) - f_k(x)}^p \le \varepsilon_k^p
+        \frac{1}{\varepsilon_k^p} \int_E \abs{f_{k+1}(x) - f_k(x)}^p \le \varepsilon_k^p
     \]
     $p \ge 1,\ \sum_1^\infty \varepsilon_k < \infty \implies \sum_1^\infty \varepsilon_k^p < \infty$.
     Now we can use the \hyperref[lem:borCantelly]{Borel–Cantelli lemma}.
     Let's say $E_0 \subset E$ is the subset of measure zero where Borel-Cantelli doesn't hold.
-    Then every $x \in E \setminus E_0$ belongs to a finite number of such suts. Let's
+    Then every $x \in E \setminus E_0$ belongs to a finite number of such sets. Let's
     put $K(x)$ as the maximum index of such set plus one. Therefore:
     \[
         \abs{f_{k+1}(x) - f_k(x)} < \varepsilon_k \quad \forall k \ge K(x)
@@ -178,7 +178,7 @@ Now let's prove that $L^\infty[a,b]$ is not separable.
 
     Now we have a candidate for convergence, but we have to prove that it converges in the $L_p$ space.
     \[
-        \int_E \abs{f_{n+k} - f_n}^p \le \sum_{m=n}^\infty \varepsilon^{2p} \quad 
+        \int_E \abs{f_{n+k} - f_n}^p \le \sum_{m=n}^\infty \varepsilon_m^{2p} \quad 
         \forall n, k
     \]
     Take $k \to \infty$:
@@ -187,7 +187,7 @@ Now let's prove that $L^\infty[a,b]$ is not separable.
         \int_E \abs{f - f_n}^p \overset{\text{Fatou's lemma}}{\le} 
         \liminf_{k \to \infty} \int_E \abs{f_{n+k} - f_n}^p
         \\&
-        \norm{f - f_n}_p \le \sum_{m=n}^\infty \varepsilon_m^2
+        \norm{f - f_n}_p \le \left( \sum_{m=n}^\infty \varepsilon_m^{2p} \right)^{\frac{1}{p}}
     \end{align*}
     This is the tail of a converging series, and thus it converges to 0.
     Therefore, $f_n \to f$ in the $L^p$ norm.

@@ -1,0 +1,211 @@
+\begin{lemma}
+    $U \subset \mathbb{R}^n$ --- any open subset.
+    Every derivation on $C^\infty(U)$ at $p$ is some directional
+    derivative evaluated at $p$.
+\end{lemma}
+\begin{remark}
+    If $V$ is a chart of $M$, then it can be mapped to a subset of $\mathbb{R}^n$.
+    Therefore, $C^\infty(V)$ can be mapped to $C^\infty(\mathbb{R}^n)$,
+    so all derivations on $V$ are some directional derivatives.
+
+    But since $V \subset M$, we have $C^\infty(V) \supset C^\infty(M)$
+    (as every function that is smooth on $M$ will be smooth on a subset of $M$).
+    Since there are less smooth functions on $M$ than on $V$, 
+    there are less restrictions for a derivation, therefore, $M$
+    could potentially have more derivations than $V$. (It can be proven though
+    that that's not the case).
+\end{remark}
+\begin{proof}
+    Without the loss of generality, let's assume that $p = \vec{0}$.
+    If $f \in C^\infty(U)$, then by Taylor series:
+    \[
+        f(x) = f(0) + 
+        \Bigl(\sum_{i=1}^n \frac{\partial f}{\partial x^i}\Big|_{x=0} \cdot x^i \Bigr)
+        + R(x), \qquad R(x) = \mathcal{O}(\norm{x}^2)
+    \]
+    $R(x)$ is a linear combination of products $g(x) h(x)$, such that $g$, $h$ are smooth and $g(0) = h(0) = 0$.
+    We can prove it in the following way. Let's take the tail of the Taylor series, $R(x)$. It has an infinite number of terms.
+    Let's take all the terms that contain $x^1$, factor $x^1$ out, and say $g(x) = x^1$ and $h(x)$ is what's left.
+    Not all terms contain $x^1$. Out of the remaining terms, let's find all that contain $x^2$, factor $x^2$ out, and so on.
+    In the end, $R(x)$ will be a linear combination of no more than $n$ such products.
+    
+    If $D$ is an arbitrary derivation on $C^\infty(U)$ at 0, then:
+    \begin{enumerate}
+        \item[Step 1.] {
+            $D(R) = 0$.
+        }
+        \item[Proof.] {
+            By linearity, it's enough to prove that $D(gh) = 0$, where
+            $g(0) = h(0) = 0$.
+            \[ D(gh) = g(0) D(h) + h(0) D(g) = 0 + 0 = 0 \]
+        }
+        \item[Step 2.] {
+            If $g = \text{const}$, then $Dg = 0$.
+        }
+        \item[Proof.] {
+            Without the loss of generality, by linearity $g \equiv 1$. Then
+            \[ D(g) = D(g^2) = 2g(0) D(g) = 2D(g) \implies D(g) = 0 \]
+        }
+        \item[Step 3.] {
+            By steps 1 and 2, since $D$ is linear, we have:
+            \[ 
+                D(f) = \sum_{i=1}^n \frac{\partial f}{\partial x^i} \Big|_{x=0}
+                \cdot D(x^i)
+            \]
+            Take $\vec{v} = [D(x^1), D(x^2), \dots, D(x^n)]$. Then
+            $D(f) = (D_{\vec{v}} f)(0)$.
+        }
+    \end{enumerate}
+\end{proof}
+
+\begin{definition}[Differential]
+    Let $M$, $N$ be smooth manifolds, $F : M \to N$ --- smooth, $p \in M$.
+    The \textit{differential} of $F$ at $p$ (or \textit{pushforward}) is a map
+    \[ dF_p : T_p M \to T_{F(p)} N \] defined by
+    \[ dF_p(v)(f) = v(f \circ F) \text{ for every } v \in T_p M,\ f \in C^\infty(N) \]
+\end{definition}
+\begin{remark}
+    The tangent spaces contain all derivations. So $v$ here is a derivation at $p$.
+\end{remark}
+\begin{remark}
+    The motivation for calling this a differential is the following.
+    If we zoom into a manifold at a point $p$, the manifold will start to look flat.
+    Therefore, we can approximate the manifold at a point with its tangent space.
+    In usual calculus, $\mathbb{R}^n$ coincides with its tangent space. 
+    This is an unfortunate coincidence, that creates a lot of confusion.
+\end{remark}
+\begin{lemma}
+    The definition is correct, i.e.
+    $d F_p(v) \in T_{F(p)} N$ for all $v \in T_p M$.
+\end{lemma}
+\begin{proof}
+    \begin{enumerate}
+        \item {
+            $d F_p(v)$ is linear on $C^{\infty(N)}$.
+            This follows directly from the linearity of $v$.
+        }
+        \item {
+            The product rule holds:
+            \begin{align*}
+                &
+                d F_p(v)(fg) = v\bigl((fg) \circ F\bigr) = 
+                v\bigl((f \circ F)(g \circ F)\bigr)
+                =\\&=
+                (f \circ F)(p) \cdot v(g \circ F) + 
+                (g \circ F)(p) \cdot v(f \circ F) = 
+                f(F(p)) \cdot dF_p(v)(g) + g(F(p)) \cdot dF_p(v)(f)
+            \end{align*}
+        }
+    \end{enumerate}
+\end{proof}
+
+\begin{proposition}
+    $M$, $N$, $P$ --- smooth manifolds,
+    $F : M \to N$, $G : N \to P$ --- smooth maps, $p \in M$. Then:
+    \begin{enumerate}
+        \item {
+            $dF_p : T_p M \to T_{F(p)} N$ is linear.
+        }
+        \item {
+            $d(G \circ F)_p : T_p M \to T_{G \circ F(p)} P$ satisfies
+            $d(G \circ F)_p = dG_{F(p)} \circ dF_p$. This is the chain rule.
+        }
+        \item {
+            $d(\operatorname{id}_M) = \operatorname{id}_{T_p M}$.
+        }
+        \item {
+            If $F$ is a diffeomorphism, then $dF_p$ is an isomorphism
+            between $T_p M$ and $T_{F(p)} N$\\ and
+            $(dF_p)^{-1} = d(F^{-1})_{F(p)}$.
+        }
+    \end{enumerate}
+\end{proposition}
+
+\subsection{Computations in charts}
+Let $(U, \varphi)$ --- a chart at $p$, $\varphi : U \to \mathbb{R}^n;\ 
+d\varphi_p : T_p M \to T_{\varphi(p)} \mathbb{R}^n$.
+
+Here is the basis of $T_{\varphi(p)} \mathbb{R}^n$:
+\[\Bigl(
+    \frac{\partial}{\partial x^1}\Big|_{\varphi(p)}, 
+    \frac{\partial}{\partial x^2}\Big|_{\varphi(p)}, \dots
+    \frac{\partial}{\partial x^n}\Big|_{\varphi(p)}
+ \Bigr) \]
+We can pull this basis back to $T_p M$ using the differential of $\varphi$.
+Let's denote it as follows:
+\[
+    \Bigl(
+        \frac{\partial}{\partial x^1}\Big|_p,
+        \frac{\partial}{\partial x^2}\Big|_p, \dots
+        \frac{\partial}{\partial x^n}\Big|_p
+    \Bigr) 
+    \text{ where }
+    \frac{\partial}{\partial x^i}\Big|_p f =
+    \frac{\partial}{\partial x^i}\Big|_{\varphi(p)} (f \circ \varphi^{-1}) =
+    \frac{\partial \hat{f}}{\partial x^i}(\hat{p}) 
+\]
+$\hat{f}$ and $\hat{p}$ are the representations of $f$ and $p$ in chart $(U, \varphi)$.
+This basis will be different for a different chart.
+
+Let $F : U \to V$, where $U \subset \mathbb{R}^n$, $V \subset \mathbb{R}^m$.
+Let's check that the definition of the differential that we gave
+will be the Jacobian in this case.
+
+Let $(x^1, \dots, x^n)$ be the standard basis of $\mathbb{R}^n$, 
+$(y^1, \dots, y^n)$ --- the standard basis of $\mathbb{R}^m$,
+$F = (F^1, \dots, F^m)$.
+It is enough to check how the differential acts on the basis vectors.
+\begin{align*}
+    &
+    dF_p\Bigl(\frac{\partial}{\partial x^i} \Big|_p\Bigr) f 
+    \overset{\text{definition of differential}}{=}
+    \left[\frac{\partial}{\partial x^i} \Big|_p \text{is a basis vector in }
+     T_p U = T_p \mathbb{R}^n\right] 
+    =
+    \frac{\partial}{\partial x^i} \Big|_p (f \circ F)
+    \overset{\text{chain rule}}{=}\\&=
+    \sum_{j=1}^m \frac{\partial f}{\partial y^j}(F(p))
+    \cdot \frac{\partial F^j}{\partial x^i}(p) = 
+    \Bigl(\sum_{j=1}^m \frac{\partial F^j}{\partial x^i} \cdot
+    \frac{\partial}{\partial y^j}\Big|_{F(p)}\Bigr) f
+    \text{ --- basis vector in } T_{F(p)} V
+\end{align*}
+This corresponds to the $i$-th column vector in the Jacobi matrix:
+\[
+    J_F = \begin{bmatrix}
+        \frac{\partial F^1}{\partial x^1}(p) & \dots & \frac{\partial F^1}{\partial x^n}(p)\\
+        \vdots & \ddots & \vdots \\
+        \frac{\partial F^m}{\partial x^1}(p) & \dots & \frac{\partial F^m}{\partial x^n}(p)\\
+    \end{bmatrix}
+\]
+$dF_p$ acts on vectors as left multiplication by $J_F$.
+\subsubsection*{General case}
+$F : M \to N$. $(U, \varphi)$ --- chart on $M$, $(V, \psi)$ --- chart on $N$.
+$\hat{F} = \psi \circ F \circ \varphi^{-1};\ \hat{p} = \varphi(p)$.
+\[
+    dF_p\Bigl(\frac{\partial}{\partial x^i}\Big|_p\Bigr) = 
+    \sum_{j=1}^m \frac{\partial \hat{F}^j}{\partial x^i}(\hat{p}) 
+    \cdot \frac{\partial}{\partial y^j}\Big|_{F(p)}
+\]
+
+\subsection{Informal statements}
+\begin{definition}[Tangent bundle]
+    \[ TM \coloneqq \sqcup_{p \in M} T_p M  = \{
+        (p, v): p \in M, v \in T_p M
+    \}\]
+    In other words, we think of different tangent spaces independently,
+    as a collection.
+\end{definition}
+$TM$ --- smooth manifold with charts
+\[ 
+    \biggl(\Bigl(U, \sqcup_{p \in U} T_p M\Bigr),\ (\varphi, d_p \psi)\biggr)
+\]
+Here $U$ is a chart in $M$.
+To verify that this is a smooth manifold, we have to make sure that the
+transition maps are smooth.
+If we have another chart $V \in M$ with transition function
+$(\psi, d_p \psi)$ then the transition map will be
+\[ 
+    (\psi \circ \phi^{-1}, d_p \psi \circ (d_p \phi)^{-1}) = 
+    (\psi \circ \phi^{-1}, d_{\phi(o)}(\psi \cdot \phi^{-1}))
+\]
